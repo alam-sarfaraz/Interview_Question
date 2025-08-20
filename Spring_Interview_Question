@@ -1,0 +1,168 @@
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+CSRF (Cross-Site Request Forgery) is an attack where a malicious site tricks a user’s browser into sending unwanted requests to your application (like transferring money, changing password, etc.) while the user is logged in.
+
+Spring Security enables CSRF protection by default to prevent such attacks.
+
+It usually works by requiring a special token (CSRF token) in every state-changing request (like POST, PUT, DELETE). If the token is missing or invalid → request is rejected.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the role of actuator in spring boot?
+Actuator is a module in Spring Boot that provides ready-to-use features for monitoring and managing applications by exposing endpoints for health, metrics, info, logging, and more.
+
+   http://localhost:8080/actuator/health → returns {"status":"UP"}
+   http://localhost:8080/actuator/metrics/jvm.memory.used → shows JVM memory usage.
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+DispatcherServlet
+In Spring MVC, the DispatcherServlet acts as the front controller. It is responsible for receiving requests and sending them to the appropriate handler method in the controller. After the controller processes the request and returns the response, the DispatcherServlet takes it and forwards it to a ViewResolver to render the view (e.g., JSP or Thymeleaf template). If the response is in JSON format, the DispatcherServlet uses tools like Jackson to serialize the data and send it back to the client.
+
+Role:
+Receives the request.
+Finds the right controller to handle it (via handler mappings).
+Calls the controller method.
+Returns the view or response to the client.
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+What are different types of Spring Bean autowiring?
+There are four types of autowiring in Spring framework.
+
+autowire byName
+autowire byType
+autowire by constructor
+autowiring by @Autowired and @Qualifier annotations
+--------------------------------------------------------------------------------------------------------------------------------------------
+What is lazy initialization of spring bean?
+Lazy initialization in Spring means a bean is created only when it is first needed, instead of at application startup.
+
+1 Normal (Eager) Initialization
+By default, Spring creates all singleton beans at startup.
+This makes them ready for use immediately but increases startup time and memory usage.
+
+2 Lazy Initialization
+Spring delays the creation of the bean until it’s actually requested.
+This can make the application start faster if some beans are rarely used.
+
+Example :
+@Component
+@Lazy
+public class MyBean {
+    public MyBean() {
+        System.out.println("MyBean Created!");
+    }
+}
+
+spring.main.lazy-initialization=true
+
+Constructor Injection + Lazy Initialization
+If you have constructor injection and mark a dependency as @Lazy,
+Spring will inject a proxy instead of the real bean.
+The real bean is only created when you first call a method on that dependency.
+
+Field / Setter Injection + Lazy Initialization
+Works the same way — Spring injects a proxy object.
+The real bean will be created only on the first method call.
+--------------------------------------------------------------------------------------------------------------------------------------------
+What are the bean scopes available in Spring?
+Singleton :  Only one instance per Spring container.Same object returned every time you request it.          
+Prototype :  A new instance is created every time you request it.
+Request   :  One bean instance per HTTP request.
+Session   :  One bean instance per HTTP session. 
+Application: One bean instance per ServletContext (shared across the whole app).
+Websocket :  One bean instance per WebSocket session.           
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Explain the Bean Life Cycle in Spring ?
+
+Below are the Spring Bean Life Cycle stages :
+1 Loading Bean Definitions: Spring reads the configuration (XML, Java Configuration Classes or Java Annotations) to understand bean definitions, including their properties, dependencies and scope.
+
+2 Bean Instantiation: Spring creates instances of the beans. Dependencies are injected via constructor, setter or field injection based on the defined configurations.
+
+3 Bean Initialization: After instantiation and dependency injection, Spring performs initialization.
+      This can be customized using:
+      init() method in XML
+      afterPropertiesSet() from the InitializingBean interface
+      @PostConstruct annotation
+4 Bean Usage: The fully initialized bean is now ready for use within the application. It can interact with other beans and components as needed.
+
+5 Bean Destruction: When the application shuts down, Spring performs bean cleanup by calling:
+                  Custom destroy() method (if defined in XML)
+                  destroy() from the DisposableBean interface
+                  @PreDestroy annotation.
+--------------------------------------------------------------------------------------------------------------------------------------------                        
+What is dependency Injection?
+
+The process of injecting dependent bean objects into target bean objects is called dependency injection.
+
+Setter Injection: The IOC container will inject the dependent bean object into the target bean object by calling the setter method.
+Constructor Injection: The IOC container will inject the dependent bean object into the target bean object by calling the target bean constructor.
+Field Injection: The IOC container will inject the dependent bean object into the target bean object by Reflection API.
+
+Which DI is Best and Why?
+Constructor Injection is generally best because:
+    Supports immutability — dependencies can’t be changed later.
+    It clearly shows what the class needs to work.
+    Easier to test with mock objects.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+What is an IOC container?
+
+Spring IoC Container is the core of Spring Framework. It creates the objects, configures and assembles their dependencies, manages their entire life cycle. It gets the information about the objects from a configuration file(XML) or Java Code or Java Annotations and Java POJO class. These objects are called Beans. Since the Controlling of Java objects and their lifecycle is not done by the developers, hence the name Inversion Of Control.                  
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Spring Boot:
+Spring Boot is an open source Java-based framework used to create a stand alone application(micro Service).
+Features of Spring Boot:
+
+1 Creates stand-alone spring application with minimal configuration needed.
+2 It has embaded server (tomcat and jetty) for run the application.
+3 Spring Boot Actuator provides health check, metrics and monitors the endpoints of the application. It also simplifies the troubleshooting management.
+4 Spring Boot automatically configures dependencies by using @EnableAutoconfiguration annotation and reduces boilerplate code.
+5 Security – to provide authentication and authorization
+6 Logging – to record events at certain points during program execution
+---------------------------------------------------------------------------------------------------------------------------------------------
+What is the use of Profiles in spring boot?
+While developing the application we deal with multiple environments such as dev, QA, Prod, and each environment requires a different configuration. For eg., we might be using an embedded H2 database for dev but for prod, we might have proprietary Oracle or DB2. Even if DBMS is the same across the environment, the URLs will be different.
+
+spring.profiles.active=dev
+
+This will activate the dev profile, and Spring Boot will load the application-dev.properties.
+---------------------------------------------------------------------------------------------------------------------------------------------
+What is Spring Boot dependency management?
+Spring Boot dependency management is used to manage dependencies and configuration automatically without you specifying the version for any of that dependencies.
+---------------------------------------------------------------------------------------------------------------------------------------------
+How Spring Boot Application Works Internally?
+
+The class has @SpringBootApplication and a main() method with SpringApplication.run().
+This is where the magic starts.
+
+1 Spring Boot starts Spring
+       It creates a Spring Application Context (a container) to hold and manage all your beans (objects).
+
+2 Auto-configuration kicks in
+       Based on the libraries in your project (like Spring Web, JPA, Security), Spring Boot automatically configures necessary settings — you don’t have to write boilerplate code.
+
+3 Component scanning
+       It looks for classes with annotations like @Component, @Service, @Repository, @Controller in your package and creates bean objects for them.
+
+4 Dependency Injection
+       If a class needs another object, Spring Boot automatically provides it (instead of you creating it manually).
+
+5 Embedded Server starts
+       If it’s a web app, Spring Boot starts an embedded Tomcat/Jetty/Undertow server.
+       Your controllers get mapped to URLs automatically.
+
+6 Application is ready
+       Spring Boot waits for requests (if it’s a web app) or starts processing tasks (if it’s a batch app).
+
+
+Spring Boot runs your main class → creates a Spring container → auto-configures everything → injects dependencies → starts a server (if needed) → your app runs.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Api (Application Programming Interface)
+API in Spring Boot is a set of RESTful endpoints defined in a Spring Boot application. These endpoints are created using annotations such as @RestController, @GetMapping, @PostMapping, and others. The API allows clients to interact with the application through HTTP requests, handling methods like GET, POST, PUT, and DELETE to perform operations and exchange data, typically in JSON format.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+What do you understand by RESTful Web Services?
+RESTful web services are services that follow REST architecture. REST stands for Representational State Transfer and uses HTTP protocol (web protocol) for implementation. These services are lightweight, provide maintainability, scalability, support communication among multiple applications that are developed using different programming languages. They provide means of accessing resources present at server required for the client via the web browser by means of request headers, request body, response body, status codes, etc.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,396 @@
+Green thread model 
+    - The thread which is managed compeleted by jvm without taking underline os support is called Green thread model .
+    - Very few operating system like sun sobries provides support by Green thread model anyway Green thread model is debricated and not recommended to use.
+
+Native os model
+The thread which is manages by the jvm with the help of underline os,is called Native os model.
+All windows based os provides supprot for Native os model.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is time slicing?
+Time slicing in multithreading (or multitasking) is a technique where the CPU divides its processing time into small units called time slices and assigns them to each thread or process in a round-robin fashion.
+
+👉 In simple words:
+It means each thread gets a small share of CPU time, runs for that short period, and then the CPU switches to the next thread.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+What states can a thread go through in its lifetime?
+The thread lifecycle includes several states of a thread:
+1 New (when created but not started)
+2 Runnable (after start() is called)
+3 Running (when executing)
+4 Blocked/Waiting (when waiting for a resource or another thread)
+5 Terminated (when completed).
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is context-switching in multi-threading?
+Context switching in multithreading is the process where the CPU pauses one thread and switches to another thread.
+   Multitasking → Many threads can share the CPU, so it looks like they run at the same time.
+   Better CPU use → CPU never sits idle; when one thread waits (like for I/O), another can run.
+   Responsiveness → Apps feel smoother because multiple tasks progress together.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is atomic operation? What are atomic classes in Java Concurrency API?
+Atomic Operation → An operation that happens all at once, without being interrupted by other threads.
+Atomic Classes (Java Concurrency API) → Special classes in java.util.concurrent.atomic (like AtomicInteger, AtomicLong, etc.) that let you do thread-safe operations on variables without using synchronized or locks.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the ExecutorService interface?
+The ExecutorService is an interface in the java.util.concurrent package that helps to manage and run multiple tasks in the background using a pool of threads instead of creating threads manually.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is user Thread and daemon Thread?
+When we create a Thread in java program, it’s known as user thread. 
+Example: In Java, any thread you create with Thread or Runnable is a user thread.
+It only stops when its work is done (unlike daemon threads, which stop when the main program ends).
+
+Demon Thread :
+A daemon thread is a background thread that runs to support other threads and automatically stops when all user threads finish.
+Example: In Java, the Garbage Collector runs as a daemon thread.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is a Thread Pool?
+A Thread Pool is a group of pre-created worker threads that are ready to do tasks.
+Instead of creating a new thread every time you need to run something, you reuse threads from the pool. This saves time and system resources.
+
+Benefits:
+Performance: Reduces the overhead of thread creation and destruction.
+Resource Management: Limits the number of concurrent threads to avoid exhausting system resources.
+Scalability: Makes it easier to manage a large number of tasks efficiently.
+
+ExecutorService executor = Executors.newFixedThreadPool(3);
+ executor.submit(() -> {System.out.println("Task " + taskId + " is running by " + Thread.currentThread().getName())};
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Multitasking:
+
+Multitasking is a process of executing multiple tasks simultaneously. We use multitasking to utilize the CPU. Multitasking can be achieved in two ways: 
+1 Process-based Multitasking (Multiprocessing)
+2 Thread-based Multitasking (Multithreading)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Process-based Multitasking (Multiprocessing)
+
+Process-based multitasking involves the execution of multiple processes concurrently. Each process operates independently and possesses its own memory space, system resources, and execution context. The operating system allocates CPU time to each process, enabling them to progress simultaneously and giving the illusion of parallel execution.
+
+it is done on OS level.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Thread-based Multitasking (Multithreading)
+
+Executing several task simultaneously where each task is a seprate independent part of the same program is called Thread-based Multitasking. And each independent part is called thread.
+
+Thread-based Multitasking (Multithreading) is based suitable at pogrammatic level.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Threads allows a program to operate more efficiently by doing multiple things at the same time.
+
+Threads can be used to perform complicated tasks in the background without interrupting the main program.
+
+There are two ways to create a thread.
+
+1 By extending the Thread class.
+2 By implement the Runnable interface:
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Thread Scheduler:
+
+Thread Scheduler is a part of JVM.It is responsisble to schedule threads i.e if multiple thread are waiting to get the chance of execution then in which order thread will be executed is decided by thread schedular and we can't expect algorithm followed by schedular and it is varied from jvm to jvm.Hence we cannot expect thread execution order and exact output.hence when a sitution comes in multithreading there is no gurantee for exact output. but we can provide several possible outputs.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Start and Run method
+
+In the case of t.start() a new thread will be created  which is responsible for the excecution of run method but in the case of t.run a new thread won't be created and run method will be executed just like a normal method call by main thread.
+ 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Overloading of run method will be possible but thread class start method can invoke no args run method the other overloded we have to call explicily like a normal method call.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+After staring a thread if we are trying to restart a same thread then we will get runtime exception saying illegalStatethread exception.
+
+Mythread t = new Mythread().
+t.start();
+t.start() ;  // IllegalStatethread exception.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Which approach is best to extend the thread class or implementing runnable interface.
+
+Among two way of defining a thread implement runnable approach is recommended. 
+In the first approch our class alway extend thread class , there is no change of extending any other class hence we are missing inheritance benifit.
+but in the second approcah while implementing runnable interface we can extend any other class hence we won't miss any inhertance benifit.
+because of above reason implement runnable interface is recommended then extending thread class.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+THREAD PRIORITY :
+
+Every thread in java has some priority it may be default prioity generate by jvm or customised priority by programmer.
+The value ranged thread priority is 1 to 10 where 1 in min priority or 10 is max priority.
+Thread class defines the following constraints to represent some standard priority.
+
+Thread.MIN_PRIORITY --> 1
+Thread.NORM_PRIORITY --> 5
+Thread.MAX_PRIORITY --> 10
+
+Thread schedular will use priority while allocating procssor the thread which having highest priority will get chance first.
+
+Thread class defines the folling a methods to get and set priority of thread.
+
+public final int getPriority()
+ 
+public final void setPriority( int p)  - allowed ranged 1 to 10 otherwise throw runtime exception illegalArgumentException.
+ 
+Defalut priority only for the main thread is 5.but for rest thead default priority will be inherited from parent to child i.e whatever priority parent thread has the same priority will be there for the child thread.
+ 
+Thread.currentThread.getPriority();
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+we can prevent a thread execution by using the folling methods 
+1 yield()
+2 join()
+3 sleep()
+ 
+yield()
+yield() called to pause current executing thread to give the chance for waiting the thread of the same priority if there is no waiting thread or all waiting have low priority then same thread can continue its execution.
+ 
+if multiple thread are waiting with same priority then which waiting thread will get chance we can't expect its depends on thread schedular.
+ 
+public static native void yield();
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+join()
+if a thread want to wait until completing someother thread then we should go for join() method.
+if a thread t1 want to wait until complete t2 then t1 has to call t2.join()
+if t1 exectue t2.join then immeditally t1 will be entered into waiting state until t2 completes.
+once t2 complete then t1 continue is execution.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+sleep()
+
+if a thread don't want to perfom any operation for a particular amount of time then we should go for sleep method.
+public static void native sleep(long ms) throw InturreptedException ; 
+public static void  sleep(long ms , int ns)InturreptedException;
+
+NOTE :
+Every sleep() throw InturreptedException,which is checked exception hence whenever we are using sleep() compulsaroy handle InturreptedException either by try catch or by throws otherwise we will get compile time exception.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Interupet Method
+
+A thread can interupet a sleeping thread or waiting thread by using interupet method of thread class.
+public void interupet();
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+SYNCHRONIZATION :
+
+synchronized is a modifier applicable only for method and blocks but not for classes and variables.
+If multiple threads are trying to oprate simultaneously on the same java object then there may be chance of data inconsistency problem.
+To overcome this problem we should for synchronized keyword.
+If a method or block declared as synchronized then at a time only one thread is allowed to execute method or block give object so that data inconsistency problem will be resolved.
+
+Advantage and disadvantage :
+
+The main advantage of synchronized keyword is we can resolve data inconsistency problem but main the disadvantage of synchronized keyword is it increases waiting time of threads and creates performance problems.Hence if there is no specific requirement then it is not recommended synchronized keyword.
+ 
+Internally the synchronization concept is implemented by using lock every object in java has a unique lock.
+WhenEver we are using synchronized keyword then only lock concept will come in picture.
+if a thread want to execute synchronized method on the given object first it has to get lock of that object.
+Once thread got the lock then it is allowed to exectue any synchronized method on that object.
+Once method exectution completes automatically thread releases a lock.
+Accuring and releasing lock internally takes care by JVM and programmer not responsible for this activities.
+
+NOTE :
+While a thread executing synchronized method on a given object the remaining thread are not allowed to execute any synchronized method simultaneously on same object but remaining thread are allwed to execute non synchronized method simultaneously.
+
+Lock concept is implemented based on object but not based on method
+
+public synchronized void display(){} -- object level lock
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Class level lock :
+
+Every class in java has a unique lock which is nothing but class level lock.
+if a thread wants to execute a static synchronized method then thread required Class level lock.
+Once thread got Class level lock then it is allowed to execute any static synchronized method of that class 
+once method execution complete automatically thread release lock.
+
+public static synchronized void display(){} --- class level lock
+
+while a thread executing static synchronized method the remaning thread are not allowed any static synchronized method of that class simultaneously but remaing thread are allowd to execute the following method simultaneously
+
+Normal static method --- public static void display(){}
+synchronized instance method -- public synchronized void display(){}
+normal instance method --  public void display(){}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+synchronized block :
+if very few lines of code required synchronization then it not recomended to declare entire method as synchronized we have to enclose those few line of code by using synchronized block.
+The main advantage of synchronized block over synchronized menthod is it reduces waiting time of thread and improve performace of syastem or application.
+
+RACE CONDITION:
+if multiple thread are operating simultaneously on same java object then there may be chance of data inconsistency problem this is called race condition.
+We can overcome this problem by using synchronized keyword.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+INTER THREAD COMMUNICATION.
+
+Two threads can communicate with eachother by using wait, notify and notifyAll method the thread which is expecting the updation is responsible to call wait method then immmediately the thread will enter into waiting state.
+The thread which is responsible to perform updation, after performing updation it is responsibe to call notify method then waiting thread will get notification and continue its exection with those updated items.
+
+NOTE :
+wait notify and notifyAll method are present in object class but not in thread class because thread can call these method on any java object.
+To call wait notify and notifyAll method on any object,thread should be owner of that object i.e thread should has locked that object i.e the should be in synchrozied area hence we can call wait notify and notifyAll method only from synchronized area otherwise we will get runtimeException saying IllegialMonitorState Execption. 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Dead Lock
+
+If two thread are waiting for eachother forever such type of infinite waiting is called DeadLock.
+By using synchronized keyword we can overcome dead lock problem.
+synchronized keyword is only reason for dead lock situation hence while using synchronized keyword we have to take special care.
+There are no resolution techinique for dead lock but several prevention technique are available.
+
+Example :
+
+public class A {
+   
+	public synchronized void display1(B b) {
+		System.out.println("Thread 1 start execution of display1 method");
+		try {
+			Thread.sleep(1000);
+		}catch (InterruptedException e) {
+			System.out.println("Thread 1 trying to call B last method");
+			b.last();
+		}
+	}
+	public synchronized void last() {
+		System.out.println("inside the A last method");
+	}
+}
+
+public class B {
+	
+	public synchronized void display2(A a) {
+		System.out.println("Thread 2 start execution of display2 method");
+		try {
+			Thread.sleep(1000);
+		}catch (InterruptedException e) {
+			System.out.println("Thread 2 trying to call A last method");
+			a.last();
+		}
+	}
+	public synchronized void last() {
+		System.out.println("inside the B last method");
+	}
+
+}
+
+public class DeadLock extends Thread {
+	A a = new A();
+	B b = new B();
+
+	public void mainMethod() {
+       this.start();
+       a.display1(b); // This line is executed by main thread
+	}
+	
+	public void run() {
+		b.display2(a); // This line is executed by child thread
+	}
+
+	public static void main(String[] args) {
+		DeadLock main = new DeadLock();
+		main.mainMethod();
+
+	}
+
+}
+
+
+In the above program if we remove at least one synchronized keyword then the program won't entered in dead lock hence synchronized keyword is the only reason for dead lock situtation.So due to this while using synchronized keyword we have to take a special care.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Dead lock vs Starvation
+Long waiting of a thread where waiting never ends such type of long wating is called deadlock. 
+
+whereas Long waiting of a thread where waiting ends yet certain point is called Starvation.
+
+Example:
+
+Low priority thread has to wait until completing all high priority threads it may be long waiting but ends yet at certaing point which is nothing but starvation.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Daemon Theads
+The threads which are execting background are called Daemon Theads.
+Example :
+Garbage collector ,Signal dispacture ,attached listener etc.
+
+The main objective of daemon thread is to provide support for non daemon threads (main thread) 
+Example 
+If main thread runs with low memory then jvm runs garbage collector to destroy usless object so that number of bytes of free memory will improved with this free memory main thread can continue its execution.
+usually daemon thread having low priority but based on our requirement daemon thread can run with high priority also.
+
+we can checked daemon nature of thread by using isDaemon thread class 
+public boolean isDaemon();
+
+we can change daemon nature of thread by using setDaemon method
+public void setDaemon(boolean b);
+
+But changing daemon nature is possible before starting of a thread only after starting a thread if we are trying to daemon nature we will get runtime Exception IllegalThreadStateException.
+
+What is Default nature of thread.
+By default main thread is alway non daemon and for all remining thread daemon nature will be inhertated from parent to child i.e if parent thread is deamon then automatically child thread is demon. And parent thread is non deamon then automitcally child thread is non daemon. 
+
+Note :
+It is impossible to change daemon nature of main thread because it is already started by jvm at begning.
+
+public class DaemonThread extends Thread{
+
+	public static void main(String[] args) {
+		System.out.println("Is daemon thread :"+Thread.currentThread().isDaemon());
+		// Thread.currentThread().setDaemon(true); --- IllegalThreadStateException
+		Thread t = new Thread();
+		System.out.println("Child thread is daemon thread :"+t.isDaemon());
+		t.setDaemon(true);
+		System.out.println("Child thread set daemon thread :" +t.isDaemon());
+	}
+}
+
+Whean last non daemon thread terminates automatically all daemon thread will be terminated irrespective of there position.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Thread Group
+Based on functionalities we can group threds into a single unit which is noting but Thread Group i.e Thread Group contains a group of threads 
+In addition to threads Thread Group can also contain sub thread groups.
+
+Advantage of Thread Group
+The main advantage of maintaining Thread in the form Thread Group is we can perform common operation easily.
+
+Every thread in java below to some group main thrad below to main group
+Every thread group in java is the child group of system group either directy or indirectly hence the system group access root for all thrad groups in java.
+System group contains several system level threads like 
+
+finalize
+reference handler
+signal dispacture
+Attached listner
+
+public class DaemonThread extends Thread{
+
+	public static void main(String[] args) {
+		System.out.println(Thread.currentThread().getThreadGroup().getName());  // main
+		System.out.println(Thread.currentThread().getThreadGroup().getParent().getName()); //system
+	}
+}
+
+
+Thread Group is a java class present in java.lang package and it is the direct child class of object.
+
+Constructor
+ThreadGroup  tg = new ThreadGroup(String gname);
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Thread Local :
+
+In Java ThreadLocal is class which enables us to create variables that can only be read and written by the same thread. Thus, even if two threads are executing the same code, and the code has a reference to the same ThreadLocal variable, the two threads cannot see each other's ThreadLocal variables. Thus, the Java ThreadLocal class provides a simple way to make code thread safe that would not otherwise be so.
+
+
+Thread Local class provide thread local variable
+Thread Local class maintain the values per thraed basis.
+Each thread local object maintain a seperate value like userId transactionId etc for each thread that access that object.
+Thread can access its local value ,can manipulate its value.
+In every parts od code is exected by the thread we can acess its local variable.
+
+Note 
+Thread Local class introduced in 1.2 version and enhancened in 1.5 version.
+Thread local can be associated with thread scope.
+Total code which is executed by the the thread has access to corresponing Thread Local variable.
+A thread can access its own local variable and can't access other local variable.
+Once thread entered into dead state all is local varible by default eligble for garbage callection.
+
+What is ThreadLocal?
+ThreadLocal is a class in Java that provides thread-local variables. Each thread accessing a ThreadLocal variable gets its own, independently initialized copy of the variable, ensuring thread safety without explicit synchronization.
+ 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,199 @@
+Aspect-Oriented Programming (AOP) is a way to write code for common tasks (like logging, security, transactions) in one place and have it run automatically wherever needed, instead of repeating it in every class.
+
+Term	     Meaning
+Aspect	     A module that contains cross-cutting logic (e.g., LoggingAspect).
+Advice	     The actual code to run (before, after, or around a method).
+Join Point	 A specific point in program execution (like method call).
+Pointcut	 An expression that selects which join points to target.
+Weaving	     The process of connecting aspects with the target code.
+
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Before("execution(* com.example.service.*.*(..))")
+    public void logBefore() {
+        System.out.println("Method execution started...");
+    }
+}
+
+@Before → Advice runs before target methods.
+execution(..) → Pointcut selecting all methods in service package.
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+Decorator
+In Spring Boot, a decorator is a bean that wraps another bean of the same type to add extra behavior without changing the original bean’s code.
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+What do you understand by an instance variable and a local variable?
+
+Instance variables are those variables that are accessible by all the methods in the class. They are declared outside the methods and inside the class. These variables describe the properties of an object and remain bound to it at any cost.
+
+All the objects of the class will have their copy of the variables for utilization. If any modification is done on these variables, then only that instance will be impacted by it, and all other class instances continue to remain unaffected.
+
+Local variables are those variables present within a block, function, or constructor and can be accessed only inside them. The utilization of the variable is restricted to the block scope. Whenever a local variable is declared inside a method, the other class methods don’t have any knowledge about the local variable.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What are the default values assigned to variables and instances in java?
+
+There are no default values assigned to the variables in java. We need to initialize the value before using it. Otherwise, it will throw a compilation error of (Variable might not be initialized). 
+But for instance, if we create the object, then the default value will be initialized by the default constructor depending on the data type. 
+If it is a reference, then it will be assigned to null. 
+If it is numeric, then it will assign to 0.
+If it is a boolean, then it will be assigned to false. Etc.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Can the static methods be overridden?
+In Java, static methods cannot be overridden in the same way instance methods are.
+Instead of overriding, static methods in a subclass hide the static methods of the parent class. This is known as method hiding.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Serialization means to convert an object into a byte stream, which can then be easily stored in a file, transmitted over a network, or saved in a database. 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ConcurrentHashMap :
+
+1 The underlined data structure for ConcurrentHashMap is Hashtable.
+2 It's thread-safe, allowing multiple threads to work on a single object. 
+3 At a time any number of threads are applicable for a read operation without locking the ConcurrentHashMap object which is not there in HashMap.
+4 In ConcurrentHashMap, at a time any number of threads can perform retrieval operation but for updated in the object, the thread must lock the particular segment in which the thread wants to operate. This type of locking mechanism is known as Segment locking or bucket locking. Hence at a time, 16 update operations can be performed by threads.
+5 Inserting null objects is not possible in ConcurrentHashMap as a key or value.
+6 In ConcurrentHashMap, the Object is divided into a number of segments according to the concurrency level.
+Concurrency-Level: It is the number of threads concurrently updating the map. The implementation performs internal sizing to try to accommodate this many threads.
+7 The default concurrency-level of ConcurrentHashMap is 16.
+8 The ConcurrentHashMap object, which uses HashMap internally, is divided into multiple portions according to the concurrency level. During an update operation, only a specific portion of the map is locked instead of the whole map.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Encapsulation : 
+
+The wrapping of data member and member function in a single unit is known as Encapsulation.
+
+In Java, encapsulation is achieved by declaring the instance variables of a class as private, which means they can only be accessed within the class. To allow outside access to the instance variables, public methods called getters and setters are defined, which are used to retrieve and modify the values of the instance variables, respectively.
+
+Abstraction :
+Abstraction is a process by which we can hide the real implementaion from user and only show those properties which is required.
+Abstraction is achieved by interfaces and abstract classes.
+
+Abstract 
+
+1 Java abstract class is a class that can not be initiated by itself, it needs to be subclassed by another class to use its properties. An abstract class is declared using the “abstract” keyword in its class definition.
+2 We use the abstract keyword to create abstract classes and methods.
+3 An instance of an abstract class can not be created.
+4 An abstract class can have constructors like the regular class. And, we can access the constructor of an abstract class from the subclass using the super
+5 There can be a final method in abstract class but any abstract method in class can not be declared as final  or in simpler terms final method can not be abstract itself as it will yield an error: “Illegal    combination of modifiers: abstract and final”.
+6 We can define static methods in an abstract class.
+7 If a class contains at least one abstract method then compulsory should declare a class as abstract .
+8 If the Child class is unable to provide implementation to all abstract methods of the Parent class then we should declare that Child class as abstract .
+9 In Java, you can declare variables within an abstract class,
+10 Variables declation :
+public abstract class AbstractClass {
+    // Static variables
+    protected static int staticVariable;
+    private static String staticString = "Static";
+
+    // Final variables
+    public final int finalVariable = 10;
+    protected final String finalString = "Final";
+
+    // Instance variables
+    public int instanceVariable;
+    private String instanceString;
+
+    // Protected variable
+    protected int protectedVariable;
+
+    // Private variable
+    private int privateVariable;
+
+    // Public variable
+    public int publicVariable;
+
+    // Package-private variable
+    int packagePrivateVariable;
+}
+
+Key Features of Abstract Classes in Java:
+Cannot be instantiated: You cannot create an object of an abstract class.
+Can contain abstract methods: Methods without a body (implementation) declared using the abstract keyword.
+Can have concrete methods: Fully implemented methods.
+Supports constructors: Abstract classes can have constructors that can be called when a subclass is instantiated.
+Can have fields: Abstract classes can declare instance variables.
+Subclasses must implement abstract methods: If a subclass does not provide implementations for all abstract methods, it must also be declared abstract.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Interface
+
+Java interface is a collection of abstract methods. The interface is used to achieve abstraction in which you can define methods without their implementations (without having the body of the methods). An interface is a reference type and is similar to the class.
+
+1 We can’t instantiate an interface in java.
+2 Interface can’t provide method implementations.
+3 Interfaces can’t have constructors because we can’t instantiate them and interfaces can’t have a method with body.
+4 By default any attribute of interface is public, static and final, so we don’t need to provide access modifiers to the attributes but if we do, compiler doesn’t complain about it either.
+5 By default interface methods are implicitly abstract and public, it makes total sense because the method don’t have body and so that subclasses can provide the method implementation.
+6 An interface can’t extend any class but it can extend another interface.
+7 A class implementing an interface must provide implementation for all of its method unless it’s an abstract class. 
+8 We can’t create an instance (interface can’t be instantiated) of the interface but we can make the reference of it that refers to the Object of its implementing class.
+9 A class can implement more than one interface.
+10 All the methods are public and abstract. And all the fields are public, static, and final.
+11 It is used to achieve multiple inheritances.
+12 Inside the Interface not possible to declare instance variables because by default variables are public static final.
+13 Inside the Interface, constructors are not allowed.
+14 Inside the interface main method is not allowed.
+15 Inside the interface, static, final, and private methods declaration are not possible.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Inheritance
+
+Inheritance is an important pillar of OOP(Object-Oriented Programming). It is the mechanism in Java by which one class is allowed to inherit the features(fields and methods) of another class.
+A class that inherits from another class can reuse the methods and fields of that class.
+
+1 The extends keyword is used for inheritance in Java.
+2 Private members of superclass are not directly accessible to subclass.
+3 Superclass members with default access is accessible to subclass ONLY if they are in same package.
+4 Superclass constructors are not inherited by subclass.
+5 ava doesn’t support multiple inheritance, a subclass can extends only one class.
+5 We can call the superclass methods and access superclass variables using super keyword. 
+6 We can’t extend Final classes in java.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Java Inheritance Types
+
+Single Inheritance
+Multilevel Inheritance
+Hierarchical Inheritance
+Multiple Inheritance
+Hybrid Inheritance
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Polymorphism
+
+The word polymorphism means having many forms. In simple words, we can define Java Polymorphism as the ability of a message to be displayed in more than one form.
+or
+Polymorphism in Java is a concept by which we can perform a single action in different ways.
+
+There are two types of polymorphism in Java: compile-time polymorphism and runtime polymorphism.
+
+
+Compile Time Polymorphism:
+Compile-time polymorphism is also known as static polymorphism and it is implemented by method overloading.
+
+Overloading.
+Runtime polymorphism or Dynamic Method Dispatch:
+Run time polymorphism is also known as dynamic method dispatch and it is implemented by the method overriding.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+In Java, "scopes" typically refer to the visibility or accessibility of variables, methods, and classes within a program. Java defines several types of scopes:
+
+1. *Class Scope*: Variables and methods declared at the class level (outside of any method) have class scope. They are accessible to all methods within the class but are not directly accessible outside the class without an instance of the class.
+
+2. *Method Scope*: Variables declared within a method have method scope. They are only accessible within the method in which they are declared and cannot be accessed from outside that method.
+
+3. *Block Scope*: Variables declared within a block of code, such as within loops or conditional statements, have block scope. They are only accessible within the block in which they are declared and cease to exist once the block is exited.
+
+4. *Local Scope*: Variables declared within a method or block have local scope. They are accessible only within the method or block in which they are declared.
+
+5. *Instance Scope*: Instance variables are declared within a class but outside of any method and have instance scope. They are accessible to all methods within the class and are unique to each instance of the class.
+
+6. *Static Scope*: Static variables are declared with the static keyword and have static scope. They are shared among all instances of a class and are accessible via the class name itself.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Concurrency:
+In simple words, concurrency is the ability to run several programs or several parts of a program in parallel. Concurrency enables a program to achieve high performance and throughput by utilizing the untapped capabilities of the underlying operating system and machine hardware. For example, modern computers have several CPUs or several cores within one CPU, the program can utilize all cores for some part of the processing; thus completing tasks much before in time in comparison to sequential processing.
+
+The backbone of java concurrency is threading. 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------

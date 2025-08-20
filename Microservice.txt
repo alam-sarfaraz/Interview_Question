@@ -1,0 +1,320 @@
+Idempotency in microservices means no matter how many times you repeat the same request, the result will be the same, which makes systems safe and reliable.
+
+Why it matters in microservices
+    - In distributed systems, failures and retries are common (network timeouts, service crashes, etc.).
+    - Without idempotency, retries could cause duplicate records, double billing, or data corruption.
+    - Idempotency ensures safe retries and consistent state.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Eventual Consistency in microservices means data in different services may not match right away, but after a little time (when all updates are done), it will become consistent.
+
+👉 Example: When you place an order, the Order Service updates first, then after a short delay, the Payment and Inventory Services also update. For a moment things look different, but finally everything matches.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Command-Query Responsibility Segregation
+Command-Query Responsibility Segregation (CQRS) means separating “write” operations (commands that change data) from “read” operations (queries that only fetch data) so both can be handled and optimized differently.
+
+OR
+CQRS is an architectural pattern where the operations that read data (queries) are separated from those that modify data (commands). This approach helps to optimize read and write operations, especially in complex applications where the requirements
+
+👉 Command = change data
+👉 Query = read data
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Event-Driven Communication 
+Event-Driven Communication is a way for different parts of a system (or microservices) to talk to each other by sending and listening to events instead of calling each other directly.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Distributed tracing helps track a single request as it flows through multiple microservices. It captures the full journey—including which services were called, how long each step took, and where any delays or errors occurred.
+
+Tools like Zipkin and Jaeger make this visual by showing timelines and service maps.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is Distributed Transaction?
+A Distributed Transaction is a transaction that involves multiple services, databases, or systems working together, and it ensures that all operations succeed or all fail, even though they run on different machines.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Domain-Driven Design (DDD)
+Domain-Driven Design is a software development approach that focuses on the business domain (the problem the software is solving) and organizes the code to match the business concepts, rules, and processes.
+
+Key Points of Domain-Driven Design (DDD) 
+    - Focus on the business problem, not just the tech.
+    - Developers and business people use the same language to avoid confusion.
+    - Break big systems into smaller, well-defined parts (Bounded Contexts).
+    - Write code that matches real-world business concepts (like Customer, Order, Payment) using entities, value objects, and services.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Explain blue-green deployment in microservices.
+Blue-green deployment is a release management strategy that reduces downtime and risk when deploying new versions of an application (or microservice).
+
+Blue environment → The current version of your microservice that’s live and serving traffic.
+Green environment → The new version of your microservice, fully deployed but not yet receiving real user traffic.
+
+Two Environments:
+    - Blue environment → The current version of your microservice that’s live and serving traffic.
+    - Green environment → The new version of your microservice, fully deployed but not yet receiving real user traffic.
+Deployment Steps:
+    - Deploy the new version of the microservice to the green environment.
+    - Test the green environment thoroughly (QA, integration tests, etc.).
+    - Switch the traffic routing from blue to green (using a load balancer or API gateway).
+    - If something goes wrong, roll back by routing traffic back to the blue environment.
+Once Stable:
+    - The green environment becomes the new “blue” for the next deployment cycle.
+    - The old blue environment can be updated for future releases.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Microservices Design Patterns for System Design:
+
+1. Service Registry
+Service Registry Pattern is a design pattern commonly used in microservices architecture to enable service discovery and dynamic load balancing. In this pattern, microservices register themselves with a service registry, which acts as a central repository for service metadata.
+This metadata includes information such as service endpoint URLs, version numbers, and other configuration details.
+Tool:
+    Eureka (Netflix OSS)
+    Consul (HashiCorp)
+
+    - Eureka Server
+      Eureka Server is an application that holds the information about all the microservices. Every Micro service will register into the Eureka server and Eureka server knows all the client applications running on each port and IP address. Eureka Server is also known as Discovery Server.
+      The @EnableEurekaServer annotation is used to make your Spring Boot application acts as a Eureka Server.
+
+
+2. API Gateway
+The API Gateway Pattern is a design pattern used in microservices.
+An API gateway acts as a reverse proxy, sitting between client applications and the backend microservices.When its receives incoming requests, performs authentication (if enabled) and forwards requests to actual microservice. It provides a single entry point and hides the complexities of services in the backend.
+Request routing
+Authentication and authorization
+Rate limiting
+Load balancing
+Logging & monitoring
+
+Tool :
+Netflix Zuul,Spring Cloud Gateway,Kong,NGINX
+
+3. Circuit Breaker
+Circuit Breaker is design pattern in microservices is like a safety mechanism that prevents one broken part from bringing down the whole system. It detects when a service is not working correctly and stops sending requests to it temporarily. This helps keep the rest of the system running smoothly and prevents problems from spreading. Once the broken part is fixed, it allows requests to flow again.
+
+How It Works
+Closed State: Initially, the circuit is closed, and requests flow normally. The Circuit Breaker monitors the success and failure rates of the requests.
+Open State: If the failure rate exceeds a certain threshold, the circuit opens. This means that any requests to the failed service are immediately returned with an error, without actually attempting to call the service. This helps to avoid overwhelming the failing service.
+Half-Open State: After a predefined timeout period, the Circuit Breaker enters a half-open state and allows a limited number of test requests to pass through. If these requests succeed, the circuit closes again, and normal operation resumes. If they fail, the circuit reopens.
+
+Tools
+Netflix Hystrix,Resilience4j,Spring Cloud Circuit Breaker
+
+Example
+Imagine you have a web application that relies on several microservices. One of these services handles user authentication. Now, if this authentication service suddenly becomes slow or stops responding due to high traffic or a technical issue:
+
+Without Circuit Breaker: Every time a user tries to log in or access a secure page, your application continues to send requests to the authentication service, even though it's not responding properly. This can slow down your entire application and potentially make it unusable for all users.
+With Circuit Breaker: The Circuit Breaker monitors the requests to the authentication service. When it detects that too many requests are failing or taking too long:
+It "opens" the circuit, meaning it stops sending requests to the authentication service temporarily.
+Your application can then handle these situations gracefully, such as showing a friendly error message to users trying to log in.
+After a set period, the Circuit Breaker may allow a few test requests to see if the authentication service has recovered.
+If the service is working again, the Circuit Breaker "closes" and resumes sending requests normally.
+If the service is still problematic, the Circuit Breaker remains open to prevent further issues and protect the rest of your application.
+
+4. Saga Pattern
+The Saga Pattern is used to manage distributed transactions across microservices. Each service executes a local transaction and publishes an event. If any service in the sequence fails, compensating transactions are executed to undo previous steps.(Compensating action = business-defined undo step.)
+
+   Approaches to Implemement SAGA Design Pattern.
+     1 Choreography-Based Approach (Event-Driven)
+       - There is no central coordinator; each service knows what to do next and triggers the next step by emitting events.
+       - Services communicate through events (e.g., via message queues or event streams). Each service listens for events and performs its own action when the   event occurs.
+       - Services operate independently and don’t need to know about each other’s details, just the events they need to react to.
+       - If a service fails, it publishes a failure event, and other services can listen to it and perform compensating actions.
+     Example:
+            Order Service creates an order and publishes the "OrderCreated" event.
+            Payment Service listens for "OrderCreated" and processes payment, publishing "PaymentProcessed".
+            Inventory Service listens for "PaymentProcessed" and updates inventory, and so on.
+
+    2. Orchestration-Based Approach (Centralized)
+       - There is central coordinator;  controls the flow of the entire saga.
+       - The orchestrator tells each service when to start, what to do, and when to proceed to the next step.
+       - The orchestrator has detailed knowledge of each service and their responsibilities in the saga.
+       - The orchestrator manages failure recovery and calls the compensating actions if needed.
+
+
+5. CDC (Consumer-Driven Contracts)
+Consumer-Driven Contracts are agreements between API consumers and providers, driven by the consumer’s needs, verified automatically to ensure changes don’t break communication.
+
+Think of it like ordering food:
+You (consumer) tell the chef (provider) exactly how you want your sandwich.
+The chef agrees and writes it down (contract).
+Every time they make it, they check if it still matches your order before serving.
+
+6. Bulkhead Pattern
+A way to isolate parts of a system so if one fails or slows down, it doesn’t sink the whole system.
+In microservices, bulkhead pattern means isolating resources (like threads, database connections, memory) for each part of the system so a failure in one part doesn’t bring down others.
+Example:
+If the Payment Service gets overloaded, only payment-related requests fail, while Order Service and Inventory Service keep running normally.
+
+7. Event Sourcing 
+Instead of storing just the current state of data, you store all the events that happened to reach that state.
+The current state can be rebuilt anytime by replaying those events.
+
+Example :
+    Imagine a Bank Account Service:
+        Traditional way (state storage):
+        Balance = ₹1000 (you just store the current balance).
+
+    Event Sourcing way:
+        Events stored:
+        Account Created with ₹1000
+        Deposited ₹500
+        Withdrawn ₹200
+        Current balance = ₹1000 + ₹500 - ₹200 = ₹1300
+        So instead of only storing the balance, you store the events that led to it.
+
+8. Data Sharding
+In microservices design patterns, Data Sharding is used to make each microservice’s database faster and more scalable by splitting large datasets into smaller, manageable parts (shards) stored on different database instances.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Load balancer
+Load balancer in microservices → A tool that spreads incoming requests across multiple instances of a microservice so no single instance gets overloaded, ensuring better performance, reliability, and availability
+Examples
+HAProxy: A popular open-source tool that balances load across services.
+NGINX: A web server that also provides load balancing capabilities.
+
+Scenario
+User Requests: Multiple users are browsing your online store, placing orders, and managing their accounts simultaneously.
+
+Product Service Instances: You have three instances of the Product Service running to manage the traffic (e.g., Product Service A, Product Service B, Product Service C).
+
+How the Load Balancer Works
+Distributing Requests: When a user requests product details, the load balancer receives the request and distributes it to one of the three Product Service instances (e.g., it sends the first request to Product Service A, the second to Product Service B, and so on).
+
+Health Monitoring: The load balancer regularly checks if each Product Service instance is running properly. If Product Service B crashes, the load balancer stops sending requests to it and only uses Product Service A and Product Service C.
+
+Scaling: During a big sale event, traffic spikes. You can add more instances of the Product Service (e.g., Product Service D and Product Service E). The load balancer will automatically start distributing requests to these new instances as well.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+How can you handle distributed transactions in microservices?
+Saga Pattern – Break big transactions into smaller local transactions.
+        - Choreography: Services react to each other’s events.
+        - Orchestration: A central coordinator tells services what to do.
+
+Two-Phase Commit (2PC) in microservices is a distributed transaction protocol that ensures all services either commit or rollback together so data stays consistent.
+
+How It Works
+Prepare Phase
+    A coordinator asks all services: “Can you commit?”
+    Each service locks resources and replies YES or NO (without committing yet).
+Commit Phase
+    If all say YES → Coordinator sends COMMIT → All services commit changes.
+    If any say NO → Coordinator sends ROLLBACK → All services undo changes.        
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the difference between service registry and service discovery in microservices?
+
+Service Registry → A directory/phonebook where all microservices register their addresses (IP + port).
+Service Discovery → The process of finding a service’s address from that directory so services can talk to each other.
+
+Analogy:
+
+Service Registry = Phonebook
+Service Discovery = Looking up a friend’s number and calling them
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Explain the Strangler Pattern.
+A migration strategy where you gradually replace parts of a legacy (monolithic) system with a new microservices-based system, instead of rewriting everything at once.
+The old system and the new system co-exist until the legacy parts are fully replaced.
+
+How It Works
+    Put a proxy or API gateway in front of the legacy system.
+    Route some requests to the new microservice, and the rest still go to the legacy system.
+    Gradually move features from the old system to microservices.
+    Once everything is migrated, the legacy system can be “strangled” (retired).
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+How does the CAP theorem relate to a microservices architecture?
+In any distributed system (like microservices), you can only guarantee 2 out of 3:
+Consistency (C): All services see the same data at the same time.
+Availability (A): Every request gets a response, even if some services are down.
+Partition Tolerance (P): System still works even if there are network issues between services.
+
+Since network problems (P) will always happen, microservices must choose:
+    CP (Consistency + Partition Tolerance): Correct data, but sometimes not available.
+        Example: Banking – better to block a transaction than show wrong balance.
+    AP (Availability + Partition Tolerance): Always available, but data may be slightly out of sync.
+        Example: Shopping site catalog – OK if product count is a bit old.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+What are the common challenges in implementing microservices?
+
+Implementing microservices comes with several challenges:
+    - Service Communication – Managing synchronous (REST) vs asynchronous (events) communication.
+    - Data Consistency – Each service has its own database, making distributed transactions complex.
+    - Fault Tolerance – One failing service can impact others; requires patterns like Circuit Breaker, Retry, and Timeout.
+    - Deployment & Operations – Managing many services increases CI/CD, container orchestration, and infrastructure complexity.
+    - Testing – End-to-end and integration testing are more difficult compared to monoliths.
+    - Security – Enforcing authentication and authorization across multiple services.
+    - Observability – Requires centralized logging, distributed tracing, and monitoring.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+How do you handle error handling in a microservices-based system?
+   In microservices, error handling is done at multiple levels:
+   - At the service level, using global exception handling and proper HTTP status codes.
+   - Between services, using resilience patterns like retries, circuit breakers, fallbacks, and timeouts.
+   - For asynchronous communication, handling failures with dead-letter queues, retries, and idempotency.
+   - At the system level, using centralized logging, distributed tracing, and monitoring to quickly detect and resolve errors.”
+------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+How would you ensure data consistency across multiple microservices?
+We use patterns like Saga (orchestration or choreography) to manage business transactions, and event-driven communication to propagate changes. Idempotency ensures safe retries, and for queries, we can use API composition to combine data from multiple services. Together, these approaches keep data consistent while maintaining scalability and resilience.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Can you explain how you would handle cross-cutting concerns like logging, authentication, and authorization in a microservices environment?
+“In a microservices environment, cross-cutting concerns like logging, authentication, and authorization are handled in a centralized and consistent way. For logging and monitoring, I use centralized logging (ELK/EFK) and distributed tracing (Zipkin/Jaeger). For authentication and authorization, I rely on OAuth2 + JWT managed by a centralized identity provider, with validation at the API Gateway. I also use service mesh or AOP techniques for consistent policies. This ensures each microservice stays focused only on business logic, while cross-cutting concerns are managed in a unified way.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Can you explain how to manage distributed transactions with the Saga pattern?
+The Saga pattern manages distributed transactions by breaking them into a series of local transactions in each service. If one step fails, compensating transactions undo the previous steps. There are two approaches: Choreography (event-driven, decentralized) and Orchestration (central coordinator). This ensures eventual consistency without relying on 2PC.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Maven is a build automation and project management tool primarily used for Java projects. It uses a project object model (POM) file to manage project dependencies, build processes, and project documentation. Maven simplifies the build process by providing a standard way to handle project configuration, dependencies, and plugins.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Monolithic and Microservices Architecture
+
+Monolithic
+A monolithic architecture is a traditional approach to designing software where an entire application is built as a single, indivisible unit. In this architecture, all the different components of the application, such as the user interface, business logic, and data access layer, are tightly integrated and deployed together.
+
+1 Monolithic architecture is built as one large system and is usually one code-base
+2 It is not easy to scale based on demand
+3 It has shared database
+4 Large code base makes IDE slow and build time gets increase.
+5 Small changes introduce greater risks as they impact the entire code base.
+6 Entire application deployed as a single entity.
+
+
+Microservices
+In a microservices architecture, an application is built as a collection of small, independent services, each representing a specific business capability. These services are loosely coupled and communicate with each other over a network, often using lightweight protocols like HTTP or messaging queues.
+
+1 Microservices architecture is built as small independent module based on business functionality
+2 It is easy to scale based on demand.
+3 Each project and module has their own database.
+4 Each project is independent and small in size.So overall build and development time gets decrease.
+5 You can modify individual microservices without impacting the entire application.
+6 Every microservice is an independent software entity that requires individual containerized deployment.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+FeignClient
+
+Feign is one of the best HTTP clients which we could use with Spring boot to communicate with third-party REST APIs.
+@EnableFeignClients’ annotation in the main class.
+
+then we can start creating the interface which will act as the client for this API. To do that we just need to create an interface inside the project.
+
+@FeignClient(value = "instantwebtools-api", url = "https://api.instantwebtools.net/v1/")
+public interface ApiClient {
+
+    @RequestMapping(method = RequestMethod.GET, value = "/airlines")
+    List<Airline> readAirLines();
+
+    @RequestMapping(method = RequestMethod.GET, value = "/airlines/{airlineId}")
+    Airline readAirLineById(@PathVariable("airlineId") String airlineId);
+
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+WebClient
+
+Spring WebClient is a non-blocking and reactive web client to perform HTTP requests. It is also the replacement for the classic RestTemplate. It is a part of spring-webflux library and also offers support for both synchronous and asynchronous operations. The DefaultWebClient class implements this WebClient interface.
+
+@Autowired
+private WebClient webClient;
+
+AddressResponse addressResponse = webClient.get().uri("/address/" + id).retrieve().bodyToMono(AddressResponse.class).block();
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Two-factor authentication (2FA) is a security process that requires users to verify their identity using two different authentication factors before gaining access to an online account. This additional layer of security helps protect against unauthorized access resulting from compromised credentials. Passwords are often easy to guess or steal, and many users reuse the same password for multiple accounts. By requiring a second factor, 2FA can help prevent unauthorized access even if a user’s password is compromised.
+
+Different Types of 2FA
+SMS-based Verification: Upon successful entry of their password, the user receives a code via text message that they must enter to gain access.
+Email-based Verification: Similar to SMS, a code is sent to the user’s email address and must be entered on the site to complete the authentication process.
+Authenticator Apps: Applications like Google Authenticator or Authy generate time-limited codes that sync with the server time to provide a code that can be used for the second factor
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------.
+Swagger is an open-source API design and documentation tool that helps developers design, build, document, and test RESTful APIs faster and more easily.
+Swagger is the way of defining the structure of APIs (Application Programming Interface). Swagger is specifically developed for REST (Representational State Transfer) APIs, where REST is a Web based API. These APIs can be defined in a file, called Swagger file, which includes certain information like the type of data that needs to be sent in a request, the type of data that needs to be received as the response from the request sent, the server locations, authorization for the request, status codes etc. The Swagger Specification is also known as the Open API Specification (OAS). Using swagger, APIs can be created in either YAML or JSON. The different tools used for swagger are: Swagger Editor, Swagger UI and Swagger Codegen. The latest version of OAS is OpenAPI 3.0.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+SonarQube
+SonarQube is a powerful tool for continuous inspection of code quality and security. It performs static code analysis to detect bugs, code smells, and security vulnerabilities in your project. Integrating SonarQube with a Spring Boot application involves setting up SonarQube, configuring your Spring Boot project to use SonarQube, and running the analysis.
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+

@@ -1,0 +1,176 @@
+What is PermGen and MetaSpace?
+
+PermGen : FullForm of PermGen is Permanent Generation and used in Java 7 and earlier.Stores metadata about classes, such as method names, field names, annotations, and constant pool information — basically all the structural details the JVM needs to work with loaded classes.PremGen is fixed in size and cannot be dynamically resized. 
+
+It was a contiguous Java Heap Memory.If too many classes were loaded (e.g., in web applications with hot-redeploy), it could fill up and cause:java.lang.OutOfMemoryError: PermGen space.
+
+MetaSpace introduced in Java 8, replacing PermGen.Stores metadata about classes, such as method names, field names, annotations, and constant pool information — basically all the structural details the JVM needs to work with loaded classes.
+MetaSpace is not part of the heap and By default, it can grow dynamically depending on available system memory.
+Example : 
+-XX:MaxMetaspaceSize=<size> → sets an upper limit.
+-XX:MetaspaceSize=<size> → initial size before first GC.
+-XX:MinMetaspaceFreeRatio / -XX:MaxMetaspaceFreeRatio → controls expansion/shrink behavior.
+
+Eliminates OutOfMemoryError: PermGen space caused by too many loaded classes, unless you explicitly set a very small limit.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+3. What is a type interface?
+Type inference means the compiler can figure out the data type automatically from the value you assign, so you don’t have to explicitly write it.
+Example in Java (Java 10+ with var):
+
+Example : 
+var name = "Sarfaraz"; // compiler infers String
+var number = 10;       // compiler infers int
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+What are Intermediate and Terminal operations?
+Intermediate operations → are used to transform and filter the elements of a stream. but don’t run immediately (lazy).
+Common methods: filter(), map(), sorted(), distinct(), limit(), skip(), peek().
+
+Terminal operations → are used to for the final result and trigger the actual processing (end of the stream).
+Common methods: forEach(), collect(), count(), reduce(), min(), max(), findFirst(), findAny().
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+How does Java 8 handle concurrency improvements?
+Java 8 introduced the java.util.concurrent package, which includes new classes like 
+CompletableFuture to help manage asynchronous programming.
+Adding new thread-safe classes (e.g., new methods in ConcurrentHashMap).
+Making collections work better with parallel processing (Parallel Streams).
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+What features do you know or use in Java 8?
+Here you can list down all the key features of Java 8 like,
+
+Lambda Expression
+Stream API 
+Functional Interface
+Java DateTime API
+Method Reference
+Optional Class
+Default and Static Methods in Interfaces
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Lambda Expressions: Lambda expressions allow developers to write more concise and expressive code by enabling the use of functional programming constructs. They simplify the syntax for defining anonymous functions, making it easier to work with collections and perform operations like filtering, mapping, and reducing.
+
+Lambda expression in java is an anonymous (no name) function.
+Lambda expression provides implementation of functional interface.
+
+Benefits:
+
+Reduces boilerplate code.
+Makes code more readable.
+Facilitates functional programming.
+
+Java Lambda Expression Syntax
+(argument-list) -> {body}  
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Stream API: The Stream API provides a new way to work with collections in Java. It allows developers to perform bulk operations on collections, such as filtering, mapping, sorting using functional-style operations. Streams enable more declarative and concise code, improving readability and reducing boilerplate code.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Default and Static Methods in Interfaces: Java 8 introduced the ability to define default and static methods in interfaces.
+Default methods provide a way to add new methods to interfaces without breaking existing implementations. 
+while static methods allow interfaces to have utility methods that can be called without an instance.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Java Functional Interfaces
+
+An Interface that contains exactly one abstract method is known as functional interface. It can have any number of default, static methods but can contain only one abstract method. 
+
+Functional Interface is also known as Single Abstract Method Interfaces or SAM Interfaces.
+ 
+1 A functional interface can extends another interface only when it does not have any abstract method.
+2 @FunctionalInterface annotation is added so that we can mark an interface as functional interface.It is not mandatory to use it, but it’s best practice to use it with functional interfaces to avoid addition of extra methods accidentally.
+3 If the interface is annotated with @FunctionalInterface annotation and we try to have more than one abstract method, it throws compiler error.
+4 The major benefit of java 8 functional interfaces is that we can use lambda expressions .
+5 Some of the useful java 8 functional interfaces are Consumer, Supplier, Function and Predicate.
+6 Many interfaces I converted into functional interfaces using @FunctionalInterface Annotation. A few of these interfaces are as follows-
+
+Example:
+Runnable - It contains only the run() method. It is used to write applications that can run on a separate thread.
+Comparable - This interface contains only the compareTo() method. The objects of the class that implements the Comparable interface can be compared the objects of the class that implements Comparable interface can be compared and sorted.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is important of Functional Interface in Java?
+Java is an object-oriented programming language i.e everything in java rotates around the java classes and their objects.
+Functional Interface in Java enables users to implement functional programming in Java. In functional programming, the function is an independent entity.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Types of Functional interfaces
+Functional interfaces in Java are mainly of four types:
+
+1 Function
+2 Consumer
+3 Predicate
+4 Supplier
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Function
+The function type functional interface receives a single argument, processes it, and returns a value. One of the applications of this type of functional interface is taking the key from the user as input and searching for the value in the map for the given key.
+
+Syntax:
+
+@FunctionalInterface
+public interface Function<T, R>{
+    R apply(T t);
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Supplier
+
+The supplier functional interface in Java is much like a functional interface, the only difference is it doesn't take any arguments. On calling the supplier it simply returns a value. Supplier is a generic interface thus, it takes the type of value in <> (Angular brackets) while implementing to be returned by the get() method.
+
+Syntax:
+
+@FunctionalInterface
+public interface Supplier<T>{
+    T get();
+}
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Consumer
+The Consumer functional interface in Java accepts a single gentrified argument and doesn't return any value.
+
+Syntax:
+
+@FunctionalInterface
+public interface Consumer<T>{
+    void accept(T t);
+}
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Predicate
+The predicate functional interface in Java takes a single argument and returns a boolean value.
+
+It is usually used in filtering values from the collection. It is also a specialization of a Function that takes a gentrified argument or a single argument and returns a boolean.
+
+Syntax:
+
+public interface Predicate<T>{
+    boolean test(T t);
+}
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Stream API
+
+Stream API is used to iterate over the collections of objects.
+
+Methods :
+
+filter(Predicate): Filters the elements of the stream based on the given predicate.
+map(Function): Transforms each element of the stream using the given function.
+forEach(Consumer): Performs an action for each element of the stream.
+collect(Collector): Collects the elements of the stream into a collection.
+findFirst() / findAny(): Returns an optional containing the first element (or any element) of the stream.
+anyMatch(Predicate) / allMatch(Predicate) / noneMatch(Predicate): Checks if any, all, or none of the elements of the stream match the given predicate.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Optional class
+It is part of java.util package.
+Optional is a container object that may or may not contain a value. It helps avoid NullPointerException.
+It helps to prevent null pointer exceptions by providing methods to handle the presence or absence of values in a more elegant way. 
+There are pre-defined methods like isPresent(), which returns true if the value is present or else false and the method get(), which will return the value if it is present.
+Optional<String> empty = Optional.empty();
+isPresent(): Check if there is a value inside the Optional.
+orElse(): Provide a default value if the Optional is empty.
+nonEmpty.get()
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+A method reference in Java is a shortcut to call a method using :: instead of writing a full lambda expression.
+
+Types of Method References:
+---------------------------------------------------------------------------------------
+| Type                          | Syntax                      | Example               |
+| ----------------------------- | --------------------------- | --------------------- |
+| 1. Static Method Reference    | `ClassName::staticMethod`   | `Math::max`           |
+| 2. Bound Instance Reference   | `obj::instanceMethod`       | `System.out::println` |
+| 3. Constructor Reference      | `ClassName::new`            | `Employee::new`       |
+| 4. Unbound Instance Reference | `ClassName::instanceMethod` | `String::toUpperCase` |
+---------------------------------------------------------------------------------------

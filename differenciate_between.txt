@@ -1,0 +1,880 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Array and ArrayList
+
+Array
+
+1 The array is not resizable. At instantiation, we must provide its maximum size. Overfilling leads to an exception.
+2 Arrays generally offer better performance than ArrayLists because they are of fixed size and don’t require internal operations to store elements.
+3 Use Array.length to determine the length of an Array.
+4 Arrays support multiple dimensions (e.g., 2D, 3D arrays).
+5 Arrays support both primitive types (like int, char) and object types.
+6 Arrays can hold null values. However, for primitive arrays, there’s no null
+7 Arrays aren’t synchronized, so they’re not inherently thread-safe.
+
+ArrayList
+
+1 ArrayList is dynamically resizable. It grows as required, even beyond its initial capacity, offering flexibility in the number of elements it can store.
+2 ArrayList can be slower, especially when increasing in size. This is because, when its capacity is exceeded, a new array is created internally, and existing elements are copied over, reducing its performance.
+3 The size() method determines the length of an ArrayList.
+4 ArrayList supports only single dimensions.
+5 ArrayList supports only object types due to its use of generics. For instance, instead of int, you’d use Integer.
+6 ArrayLists can contain and identify null elements.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Array and Linked List
+
+Array
+
+1 An array is collection of elements having same data types.
+2 The location of array elements is the continuous.
+3 Arrays are based on static memory which means the size of the array is fixed.
+4 Memory is allocated during compile time in arrays
+5 Memory uses is lesser than linked list because an array only contains data.
+6 In an array, Memory is not utilized in an efficient way because if we create an array of size 10 and we only use 5 elements then it will be a waste of memory.
+7 In the case of arrays, the insertion and deletion operations require more time to execute.
+8 In arrays, accessing the elements is easier.
+
+
+Linked List
+
+1 A Linked list is a collection of nodes that contains data and address.
+2 Location of linked list nodes is not continuous.
+3 Linked lists are based on dynamic memory which means the size of the linked list is dynamic.
+4 Memory is allocated during run-time in a linked list
+5 Memory uses is more than array because linked stores data and address both
+6 In a linked list, Memory is utilized in an efficient way as we create new node only there is required so no memory will be wasted.
+7 In the linked lists, the insertion and deletion operations take less time.
+8 In linked lists, the whole linked list is to be traversed to access the elements.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+ArrayList and LinkedList
+
+ArrayList
+
+1 ArrayList internally uses a dynamic array to store the elements.	
+2 Manipulation with ArrayList is slow because it internally uses an array. If any element is removed from the array, all the other elements are shifted in memory.	
+3 An ArrayList class can act as a list only because it implements List only.	
+4 ArrayList is better for storing and accessing data.	
+5 The memory location for the elements of an ArrayList is contiguous.	
+6 Generally, when an ArrayList is initialized, a default capacity of 10 is assigned to the ArrayList.	
+7 To be precise, an ArrayList is a resizable array.	
+
+LinkedList
+
+1 LinkedList internally uses a doubly linked list to store the elements.
+2 Manipulation with LinkedList is faster than ArrayList because it uses a doubly linked list, so no bit shifting is required in memory.
+3 LinkedList class can act as a list and queue both because it implements List and Deque interfaces.
+4 LinkedList is better for manipulating data.
+5 The location for the elements of a linked list is not contagious.
+6 There is no case of default capacity in a LinkedList. In LinkedList, an empty list is created when a LinkedList is initialized.
+7 LinkedList implements the doubly linked list of the list interface.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+List and a Set
+
+List
+
+1 The insertion order is maintained by the List.
+2 List allows duplicate elements.
+3 Multiple null elements can be stored.
+4 The List implementation classes are LinkedList and ArrayList.
+5 The method of List interface listiterator() is used to iterate the List elements.
+
+Set
+
+1 It doesn't maintain the insertion order of elements.
+2 Set doesn’t allow duplicate elements.
+3 Null element can store only once.
+4 The Set implementation classes are TreeSet, HashSet and LinkedHashSet.
+5 The iterator is used when we need to iterate the Set elements.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Arraylist and Vector
+
+Arraylist
+
+1 ArrayList is not synchronized.
+2 ArrayList increments 50% of the current array size if the number of elements exceeds its capacity.
+3 ArrayList is not a legacy class.
+4 ArrayList is fast because it is non-synchronized.
+5 ArrayList uses the Iterator interface to traverse the elements.
+6 ArrayList performance is high.
+7 Multiple threads is allowed 
+
+Vector
+
+1 Vector is synchronized.
+2 Vector increments 100% means doubles the array size if the total number of elements exceeds its capacity.
+3 Vector is a legacy class.
+4 Vector is slow because it is synchronized
+5 A Vector can use the Iterator interface or Enumeration interface to traverse the elements.
+6 Vector performance is low.
+7 only one threads are allowed.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Comparable and Comparator
+
+Comparable
+
+1 Comparable provides a single sorting sequence. In other words, we can sort the collection on the basis of a single element such as id, name, and price.
+2 Comparable provides compareTo() method to sort elements.
+3 Comparable is present in java.lang package.
+4 Comparable modifies the class that implements it.
+5 Comparable is an interface in Java.
+
+Comparator
+
+1 Comparator provides multiple sorting sequences. In other words, we can sort the collection on the basis of multiple elements such as id, name, and price etc.
+2 Comparator provides compare() method to sort elements.
+3 A Comparator is present in the java.util package.
+4 Comparator doesn't modify any class.
+5 Comparator is a functional interface in Java.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+== and .equals()
+==
+
+The == operator compares the reference or memory location of objects in a heap, whether they point to the same location or not.
+Whenever we create an object using the operator new, it will create a new memory location for that object. So we use the == operator to check memory location or address of two objects are the same or not.
+
+
+equals
+The Java string equals() method, compares two strings and returns true if all characters match in both strings, else returns false.
+
+Example:
+
+public class Test {
+    public static void main(String[] args)
+    {
+        String s1 = "HELLO";
+        String s2 = "HELLO";
+        String s3 =  new String("HELLO");
+ 
+        System.out.println(s1 == s2); // true
+        System.out.println(s1 == s3); // false
+        System.out.println(s1.equals(s2)); // true
+        System.out.println(s1.equals(s3)); // true
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+HashSet and TreeSet
+ 
+HashSet 
+1 It does not provide a guarantee to sort the data.
+2 In HashSet, only an element can be null.
+3 It uses hashCode() or equals() method for comparison.
+4 It is faster than TreeSet.	
+5 Internally it uses HashMap to store its elements.
+6 It allows only heterogeneous value.
+
+
+TreeSet
+1 It provides a guarantee to sort the data. The sorting depends on the supplied Comparator.
+2 It does not allow null elements.
+3 It uses compare() or compareTo() method for comparison.
+4 It is slower in comparison to HashSet.
+5 Internally it uses TreeMap to store its elements.
+6 It allows only homogeneous value
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+HashMap and Hashtable
+
+HashMap
+
+1 HashMap allows one null key and multiple null values.
+2 HashMap is non synchronized. It is not-thread safe.
+3 HashMap is fast.
+4 HashMap is traversed by Iterator.
+5 HashMap is a new class introduced in JDK 1.2.
+
+Hashtable
+
+1 Hashtable doesn't allow any null key or value.
+2 Hashtable is synchronized. It is thread-safe
+3 Hashtable is slow.
+4 Hashtable is traversed by Enumerator and Iterator.
+5 Hashtable is a legacy class.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+HashMap and TreeMap
+
+HashMap
+1 It may have a single null key and multiple null values.
+2 It does not provide any order for elements.	
+3 HashMap contains value based on the key.
+4 For comparing keys, equals() is used.	
+5 HashMap supports heterogeneous elements because it does not perform key sorting.
+
+
+TreeMap
+1 It cannot have a null key but have multiple null values.
+2 It provides orders for elements.
+3 TreeMap also contains value based on the key.
+4 For comparing keys, compare or compareTo() is used.
+5 Because of sorting, TreeMap allows homogeneous values as keys.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+HashMap
+
+1 Non-synchronized.
+2 Not thread-safe	 
+3 It allows for storing null keys and values.	
+4 The HashMap iterator operates in a fail-fast manner. If a concurrent modification occurs during iteration, an exception called ConcurrentModificationException is thrown by the ArrayList.
+5 Can be synchronized manually using Collections.synchronizedMap().
+
+
+ConcurrentHashMap
+
+1 synchronized
+2 Thread-safe	
+3 It does not allow to store null key/values.
+4 It's essentially fail-safe. Consequently, during iteration, a ConcurrentHashMap never throws such exceptions.
+5 Natively thread-safe without needing additional synchronization wrappers.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Abstract class and Interface
+
+Abstract
+A class which has the abstract keyword in its declaration is called abstract class. Abstract classes should have zero or more abstract methods. i.e., methods without a body. It can have multiple concrete methods.
+
+1 Abstract class can have abstract and non-abstract methods.
+2 Abstract class doesn't support multiple inheritance.
+3 Abstract class can have final, non-final, static and non-static variables.
+4 The abstract keyword is used to declare abstract class.
+5 An abstract class can be extended using keyword "extends".
+6 A Java abstract class can have class members like private, protected, etc.
+7 An abstract class can declare constructors.
+8 Cannot be instantiated.	
+
+Interface
+
+An interface, on the other hand, is a contract that specifies a set of methods that a class must implement.
+
+1 Interface can have only abstract methods. Since Java 8, it can have default and static methods also.
+2 Interface supports multiple inheritance.
+3 Interface has only static and final variables.
+4 The interface keyword is used to declare interface.
+5 An interface can be implemented using keyword "implements".
+6 Members of a Java interface are public by default.
+7 An interface cannot declare constructors
+8 Can be instantiated.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+static , non-static variables and 
+
+static
+When a variable is declared as static, then a single copy of the variable is created and shared among all objects at a class level. Static variables are, essentially, global variables. All instances of the class share the same static variable. 
+
+1 Static variables can be accessed using class name	
+2 Static variables can be accessed by static and non static methods	
+3 Static variables reduce the amount of memory used by a program.	
+4 In Static variable Memory is allocated only once, at the time of class loading.	
+5 Static variables Exists for the entire lifetime of the program.	
+6 Static variables Default value is assigned automatically.	
+7 Static variables are shared among all instances of a class.
+
+ Static variables can be initialized 
+ 
+1 Direct Initialization: You can directly assign a value to a static variable at the time of declaration.
+2 Static Initialization Block: You can use a static initialization block to initialize static variables. This block executes only once when the class is loaded into memory.
+3 Initialization via a Static Method: You can create a static method to initialize static variables.
+4 Using Constructors: Although not recommended, you can also initialize static variables within constructors. However, this is not a common practice and might lead to unexpected behavior.
+
+
+Non-static variables or Instance Variables 
+
+Instance variables are non-static variables and are declared in a class outside any method, constructor or block.
+As instance variables are declared in a class, these variables are created when an object of the class is created and destroyed when the object is destroyed.
+Unlike local variables, we may use access specifiers for instance variables. If we do not specify any access specifier then the default access specifier will be used.
+Initialisation of Instance Variable is not Mandatory. Its default value is 0
+Instance Variable can be accessed only by creating objects.
+
+1 Non static variables can be accessed using instance of a class
+2 Non static variables cannot be accessed inside a static method.
+3 Non static variables do not reduce the amount of memory used by a program
+4 In non Static variable Memory is allocated each time an instance of the class is created.
+5 Non Static variables Exists for the lifetime of the object.
+6 Non Static variables Default value is not assigned automatically.
+7 Non static variables are specific to that instance of a class.
+
+Local variable
+
+local variable is a variable that is declared within a method, constructor, or block. Local variables are only accessible within the scope in which they are declared. They have a limited lifespan and are created when the block in which they are declared is entered, and they cease to exist once the block is exited.
+Attempting to access localVar outside of its scope (i.e., outside of someMethod()) would result in a compilation error.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Static method And Non-Static method
+
+Static method
+
+1 A static method is a method that belongs to a class, but it does not belong to an instance of that class and this method can be called without the instance or object of that class.
+2 In the static method, the method can only access only static data members and static methods of another class or the same class but cannot access non-static methods and variables.
+3 The static method uses compile-time or early binding.
+4 The static method cannot be overridden because of early binding.
+
+
+Non-Static method
+
+1 Every method in Java defaults to a non-static method without a static keyword preceding it. non-static methods can access any static method and static variable also, without using the object of the class.
+2 In the non-static method, the method can access static data members and static methods as well as non-static members and methods of another class or the same class.
+3 The non-static method uses runtime or dynamic binding.
+4 The non-static method can be overridden because of runtime binding.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Constructor and Method
+
+1 A constructor is a special type of method that is used to initialize objects of a class.
+2 It has the same name as the class and doesn't have a return type, not even void.
+3 Constructors are called automatically when an object of the class is created.
+4 They are primarily used to initialize instance variables or perform any setup required for an object.
+5 If a class doesn't define any constructors, Java provides a default constructor (with no arguments) automatically. However, if you define any constructor explicitly, the default constructor is not provided.
+6 You can define multiple constructors within a class, each with a different parameter list (overloading).
+
+
+Method
+1 A method is a block of code that performs a specific task or action when invoked.
+2 Methods are defined within a class and can be called to perform certain operations on objects of that class.
+3 They have a return type (void if they don't return any value), a name, and a parameter list.
+4 Methods can be called explicitly by invoking them using the object's reference.
+5 They can be static or non-static. Static methods belong to the class itself and can be called without creating an object, whereas non-static methods belong to objects of the class and can only be called using object references.
+6 Methods can be overloaded, meaning you can have multiple methods with the same name but with different parameter lists.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Overloading 
+
+Overloading in Java refers to the ability to define multiple methods in a class with the same name but with different parameter lists. These methods can have different numbers of parameters or parameters of different types. Java uses the number and types of parameters to determine which overloaded method to call when it encounters a method invocation.
+
+Key points about method overloading:
+
+Same Method Name: Overloaded methods must have the same name.
+
+Different Parameter Lists: Overloaded methods must have different parameter lists. This can include a different number of parameters, different types of parameters, or both.
+
+Return Type and Access Modifier: Overloaded methods can have the same or different return types and access modifiers. However, method overloading is not determined by the return type or access modifier.
+
+Polymorphism: Method overloading is an example of compile-time (static) polymorphism, where the compiler determines which overloaded method to call based on the method signature at compile time.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Overriding
+
+Method overriding in Java is a feature that allows a subclass to provide a specific implementation of a method that is already defined in its superclass. This enables a subclass to provide its own implementation of a method that has been inherited from its superclass.
+
+Key points about method overriding:
+
+Inheritance: Method overriding is only applicable in inheritance hierarchies, where a subclass extends a superclass.
+
+Method Signature: The overridden method in the subclass must have the same name, return type, and parameters (parameter types and order) as the method in the superclass. This is known as the method's signature.
+
+Access Modifier: The access modifier for the overriding method in the subclass must be the same or less restrictive than the access modifier of the method in the superclass. However, it cannot be more restrictive.
+
+Exceptions: The overriding method in the subclass can throw fewer exceptions or the same exceptions as the method in the superclass. It cannot throw new or broader checked exceptions than the superclass method.
+
+Runtime Polymorphism: Method overriding is an example of runtime (dynamic) polymorphism. The actual method that gets executed is determined by the type of object at runtime.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Collection vs Collections
+
+Collection
+
+Collection is a interface present in java.util package. It is used to represent a group of individual objects as a single unit.
+
+1 It is an interface.
+2 It is used to represent a group of individual objects as a single unit. 	
+3 The Interface can also contain abstract and default methods.but in java 8 it contain static method also.
+
+
+Collections
+
+Collections is a utility class present in java.util package. It defines several utility methods like sorting and searching which is used to operate on collection.
+
+1 It is a utility class.
+2 It defines several utility methods that are used to operate on collection.
+3 It contains only static methods.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enumeration, Iterator, and ListIterator
+
+Enumeration
+
+1 It can be applied only to the legacy classes.
+2 Single direction, i.e we can traverse elements present in the collection only in the forward direction.	
+3 We can only perform the read operation.	
+4 Thread-Safe
+5 boolean hasMoreElements() ,nextElement(); 
+
+Iterator 
+
+1 It can be applied to any collection interface.
+2 Single direction, i.e we can traverse elements present in the collection only in the forward direction.	
+3 We can perform read and remove operation.	
+4 Not Thread-Safe
+5 boolean hasNext(), next(),default void remove(); 
+
+
+ListIterator
+
+1 It can be applied to the only list interface.
+2 Bidirectional, i.e we can traverse elements present in the collection both in forward and backward directions.
+3 We can perform read, remove, add, and replace operations.
+4 Not Thread-Safe
+5 boolean hasNext(),next(),int nextIndex(),boolean hasPrevious(),int previousIndex(),void add(E e),void set(E e),void remove();
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+final, finally and finalize
+
+Final
+
+1 final is the keyword and access modifier which is used to apply restrictions on a class, method or variable.	
+2 Final keyword is used with the classes, methods and variables.	
+3
+(1) Once declared, final variable becomes constant and cannot be modified.
+(2) final method cannot be overridden by sub class.
+(3) final class cannot be inherited.
+
+4 Final method is executed only when we call it.	
+5 final is executed at compile-time.	
+
+
+Finally
+
+1 finally is the block in Java Exception Handling to execute the important code whether the exception occurs or not.	
+2 Finally block is always related to the try and catch block in exception handling.	
+3 
+(1) finally block runs the important code even if exception occurs or not.
+(2) finally block cleans up all the resources used in try block
+
+4 Finally block is executed as soon as the try-catch block is executed.
+  It's execution is not dependant on the exception.
+5 finally is executed at runtime.	
+
+
+Finalize
+
+1 finalize is the method in Java which is used to perform clean up processing just before object is garbage collected.
+2 finalize() method is used with the objects.
+3
+(1)finalize method performs the cleaning activities with respect to the object before its destruction.
+
+4 finalize method is executed just before the object is destroyed.
+5 finalize is executed by the garbage collector before an object is destroyed
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Checked vs Unchecked Exceptions
+
+In Java, Exception is an unwanted or unexpected event, which occurs during the execution of a program, i.e. at run time, that disrupts the normal flow of the program’s instructions. 
+
+Checked exceptions
+
+1 Checked exceptions occur at compile time.
+2 The compiler checks a checked exception at compile time.
+3 Handled at compile time.
+4 SQLException, IOException, ClassNotFoundException, InvocationTargetException
+
+
+Unchecked exceptions
+
+1 Unchecked exceptions occur at runtime.
+2 The compiler does not check these exceptions.
+3 Handled at run time.
+4 NullPointerException, ArrayIndexOutOfBoundsException, ArithmeticException, IllegalArgumentException,NumberFormatException
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Throw and Throws 
+
+Throw
+1 Throw keyword to throw an exception explicitly.
+2 The Throw keyword is used inside a method.
+3 The throw keyword is followed by an instance of Exception to be thrown.
+4 We are allowed to throw only one exception at a time i.e. we cannot throw multiple exceptions.
+5 Example :
+ public static void checkNum(int num) {  
+        if (num < 1) {  
+            throw new ArithmeticException("\nNumber is negative, cannot calculate square");  
+        }  
+        else {  
+            System.out.println("Square of " + num + " is " + (num*num));  
+        }  
+    }  
+
+Throws 
+1 Throws keyword to declare that a method might throw an exception.
+2 The Throws keyword is used in the method signature.
+3 The throws keyword is followed by class names of Exceptions to be thrown.
+4 We can declare multiple exceptions using throws keyword that can be thrown by the method. For example, main() throws IOException, SQLException.
+5 Example :
+public static int divideNum(int m, int n) throws ArithmeticException {  
+        int div = m / n;  
+        return div;  
+    }  
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Wait() and Sleep()
+ 
+Wait()
+
+1 The Wait() method is related to the Object class.
+2 It is not a static method.	
+3 wait() method, thread goes in waiting state and it won’t come back automatically until we call the notify() or notifyAll().
+4 Wait() Has Three Overloaded Methods:
+ wait()
+ wait(long timeout)
+ wait(long timeout, int nanos)
+5 Wait() should be called only from Synchronized context. i.e It is always called on an object within a synchronized block or method to ensure proper synchronization.
+
+Sleep()
+
+1 The Sleep () method is related to the Thread class.
+2 It is a static method.
+3 sleep() is a method which is used to pause the process for few seconds or the time we want to. 
+4 Sleep() Has Two Overloaded Methods:
+ sleep(long millis)millis: milliseconds
+ sleep(long millis,int nanos) nanos: Nanoseconds
+5 There is no need to call sleep() from Synchronized context.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+start vs run method
+
+start()
+
+1 when program calls start() method a new Thread is created and code inside run() method is executed in new Thread.
+2 can not call start() method twice on the thread object. once started, the second call of start() will throw IllegalStateException
+3 Defined in java.lang.Thread class.	
+
+Run ()
+
+1 call run() method directly no new Thread is created and code inside run() will execute on the current Thread
+2 can call run() method twice.
+3 Defined in java.lang.Runnable interface and must be overridden in the implementing class.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+notify() and notifyAll() 
+
+Notify()
+1 In the case of the multiThreading, notify() method sends the notification to only one thread among the multiple waiting threads which are waiting for the send lock. The choice of the thread to wake depends on the OS implementation of thread management.
+2 As in the case of notify() method, the notification is sent to a single thread among the multiple waiting threads, so it is sure that which of those waiting threads is going to receive the lock.	
+3 In case of notify() method the risk of thread missing is high as notification is sent only single thread and if it misses that than no other thread would get notification and hence the lock.	
+
+
+NotifyAll() 
+
+1 While notifyAll() methods in the same context send notifications to all waiting threads instead of a single thread.
+2 On the other hand, notifyAll() sends a notification to all waiting threads. Hence, it is not clear which of the thread is going to receive the lock.
+3 While in case of notifyAll as notification is to all the waiting threads and hence if any thread misses the notification, there are other threads to do the job.Hence risk is less.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Process vs. Thread
+
+Process
+ 
+1 process is an instance of a program with its own memory space and resources.
+2 Each process has its memory area that is not shared by any other process.	
+3 When one process fails, it does not affect the other processes.	
+4 The process takes more time to terminate.	
+5 The process is called the heavyweight process.	
+6 The process does not share data with each other.	
+
+Thread
+
+1 thread is the smallest unit of execution within a process, sharing the same memory space and resources.
+2 A process's threads share the same memory area.
+3 If one thread fails, the entire process may suffer.
+4 The thread takes less time to terminate.
+5 A Thread is lightweight as each thread in a process shares code, data, and resources.
+6 Threads share data with each other.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+collect and Collectors.
+
+collect is a method provided by the Stream API for accumulating elements into a collection.
+
+collect takes a Collector as an argument, which specifies how the elements should be collected and organized.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PermGen Space and MetaSpace
+
+PermGen
+
+PermGen stands for Permanent Generation. It is a special type of heap space which is separate from the main memory heap. JVM uses PermGen to keep track of loaded class metadata, Static content (static method, references to the static object,primitive variables. etc.)
+
+PermGen is the memory area for storing class data like static variable,byte code and etc. By default 64 Mb is allocated for PermGen.It can be tuned by using -XXMaxPermSize.
+
+1 PermGen is the memory area for storing class data like static variable,byte code and etc.
+2 By default 64 Mb is allocated for PermGen.
+3 It can be tuned by using -XXMaxPermSize.
+4 It is a special Heap space.
+5 With its limited memory size, PermGen is involved in generating the famous OutOfMemoryError. PermGen space cannot be made to auto increase. So, it is difficult to tune and runs into memory issues.
+
+-XX:PermSize=[size] is the initial or minimum size of the PermGen space
+-XX:MaxPermSize=[size] is the maximum size
+Disadvantage — it won’t grow dynamically when we add more static content
+
+
+MetaSpace
+
+In Java 8, PermGen method area replaced with MetaSpace. They have moved permGem to the separate memory in the native OS and that is called MetaSpace. It can by default auto increases its size. In MetaSpace, classes can load and unload during the lifespan of the JVM.
+
+1 In Java 8, PermGen method area replaced with MetaSpace
+2 It can by default auto increases its size.
+3 We can restrict upper bound of the memory by -XX:MaxMetaspaceSize
+4 Since Java 8, It is now separate memory area  in the native OS
+5 Garbage collection is also optimized with introduction of Metaspace. once the class metadata usage reaches its maximum metaspace size, garbage collector automatically triggers the cleaning of the dead classes .
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Volatile and Transient
+
+Volatile 
+
+A volatile keyword is used in a multithreading environment where two threads reading and writing the same variable simultaneously. The volatile keyword flushes the changes directly to the main memory instead of the CPU cache.
+
+1 Volatile can be used with a static variable.
+2 Volatile can be used with the final keyword
+3 volatile is used to make sure that the value of a variable is always read from the main memory and not from the thread's cache.
+4 Ensures that changes made in one thread are immediately visible to other threads.
+5 It does not store the value of the variable in the thread's cache; all reads and writes are directly from and to the main memory.
+
+
+Transient
+
+The transient keyword is used during serialization. Fields that are marked as transient can not be part of the serialization and deserialization. We don't want to save the value of any variable then we use transient keyword with that variable. 
+
+1 Transient can not be used with the static keyword
+2 Transient can not be used with the final keyword
+3 transient is used to prevent fields from being serialized during the serialization process.
+4 Prevents a variable from being serialized with the object.
+5 The variable is skipped by the serialization mechanism, making it not part of the object's serialized state.
+Object level lock and Class level lock
+
+In multithreading environment, two or more threads can access the shared resources simultaneously which can lead the inconsistent behavior of the system. Java uses concept of locks to restrict concurrent access of shared resources or objects. Locks can be applied at two levels .
+
+Object level lock
+
+1 It can be used when you want non-static method or non-static block of the code should be accessed by only one thread.
+2 It should always be used to make non-static data thread safe. 
+3 Every object the class may have their own lock.
+4  Object-level synchronization involves using the synchronized keyword on a non-static method or block within an instance of a class.
+5 It synchronizes access to instance-specific resources, and different instances of the class have their independent locks.
+6 This is useful when you want to protect instance-specific data from concurrent access by multiple threads.
+
+Example:
+java
+public class MyObject {
+    public synchronized void objectLevelMethod() {
+        // Code that needs synchronization
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Class level lock
+
+1 It can be used when we want to prevent multiple threads to enter the synchronized block in any of all available instances on runtime.
+2 It should always be used to make static data thread safe.
+3 Multiple objects of class may exist but there is always one class’s class object lock available.
+4 Class-level synchronization involves using the `synchronized` keyword on a `static` method or a `static` block within a class.
+5 It synchronizes access to the class-level resource, meaning all instances of the class share the same lock.
+6 This is suitable when you want to ensure that only one thread can access a particular method or block across all instances of the class.
+
+Example:
+java
+public class MyClass {
+    public static synchronized void classLevelMethod() {
+        // Code that needs synchronization
+    }
+}
+```
+Errors and Exceptions
+
+Errors
+1 Error is an unexpected event that cannot be handled at runtime. Errors can terminate your program. Most of the time, programs cannot recover from an error.
+2 An error cannot be handled at runtime.	
+3 An error can occur both at compile time and during runtime.	
+4 An error has the capacity to terminate your program and maybe your system as well.	
+5 It belongs to java.lang.Error package.
+6 java.lang.StackOverflowError, java.lang.OutOfMemoryError
+
+
+Exceptions
+
+1 An Exception is the occurrence of an event that can disrupt the normal flow of the program instructions.
+2 An exception can be handled at runtime.
+3 Although all the Exceptions occur at runtime. But checked Exceptions can be detected at compile time.
+4 An exception has the capacity to distract the normal flow of the program and change its direction to somewhere else when an exceptional case has occurred.
+5 It belongs to java.lang.Exception package.	
+6 Checked Exceptions : SQLException, IOException Unchecked Exceptions : ArrayIndexOutOfBoundException, NullPointerException, ArithmeticException.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+String 
+
+1 String is a final class. 
+
+2 String class represents character strings, we can instantiate String in two ways.
+
+String str = "ABC";
+String str = new String("ABC");
+
+3 String is immutable in Java.(which means a constant and cannot be changed once created.) So it’s suitable to use in a multi-threaded environment. We can share it across functions because there is no concern of data inconsistency.
+
+4 When we create a String using double quotes, JVM first looks for the String with the same value in the string pool. If found, it returns the reference of the string object from the pool. Otherwise, it creates the String object in the String pool and returns the reference. JVM saves a lot of memory by using the same String in different threads.
+
+5 If the new operator is used to create a string, it gets created in the heap memory.
+
+6 The + operator is overloaded for String. We can use it to concatenate two strings. Although internally it uses StringBuffer to perform this action.
+
+7 String overrides equals() and hashCode() methods. Two Strings are equal only if they have the same character sequence. The equals() method is case sensitive. If you are looking for case insensitive checks, you should use equalsIgnoreCase() method.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+StringBuffer and StringBuilder 
+
+StringBuffer and StringBuilder are classes used for String manipulation. These are mutable objects, which provide methods such as substring(), insert(), append(), delete() for String manipulation.
+
+StringBuffer
+
+1 StringBuffer is synchronized i.e. thread safe. It means two threads can't call the methods of StringBuffer simultaneously.
+2 StringBuffer is less efficient than StringBuilder.	
+
+StringBuilder 
+
+1 StringBuilder is non-synchronized i.e. not thread safe. It means two threads can call the methods of StringBuilder simultaneously.
+2 StringBuilder is more efficient than StringBuffer.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Monolithic and Microservices Architecture
+
+Monolithic
+
+A monolithic architecture is a traditional approach to designing software where an entire application is built as a single, indivisible unit. In this architecture, all the different components of the application, such as the user interface, business logic, and data access layer, are tightly integrated and deployed together.
+
+1 Monolithic architecture is built as one large system and is usually one code-base
+2 It is not easy to scale based on demand
+3 It has shared database
+4 Large code base makes IDE slow and build time gets increase.
+5 Small changes introduce greater risks as they impact the entire code base.
+6 Entire application deployed as a single entity.
+
+
+Microservices
+
+In a microservices architecture, an application is built as a collection of small, independent services, each representing a specific business capability. These services are loosely coupled and communicate with each other over a network, often using lightweight protocols like HTTP or messaging queues.
+
+1 Microservices architecture is built as small independent module based on business functionality
+2 It is easy to scale based on demand.
+3 Each project and module has their own database
+4 Each project is independent and small in size. So overall build and development time gets decrease.
+5 You can modify individual microservices without impacting the entire application.
+6 Every microservice is an independent software entity that requires individual containerized deployment.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Shallow and Deep copy of a class
+
+Shallow copy
+
+1 Shallow copy creates a new object and copies the references of the original object’s elements into the new object.
+2 The new object references the same memory locations as the original object for its elements.
+3 If any changes are made to the shared elements in the new or original object, the changes will be reflected in both.
+4 Shallow copy is a relatively faster operation and requires less memory.
+5 Shallow copy is suitable when you want to create a new object, but you don’t need independent copies of the elements.
+
+Deep copy
+
+1 Deep copy creates a new object and recursively copies the elements of the original object, including any objects referenced within it.
+2 The new object has its own memory locations for all the elements, including the referenced objects.
+3 Changes made to the elements in the deep copy do not affect the original object or any other copied objects.
+4 Deep copy is a relatively slower operation and requires more memory, especially for complex data structures.
+5 Deep copy is suitable when you want to create a completely independent copy of an object, including all its nested objects.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+In Hibernate
+get()
+
+This method gets the data from the database as soon as it is called.
+The database is hit every time the method is called.
+The method returns null if the object is not found
+This method should be used if we are unsure about the existence of data in the database.
+
+load()
+This method returns a proxy object and loads the data only when it is required.
+The database is hit only when it is really needed and this is called Lazy Loading which makes the method better.
+The method throws ObjectNotFoundException if the object is not found.
+This method is to be used when we know for sure that the data is present in the database.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Heap Space and Stack Memory
+
+Heap Space 
+
+1 It is created when the JVM starts up and used by the application as long as the application runs. It stores objects and JRE classes.
+2 Whenever an object is created, it’s always stored in the Heap space .
+3 Objects stored in the heap are globally accessible.
+4 Heap memory lives from the start till the end of application execution.
+5 We can use -Xms and -Xmx JVM option to define the startup size and maximum size of heap memory.
+6 If heap memory is full, it throws java.lang.OutOfMemoryError.
+7 Memory allocated in random order.
+
+Stack Memory
+
+1 The stack memory is a physical space (in RAM) allocated to each thread at run time. It is created when a thread creates.
+2 Stack memory contains the reference to it. Stack memory only contains local primitive variables and reference variables to objects in heap space.
+3 Stack memory can’t be accessed by other threads.
+4 Memory allocated to stack lives until the function returns.
+5 We can use -Xss to define the stack memory size.
+6 When stack memory is full, Java runtime throws java.lang.StackOverFlowError.
+7 Memory allocation is continuous.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Java Persistence API	
+JPA is responsible for managing relational databases in Java applications.	
+JPA is the Java specification and not the implementation.	
+It is defined under the javax.persistence package.	
+It is the standard API that allows developers to perform database operations smoothly.	
+It uses the EntityManagerFactory interface to interact with the entity manager factory for the persistence unit. 	
+It uses the EntityManager interface to create, read, and delete operations for instances of mapped entity classes. This interface interacts with the persistence context.	
+It uses Java Persistence Query Language (JPQL) is an object-oriented query language to perform database operations.	
+
+
+Hibernate
+Hibernate is an ORM tool used for saving the state of the Java object in the database.
+Hibernate is an implementation of JPA and uses common standards of Java Persistence API.
+It is defined under org.hibernate package.
+It is used to map Java data types with database tables and SQL data types.
+It uses the SessionFactory interface for creating Session instances.
+It uses a Session interface to create, read, and delete operations for instances of mapped entity classes. It behaves as a runtime interface between a Java application and Hibernates.
+It uses Hibernate Query Language (HQL) is an object-oriented query language to perform database operations.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Spring
+1 Spring framework is a java EE framework that is used to build applications.	
+2 The primary or most important feature of the Spring framework is dependency injection(Dependency Injection (DI) is a design technique that removes dependencies from computer code, making the application easier to maintain and test).
+3 Spring framework helps to create a loosely coupled application.	
+4 In the Spring framework to test the Spring Project, we need to set up the servers explicitly.	
+5 Spring framework does not provide support for the in-memory database.	
+6 In the Spring framework, XML Configuration is required.	
+7 Spring framework does not provide any plugin for maven, Gradle, etc. like Spring Boot.	
+
+Springboot
+1 Spring Boot framework is mainly used to develop REST API’s
+2 The main or primary feature of the Spring Boot is Autoconfiguration( Simply described, Spring Boot autoconfiguration is a method of automatically configuring a Spring application based on the dependencies found on the classpath.)
+3 Spring Boot helps to create a stand-alone application.
+4 Spring Boot offers built-in or embedded servers such as Tomcat and jetty.
+5 Spring Boot provides support for the in-memory database such as H2.
+6 No need for XML configuration in Spring Boot.
+7 Spring Boot provides build tool plugins for Maven and Gradle. The Plugins offer a variety of features, including the packaging of executable jars.
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,330 @@
+If you are iterating an ArrayList in Java and delete an element at the same time, what happens depends on how you are iterating and deleting:
+ArrayList<String> list = new ArrayList<>(Arrays.asList("A", "B", "C", "D"));
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Fail-Fast
+   Throws ConcurrentModificationException if the collection is modified while iterating.
+   It doesn't allow structural modification during iteration (except via iterator’s own remove()).
+        Examples: ArrayList,HashMap,HashSet
+
+Fail-Safe
+    Does not throw ConcurrentModificationException.
+    It works on a clone (copy) of the collection.
+    So any structural modification won’t affect the iteration.
+        Examples: CopyOnWriteArrayList, ConcurrentHashMap
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+try-with-resources
+
+The try-with-resources statement in Java is a powerful feature introduced in Java 7. It is used to automatically manage resources such as files, database connections, sockets, etc. that need to be closed after they are no longer needed. This feature helps in writing cleaner and more reliable code by ensuring that resources are closed properly, avoiding resource leaks.
+
+The try-with-resources statement in Java simplifies resource management by automatically closing resources when they are no longer needed. It reduces boilerplate code, enhances readability, and prevents resource leaks. By understanding and using try-with-resources, you can write cleaner, more reliable Java code.
+
+Use the try-with-resources statement, you need to declare the resources within the try statement. The resources must implement the AutoCloseable interface, which includes the close() method.
+
+Syntax:
+try (ResourceType resource = new ResourceType()) {
+    // Use the resource
+} catch (ExceptionType e) {
+    // Handle exceptions
+}
+
+5. Example with Custom Resources
+You can also use try-with-resources with custom resources by implementing the AutoCloseable interface.
+
+Example:
+class CustomResource implements AutoCloseable {
+    public void useResource() {
+        System.out.println("Using custom resource");
+    }
+
+    @Override
+    public void close() {
+        System.out.println("Closing custom resource");
+    }
+}
+
+public class CustomResourceExample {
+    public static void main(String[] args) {
+        try (CustomResource customResource = new CustomResource()) {
+            customResource.useResource();
+        }
+    }
+}
+
+
+Benefits of try-with-resources
+Automatic Resource Management: Automatically closes resources when they are no longer needed.
+Simplified Code: Reduces boilerplate code required to explicitly close resources.
+Reduced Resource Leaks: Ensures that resources are properly closed, reducing the risk of resource leaks.
+Improved Readability: Enhances the readability and maintainability of the code.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Future and CompletableFuture
+
+Future
+Future is introduced in java 5 and present in java.util.concurrent package.
+It is an interface in java.
+A Future in Java is like a promise that we will get a result later from a task that runs in the background.
+We can ask the Future for the result with .get(), but it blocks until the result is ready.
+
+In Java Future is a powerful tool that allows developers to write asynchronous code.
+It represents the result of an asynchronous computation, which may not be available immediately. With the help of Java Future, we can start a task in the background and continue with other work while the task is running. Once the task is done, you can get the result using the Future object.
+It provides an isDone() method to check whether the computation is done or not, and a get() method to retrieve the result of the computation when it is done.
+
+ExecutorService executor = Executors.newSingleThreadExecutor();
+Future<Integer> futureResult = executor.submit(() -> {
+    // Simulating a long-running task
+    TimeUnit.SECONDS.sleep(2);
+    return 42; // The result of the computation
+});
+
+int result = future.get();
+ 
+Limitations of Future:
+1 It can not be manually completed.
+2 Multiple Futures can not be chained together.
+3 No Exception Handling.
+----------------------------------------
+CompletableFuture
+
+CompletableFuture is a class in the java.util.concurrent package that provides a way to write asynchronous, non-blocking code in Java. It is part of the Java 8 enhancements to the Future interface.
+
+CompletableFuture is used for asynchronous programming in Java. Asynchronous programming is a means of writing non-blocking code by running a task on a separate thread than the main application thread and notifying the main thread about its progress, completion or failure.
+
+We can run tasks asynchronously using methods like runAsync and supplyAsync.
+runAsync method
+
+If you want to run some background task asynchronously and don’t want to return anything from the task, then you can use CompletableFuture.runAsync() method. It takes a Runnable object and returns CompletableFuture<Void>.
+
+supplyAsync method
+If you want to run some background task asynchronously and we want to return anything from the task, then you can use CompletableFuture.supplyAsync()
+
+-------------------------------------------------------------
+Blocking vs non-blocking: One of the key differences between Future and CompletableFuture is that Future is a blocking API, whereas CompletableFuture is non-blocking. With a Future object, you must call the get() method to retrieve the result, but this method blocks until the result is available. In contrast, with a CompletableFuture object, you can use various non-blocking methods to retrieve the result, such as thenApply(), thenAccept(), or join().
+
+Exception Handling: CompletableFuture provides better exception handling than Future. With Future, you can only check if the computation completed successfully or not. If an exception occurs during the computation, you have to catch it explicitly. In contrast, with CompletableFuture, you can handle exceptions in a more declarative way using methods like exceptionally() and handle().
+
+Completion: With a Future object, there is no way to explicitly complete the future. Once you submit a task to an executor service and get a Future object in return, you can only wait for the task to complete. With CompletableFuture, you have more control over the completion of the future. You can complete it explicitly by calling complete(), completeExceptionally(), or cancel() methods.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Explain equals and hashcode contract
+
+If two objects are equal (using equals()), their hash codes must also be equal.
+If two objects have the same hash code, they might be equal — but it's not guaranteed.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+In Java, a ClassLoader is a part of the Java Runtime Environment that is responsible for loading classes into jvm when they are required by a Java application.
+It is used to load a class during run time. The java class loader is based on 3 principles, Delegation, Visibility, and Uniqueness.
+
+Bootstrap ClassLoader
+Loads core Java classes (e.g., java.lang.*, java.util.*)
+
+Extension ClassLoader
+Loads classes from the ext directory ($JAVA_HOME/lib/ext)
+
+System/Application ClassLoader
+Loads classes from the application's classpath
+
+Custom ClassLoaders
+You can create your own by extending ClassLoader
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Reflection in Java is a powerful feature that allows us to inspect and manipulate the properties of classes, methods, fields, and other components of a program at runtime, even if we don't know the exact class types or members in advance.
+
+Imagine you have a class, but you don't know what methods it has. Using reflection, you can ask the class about its methods and even call them, all while the program is running.
+Reflection allows you to access private fields and invoke private methods dynamically, even if you don’t have direct access to them in the usual way.
+
+You need to use setAccessible(true) to bypass Java's access control (private, protected, etc.).
+
+class Person {
+    private String name;
+    public Person(String name) {
+        this.name = name;
+    }
+    private void greet() {
+        System.out.println("Hello, " + name + "!");
+    }
+}
+
+public class ReflectionExample {
+    public static void main(String[] args) throws Exception {
+        // Create an object of Person class
+        Person person = new Person("Alice");
+
+        // Get the Class object for the Person class
+        Class<?> clazz = person.getClass();
+
+        // Access the private field "name"
+        Field nameField = clazz.getDeclaredField("name");
+        nameField.setAccessible(true);  // Allow access to private field
+        System.out.println("Name: " + nameField.get(person));  // Get the value of "name"
+
+        // Access the private method "greet"
+        Method greetMethod = clazz.getDeclaredMethod("greet");
+        greetMethod.setAccessible(true);  // Allow access to private method
+        greetMethod.invoke(person);  // Invoke the greet() method
+    }
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+In Java, there are several ways to create an object, depending on the use case. Here are the most common ones:
+1. Using new keyword (Most common)  ----  MyClass obj = new MyClass();
+2. Using Class.forName() (Reflection) ---- MyClass obj = (MyClass) Class.forName("MyClass").newInstance();
+3. Using clone() method
+MyClass obj1 = new MyClass();
+MyClass obj2 = (MyClass) obj1.clone();
+
+4. Using Reflection and Constructors
+Constructor<MyClass> constructor = MyClass.class.getConstructor();
+MyClass obj = constructor.newInstance();
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is Garbage Collection in Java?
+
+Garbage Collection in Java is a process by which the Java Virtual Machine (JVM) automatically deletes objects that are no longer being used, freeing up memory for new objects.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+When does an object become eligible for Garbage Collection in Java?
+In Java, an object becomes eligible for Garbage Collection when no live thread can access it—in other words, when there are no more references to the object.
+
+Common Scenarios When an Object Becomes Eligible:
+1 All references to the object are set to null:
+2 Reference is reassigned:
+3 Anonymous objects with no reference:
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+A marker interface is an interface that does not contain any methods or fields and @interface annotation is used over the inerface.
+If a class implements a marker interface, it gets special treatment by Java or other code. This is often checked using the instanceof operator.
+
+Used :
+Type Identification: Allows us to check at runtime whether an object belongs to a certain category.
+
+The Serializable marker interface is used to indicate that an object can be converted into a stream of bytes.
+This is required when saving an object’s state or sending it over a network.
+
+Cloneable: Tells Java that objects of this class can be copied.
+
+Key Points
+No Methods: Marker interfaces have no methods.
+Tagging: They tag a class with a specific capability.
+Checked with instanceof: The presence of the marker is often checked using the instanceof keyword.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is Variable Shadowing?
+Variable shadowing occurs when a variable declared in an inner scope (such as a method, constructor, or inner class) has the same name as a variable declared in an outer scope (such as a class or enclosing block). The inner variable "shadows" or hides the outer variable, making the outer variable inaccessible in the current scope.
+
+How Does Variable Shadowing Happen?
+Variable shadowing commonly occurs in the following scenarios:
+
+Method parameters shadowing instance variables
+Local variables shadowing instance or class variables
+Inner class variables shadowing outer class variables
+Block variables shadowing method or instance variables
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+In Java, the volatile keyword ensures that a variable's value is always read from and written to the main memory, not from a thread's local cache. This means all threads see the latest value immediately.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Explain the differences between primitive data types and reference data types.
+
+Primitive data types hold the actual values, whereas reference data types hold references or memory addresses of objects. Primitive data types are used to store simple values, and they are stored directly in memory, making them more efficient in terms of memory consumption and performance. Reference data types, on the other hand, point to objects stored in the memory heap.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is autoboxing in Java?
+Autoboxing is the automatic conversion of a primitive data type into its corresponding wrapper class object. For example, when you assign an int primitive value to an Integer object, autoboxing automatically converts the int to an Integer.
+
+Describe autoboxing and unboxing.
+Answer: Autoboxing is the automatic conversion of a primitive type to its corresponding wrapper class (int to Integer). Unboxing is the reverse process, converting a wrapper class back to its primitive type (Integer to int).
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What are the wrapper classes in Java?
+
+Wrapper classes are classes that represent primitive data types as objects. They provide utility methods and are useful when working with collections that require objects instead of primitives. For example, Integer is the wrapper class for int, Double for double, and so on.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the ‘null’ value, and in which data types can it be used in Java?
+
+Answer: ‘null’ represents the absence of a value and can be assigned to reference data types like objects and strings.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is type casting in Java, and when is it required?
+
+Answer: Type casting is the process of converting one data type to another. It is required when you need to assign a value from one type to another, such as from a ‘double’ to an ‘int’.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is an implicit type cast, and when does it occur in Java?
+
+Answer: An implicit type cast is an automatic conversion of a smaller data type to a larger data type, e.g., from ‘int’ to ‘double’.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is an explicit type cast, and how is it done in Java?
+
+Answer: An explicit type cast is a manual conversion of a larger data type to a smaller data type. It is done by specifying the target data type in parentheses, e.g., (int) 3.14159.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Explain the concept of widening and narrowing conversions in type casting.
+
+Answer: Widening conversion occurs when a smaller data type is cast to a larger data type (e.g., ‘int’ to ‘double’). Narrowing conversion is the opposite, where a larger data type is cast to a smaller one, which may result in data loss.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the scope of instance variables in Java, and where are they declared?
+
+Answer: Instance variables are declared within a class but outside of any method. They have class-wide scope and are accessible throughout the class.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Explain the concept of “automatic type promotion” in Java.
+
+Answer: Automatic type promotion occurs when a smaller data type is automatically promoted to a larger data type in expressions, to prevent data loss and maintain precision.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the difference between “copy by value” and “copy by reference” when passing variables to methods?
+
+Answer: In “copy by value,” a copy of the variable’s value is passed to the method, so changes to the parameter do not affect the original variable. In “copy by reference,” the method receives a reference to the original variable, and changes to the parameter affect the original.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+How does memory allocation work for Objects in Java?
+
+When an object is created in Java, the JVM allocates memory for that object from the heap. The heap is a pool of memory that is available for the JVM to use. When the object is no longer needed, the memory is freed up and can be used for other objects.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the difference between float and double?
+Ans. Float can represent up to 7 digits accurately after decimal point, where as double can represent up to 15 digits accurately after decimal point.
+
+‘float’ is a single-precision floating-point data type, and ‘double’ is a double-precision floating-point data type. Use ‘float’ when you need to save memory, and ‘double’ when you need higher precision.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Why java not support pointer?
+A pointer is a variable which can hold the address of another variable or object.
+
+But, Java does not support pointer due to security reason, because if you get the address of any variable you could access it anywhere from the program without any restriction even variable is private.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+The static keyword indicates that a field or method belongs to the class rather than to instances of the class. Static fields and methods can be accessed without creating an instance of the class.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Explain the purpose of the finalize() method in Java.
+
+Answer: The finalize() method is called by the garbage collector before an object is removed from memory. It is intended to allow the object to clean up resources (like closing files) but is generally discouraged due to unpredictability and the availability of better resource management techniques (like try-with-resources).
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Object Class Methods
+toString() method
+hashCode() method
+equals(Object obj) method
+finalize() method
+getClass() method
+clone() method
+wait(), notify() notifyAll() methods
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the difference between shallow copy and deep copy?
+
+Answer:
+A shallow copy in Java means copying the object’s field values. However, if the object contains references (to other objects), only the references are copied, not the actual objects.
+
+A deep copy means copying an object along with all nested objects. Changes in the copy do not affect the original object.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Java ClassLoader
+
+The Java class loader is an abstract class, belonging to java.lang package. It is a part of the Java run time environment that loads Java classes dynamically into the java virtual machine. It is used to load a class during run time. The java class loader is based on 3 principles, Delegation, Visibility, and Uniqueness. In this article, we will be diving deep into understanding class loaders in Java.
+
+Types of the class loader in java In Java, there are three types of class loaders:
+
+Bootstrap class loader
+Extension class loader
+System class loader
+
+Bootstrap ClassLoader: It is a machine code that starts the operation when called by JVM. The bootstrap class loader is not a Java class, instead, its job is to only load a class from the location rt.jar. It doesn’t have any parent class loader and is also known as a Primordial class loader. It is a parent of all the class loaders. For example: When a String.class.getClassLoader() is called, it returns the output as null, and any code that uses it throws NullPointerException.
+
+Extension ClassLoader: It is a child of BootStrap ClassLoader. It is used for loading the extension of core classes of Java by using the respective extension library of JDK. This class loads the library from the directory, JRE/lib/ext or any other directory pointed java.ext.dirs by a system property.
+
+System ClassLoader: The application of ClassLoader is also known as System ClassLoader. It is used for loading application-type classes which can be found in the environment variable CLASSPATH, -classpath, or -cp command-line option. The ClassLoader Application is a child of Extension CLassLoader.
+
+How Do Java ClassLoaders Work?
+When JVM sends the request for a class, a loadClass() method of java.lang.ClassLoader is invoked internally and passes the name of the class. The loadClass() method then calls the findLoadedClass() method to check whether the class has been loaded successfully or not. This is helpful to avoid loading of class multiple times. If the class is loaded already, then it delegates the request to the parent ClassLoader of the class. In case, if the ClassLoader is unable to find the class then findClass() is invoked which looks for classes in the file system. 
+
+https://www.scaler.com/topics/class-loader-in-java/
+---------------------------------------------------------------------------------------------------------------------------------------------------------------

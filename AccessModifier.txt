@@ -1,0 +1,125 @@
+In Java, Access modifiers help to restrict the scope of a class, constructor, variable, method, or data member. It provides security, accessibility, etc to the user depending upon the access modifier used with the element. Let us learn about Java Access Modifiers, their types, and the uses of access modifiers in this article.
+
+There are four types of access modifiers available in Java: 
+
+Default – No keyword required
+Private
+Protected
+Public
+
+Default
+
+When no access modifier is specified for a class, method, or data member – It is said to be having the default access modifier by default. The data members, classes, or methods that are not declared using any access modifiers i.e. having default access modifiers are accessible only within the same package.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Example :
+
+package p1; 
+// Class Geek is having Default access modifier 
+class Geek 
+{ 
+    void display() 
+    { 
+        System.out.println("Hello World!"); 
+    } 
+} 
+
+package p2; 
+import p1.*; 
+
+// This class is having default access modifier 
+class GeekNew 
+{ 
+    public static void main(String args[]) 
+    { 
+        // Accessing class Geek from package p1 
+        Geek obj = new Geek(); 
+
+        obj.display(); 
+    } 
+} 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Private Access Modifier
+
+The private access modifier is specified using the keyword private. The methods or data members declared as private are accessible only within the class in  which they are declared.
+
+Any other class of the same package will not be able to access these members.
+Top-level classes or interfaces can not be declared as private because private means “only visible within the enclosing class”.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Protected Access Modifier
+
+The protected access modifier is specified using the keyword protected.
+
+The methods or data members declared as protected are accessible within the same package or subclasses in different packages.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Public Access modifier
+The public access modifier is specified using the keyword public. 
+
+The public access modifier has the widest scope among all other access modifiers.
+Classes, methods, or data members that are declared as public are accessible from everywhere in the program. There is no restriction on the scope of public data members.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Can we have a private constructor in Java?
+
+Yes, we can have a private constructor in Java.
+The private constructor is used when we do not want to create the object of that class.
+We cannot create a subclass of that class.
+It is also used in Singleton design and Factory method design patterns.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Can we declare a top-level class as private?
+ 
+No, we cannot declare a top-level or outer class as private. It can have either “public” or no modifier.
+If you declare a top-level class as a private, the compiler will complain that the “modifier private is not allowed here” but an inner class can be private.
+
+public class PrivateDemo {
+	
+	
+	public void outerMethod() {
+		System.out.println("Outer Class method");
+		InnerClass ic= new InnerClass();
+		ic.innerMethod();
+	}
+	
+	private class InnerClass{
+		
+		public void innerMethod() {
+		System.out.println("Inner Class method");
+		}
+	}
+
+	public static void main(String[] args) {
+		PrivateDemo pm = new PrivateDemo();
+		pm.outerMethod();  // first way
+		PrivateDemo.InnerClass pm1= new PrivateDemo().new InnerClass(); // second way
+		pm1.innerMethod();
+	}
+}
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Can we declare a top-level class as protected?
+
+No, we cannot declare a class as protected. An inner class can be protected but not an outer class.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Can a method or a class be final and abstract at the same time?
+
+No, it is not possible. A class or a method cannot be final or abstract at the same time because the final method or final class cannot be further modified whereas an abstract class or an abstract method must be modified further.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is access modifier for enumeration?
+Enumeration members are always public. No other access modifiers are allowed.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

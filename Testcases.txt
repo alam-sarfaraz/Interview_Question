@@ -1,0 +1,74 @@
+Test-Driven Development (TDD) is a software development approach where you write tests for your code before you actually write the code itself. In Java, TDD is commonly practiced using frameworks like JUnit and Mockito. Here's a basic guide on how to do TDD in Java:
+
+Test Driven Development (TDD) is software development approach in which test cases are developed to specify and validate what the code will do. In simple terms, test cases for each functionality are created and tested first and if the test fails then the new code is written in order to pass the test and making code simple and bug-free.
+
+https://www.guru99.com/test-driven-development.html
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+What is JUnit?
+
+JUnit is an open-source, Java-based unit testing framework that plays a crucial role in achieving the culture of TDD (Test Driven Development). The TDD culture lays strong emphasis on setting up the test data for testing a logic that would be implemented once the testing is successful. JUnit helps to increase the software stability as it helps in identifying the bug in the code logic at an early stage without requiring the software to go to production. This helps in reducing the time required to debug any issues later on.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+Unit Testing is a one of the testing done by the developers to make sure individual unit or component functionalities are working fine.
+Unit testing is the process where you test the smallest functional unit of code. Software testing helps ensure code quality
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+Integration Tests
+Integration test — in which the different units, modules or components of a software application are tested as a combined entity.
+We need to perform real operations to check all the layers are working well in the flow. Here, the layers are controller, service, repository…
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+Mockito is a popular mocking framework used in Java to create mock objects for unit tests. It's particularly helpful for writing tests for classes that have external dependencies (like databases, APIs, or other services). Instead of using these real dependencies in tests, which can be time-consuming and unpredictable, Mockito allows you to use mock objects in their place.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+class Test
+
+@InjectMocks
+paymentDetailController paymentDetailController
+
+@Mock
+Paymentdetailservice paymentDetailservice;
+
+ @Autowired
+  protected MockMvc mvc;
+
+
+/// Unit testcase
+@Test
+public void getdata(){
+Mockito.when(paymentDetailservice.getpaymentId("123")).thenReturn(getPaymentDetail());
+PaymentDetail paymentDetail  = paymentDetailController.getpaymentId("123");
+assertEquals(paymentDetail.getpaymentMethod(),"Online");
+}
+
+
+public PaymentDetail getPaymentDetail(){
+  PaymentDetail paymentDetail =new PaymentDetail();
+  paymentDetail.setId("123);
+  paymentDetail.setMethod("Online");
+  return paymentDetail;
+  
+}
+
+
+@Test
+  void findByIdentifierSuccessTest() throws Exception {
+    String uri = BASE_URI + "findByIdentifier?identifier=abcd";
+    MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON_VALUE))
+        .andReturn();
+ }
+ 
+ /// integration testcase
+ 
+  @Test
+  void searchWithFilterJsonSuccessTest() throws Exception {
+    String uri = BASE_URI + "searchWithFilterJson?llimit=0&ulimit=50&orderBy=id&orderType=desc";
+    String mapToJson = mapToJson(filterJson);
+    MvcResult mvcResult = mvc
+        .perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(mapToJson))
+        .andReturn();
+    String content = mvcResult.getResponse().getContentAsString();
+    int status = mvcResult.getResponse().getStatus();
+    assertEquals(200, status);
+  }
+-----------------------------------------------------------------------------------------------------------------------------------------------------------

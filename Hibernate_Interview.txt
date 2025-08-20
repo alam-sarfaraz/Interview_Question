@@ -1,0 +1,405 @@
+In Hibernate, what is optimistic locking?
+
+Optimistic locking is a concurrency control mechanism that prevents multiple transactions from overwriting each other’s changes by checking a version/timestamp field before committing an update. 
+
+OR 
+
+Optimistic locking in Hibernate is a way to stop two users from accidentally overwriting each other’s changes by using a version or timestamp column to check if the data was modified by someone else before saving.
+
+Analogy:
+
+Two people editing the same Google Doc offline:
+You save yours only if it’s still on the same version you downloaded.
+If someone else saved a newer version, you get a warning instead of overwriting it.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What does Hibernate’s pessimistic locking mean?
+Hibernate’s pessimistic locking means it locks the database row immediately when you read it, so no other transaction can modify it until you release the lock (usually at transaction commit).
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+StatelessSession:
+In Hibernate StatelessSession is a lightweight, non-caching version of Session designed for bulk operations or simple, read-only operations where you don’t need Hibernate’s first-level cache, dirty checking, or lifecycle management.
+
+Analogy:
+
+Normal Session → Like working with Google Docs (auto-saves, tracks changes, keeps history).
+StatelessSession → Like typing directly into Notepad (fast, no tracking, no auto-save features).
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What are the three types of Hibernate?
+The three types of Hibernate object states are – Transient Object State, Persistent Object State, and Detached Object State. These states are also called the lifecycle states of an object.
+
+Transient Object → An object that is not associated with any Hibernate Session and does not represent any row in the database.
+Example :
+User user = new User(); // Transient
+user.setName("John");
+
+Persistent Object → An object that is associated with an active Hibernate Session and represents a row in the database; Hibernate tracks its changes.
+
+Example :
+Session session = sessionFactory.openSession();
+Transaction tx = session.beginTransaction();
+session.save(user); // user becomes Persistent
+user.setName("Johnny"); // Hibernate will auto-update DB
+tx.commit();
+
+
+Detached Object → An object that was previously persistent but whose Hibernate Session has been closed or the object has been evicted; it still represents a row in the database but is no longer tracked by Hibernate.
+and updates must be explicitly saved using methods like update() or merge(). Detached objects can still be re-associated with a session.
+The update() and merge() methods in Hibernate are used to reattach detached objects to a session, but they differ in their behavior:
+
+update(): Reattaches the detached object to the session and updates it. It throws an exception if the object already exists in the session.
+merge(): Copies the state of the detached object to a persistent object in the session. It does not throw an exception if the object exists.
+Example :
+session.close(); // user becomes Detached
+user.setName("John Updated"); // No automatic DB update
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Explain the concept of Hibernate Envers?
+
+Hibernate Envers is an auditing framework that allows developers to track entity changes over time. This feature is handy when we are facing debugging issues in a project. Envers provides a variety of query and reporting tools that make it easy to access and analyze the revision history of an entity. Developers can easily compare different revisions of an entity and view changes. 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the difference between transient and persistent objects in Hibernate?
+
+Transient and persistent are like the two states of an object in Hibernate. A transient state means that the current thing has not yet been saved in the database, whereas persistent means it has already been saved. If a persistent object is modified, the changes are automatically synchronized with the database during a transaction. It ensures that the changes persist and can be retrieved later.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+What will happen if we don’t have no-args constructor in Entity bean?
+
+If your Entity class doesn’t have a no-args constructor (either public or protected), Hibernate can’t create objects from the database and you’ll get an error at runtime like : org.hibernate.InstantiationException: No default constructor for entity.
+
+Hibernate uses reflection to create entity objects when fetching data.
+Reflection needs a no-argument constructor so it can:
+Create a blank instance.
+Set fields one by one from the database result.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Why we should not make Entity Class final?
+We should not make an Entity class final in Hibernate/JPA because
+Reason 1 – Hibernate uses proxies
+For lazy loading, Hibernate creates proxy subclasses of your entity at runtime.
+If your class is final, Java cannot subclass it, so Hibernate can’t create those proxies
+class User$HibernateProxy extends User { ... }
+
+Reason 2 – Future flexibility
+If you mark it final, you lose the option to extend it later (for inheritance mapping like @Inheritance).
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What caching strategies are available in Hibernate?
+
+Hibernate supports several caching strategies:
+
+— Read-Only: Suitable for data that never changes.
+— Read-Write: Allows for both reading and writing, ensuring data consistency with a versioning mechanism.
+— Non-Strict Read-Write: Allows for some level of inconsistency.
+— Transactional: Used for applications that require transactional cache (e.g., JTA transactions).
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the difference between programmatic and declarative transaction management?
+
+programmatic transaction management - We are writing the Java code to start, commit, or roll back transactions manually.
+
+Declarative transaction management -  we are using annotations or XML to tell Spring to manage transactions automatically.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+How can you optimize the performance of a Hibernate application?
+
+— Caching: Implement first-level and second-level caches to reduce database access.
+— Batch Processing: Use batch processing for bulk operations to minimize the number of database round-trips.
+— Lazy Loading: Use lazy loading for associations to fetch related entities only when needed.
+— Connection Pooling: Use connection pooling to manage database connections efficiently.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is difference between openSession and getCurrentSession?
+openSession() → Always creates a new Session. You must close it manually.
+
+getCurrentSession() → Gives you a session bound to the current context (like the current thread or transaction). Hibernate closes it automatically when the transaction ends.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+The N+1 problem in Hibernate is a performance issue that occurs when your code runs 1 query to get a list of parent entities and then 1 query for each parent to fetch their associated child entities.
+
+How to fix it.
+
+Use JOIN FETCH -- @Query("SELECT u FROM User u JOIN FETCH u.orders")
+
+
+Use @EntityGraph -- @EntityGraph(attributePaths = "orders")
+                    @Query("SELECT u FROM User u")
+                    List<User> getUsersWithOrders();
+
+
+Use Batch Fetching -- 
+                         @OneToMany(mappedBy = "user")
+                         @BatchSize(size = 10)
+                         private List<Order> orders;
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Can you explain the concept behind Hibernate Inheritance Mapping?
+
+Hibernate allows you to store and retrieve this inheritance structure from a relational database (which doesn’t directly support inheritance). So, Hibernate provides 3 strategies to map this inheritance.
+
+--------------------------Single Table Strategy (Default)
+
+In JPA, Single Table means all classes in the inheritance hierarchy are stored in one database table.
+A special column called a discriminator column identifies which row belongs to which subclass.
+
+Table --> id	brand	doors	hasCarrier	type
+          type tells if the row is a Car or Bike. 
+      
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+class Vehicle { }  
+
+@Entity
+@DiscriminatorValue("CAR")
+public class Car extends Vehicle {
+    private int doors;
+}
+
+@Entity
+@DiscriminatorValue("BIKE")
+public class Bike extends Vehicle {
+    private boolean hasCarrier;
+}
+
+
+----------------------------- Table per Class Strategy
+
+In JPA, Table per Class means each subclass has its own table, and that table stores both the parent’s fields and the subclass’s fields.
+
+Car Table
+id	brand	doors
+
+Bike Table
+id	brand	hasCarrier
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Vehicle {
+    @Id
+    private Long id;
+    private String brand;
+}
+
+@Entity
+public class Car extends Vehicle {
+    private int doors;
+}
+
+@Entity
+public class Bike extends Vehicle {
+    private boolean hasCarrier;
+}
+
+
+       
+--------------------------Joined Strategy
+Each subclass has its own dedicated database table, joined to the parent table based on foreign keys..
+  
+DB Tables:
+Vehicle → id, brand
+Car → id, doors
+Bike → id, hasCarrier
+  
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Vehicle {
+    @Id
+    private Long id;
+    private String brand;
+}
+
+@Entity
+public class Car extends Vehicle {
+    private int doors;
+}
+
+@Entity
+public class Bike extends Vehicle {
+    private boolean hasCarrier;
+}
+ 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Connection pooling 
+
+Connection pooling is a technique used to manage and reuse connections in a networked application, particularly for databases. Instead of opening and closing a new connection for every request, a pool of connections is maintained, and connections are reused as needed. This improves performance and resource utilization by reducing the overhead associated with establishing and terminating connections.
+
+Key Concepts of Connection Pooling:
+Connection Pool: A cache of database connections maintained so that the connections can be reused when future requests to the database are required.
+Idle Connections: Connections that are created and ready to use but are not currently being used by any database operations.
+Max Pool Size: The maximum number of connections that can be created in the pool.
+Min Pool Size: The minimum number of connections that should be maintained in the pool, even if they are idle.
+Connection Lease: When a connection is borrowed from the pool for use, it is referred to as a lease. After usage, it is returned to the pool.
+Timeout: The maximum time an application will wait to get a connection from the pool. If a connection is not available within this time, an error is thrown.
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+public class DatabaseConnectionPool {
+    private static HikariDataSource dataSource;
+
+    static {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/mydatabase");
+        config.setUsername("dbuser");
+        config.setPassword("dbpassword");
+        config.setMinimumIdle(10);
+        config.setMaximumPoolSize(100);
+        config.setConnectionTimeout(30000);
+        
+        dataSource = new HikariDataSource(config);
+    }
+
+    public static Connection getConnection() throws SQLException {
+        return dataSource.getConnection();
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+Hibernate
+Hibernate is a Java-based persistence framework.that basically allows a developer to map POJO - plain old Java objects - to relational database tables.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is ORM in Hibernate?
+Hibernate ORM stands for Object Relational Mapping. This is a mapping tool pattern mainly used for converting data stored in a relational database to an object used in object-oriented programming constructs. This tool also helps greatly in simplifying data retrieval, creation, and manipulation.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Configuration
+
+As Hibernate can operate in different environments, it requires a wide range of configuration parameters. These configurations contain the mapping information that provides different functionalities to Java classes. Generally, we provide database related mappings in the configuration file. Hibernate facilitates to provide the configurations either in an XML file (like hibernate.cfg.xml) or properties file (like hibernate.properties).
+ 
+hibernate. cfg. xml
+
+Configuration configuration = new Configuration();
+configuration.configure("hibernate.cfg.xml");
+        	
+ 
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE hibernate-configuration PUBLIC    
+        "-//Hibernate/Hibernate Configuration DTD 5.3//EN"    
+        "http://www.hibernate.org/dtd/hibernate-configuration-5.3.dtd">    
+<hibernate-configuration>    
+    <session-factory>    
+              
+    <property name="hbm2ddl.auto">update</property>      
+        <property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>      
+        <property name="connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>      
+        <property name="connection.username">system</property>      
+        <property name="connection.password">jtp</property>      
+        <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>     
+         
+    </session-factory>    
+</hibernate-configuration>  
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Configuration configuration = new Configuration();
+configuration.configure("hibernate.cfg.xml");
+SessionFactory sessionFactory = configuration.buildSessionFactory();
+Session session = sessionFactory.openSession();
+Transaction tx = session.beginTransaction();
+session.persist(song1);
+session.getTransaction().commit();
+session.close();
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+SessionFactory
+
+SessionFactory is a thread-safe, heavyweight object responsible for creating and managing Session instances. The Session provides methods such as save, delete and update, all of which are used to perform CRUD-based operations on the database to which the SessionFactory connects
+It holds second level cache (optional) of data.
+
+Heavyweight & Immutable
+   Created once per application during startup.
+   Stores metadata (mappings, configuration, SQL dialect, caching strategies).
+
+Lifecycle
+    Create once → reuse across the app → close when the application shuts down.
+    Avoid creating multiple SessionFactory instances unnecessarily.
+    
+Creation
+    Configuration configuration = new Configuration().configure("hibernate.cfg.xml");
+    SessionFactory sessionFactory = configuration.buildSessionFactory();
+       
+Responsibilities:
+    Parse Hibernate config files (XML or annotations).
+    Manage connection pooling via JDBC or an external pool.
+    Provide Session objects for performing CRUD operations.
+    Maintain second-level cache if enabled.
+   
+---------------------------------------------------------------------------------------------------------------------------------------------------------------    
+Is hibernate prone to SQL injection attack?
+Hibernate can be vulnerable to SQL injection if you put user input directly into your query strings.
+     Safe → Use placeholders/parameters so Hibernate binds the values for you.
+     Unsafe → Build queries by joining strings with user input.
+Example : 
+        placeholders -  query = session.createQuery("FROM User WHERE id = :id");
+        parameters   -  query.setParameter("id", userId);    
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Session :
+A session is an object that maintains the connection between Java object application and database. Session also has methods for storing, retrieving, modifying or deleting data from database using methods like persist(), load(), get(), update(), delete(), etc.
+
+The session objects should not be kept open for a long time because they are not usually thread safe and they should be created and destroyed them as needed.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Criteria
+In Hibernate, criteria queries are used to fetch data from a database based on certain conditions or criteria. Criteria queries are created using the Criteria API provided by Hibernate. 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+A transaction is a unit of work which ensure the data which is committed in database successfully or not.
+A transaction can be described by ACID properties (Atomicity, Consistency, Isolation and Durability).
+
+1. Atomicity: Each transaction should be carried out in its entirety; if one part of the transaction fails, then the whole transaction fails.
+2. Consistency: The database should be in a valid state before and after the performed transaction.
+3. Isolation: Each transaction should execute in complete isolation without knowing the existence of other transactions.
+4. Durability: Once the transaction is complete, the changes made by the transaction are permanent (even in the occurrence of unusual events such as power loss).
+
+void begin() starts a new transaction.
+void commit() ends the unit of work unless we are in FlushMode.NEVER.
+void rollback() forces this transaction to rollback.
+void setTimeout(int seconds) it sets a transaction timeout for any transaction started by a subsequent call to begin on this instance.
+boolean isAlive() checks if the transaction is still alive.
+void registerSynchronization(Synchronization s) registers a user synchronization callback for this transaction.
+boolean wasCommited() checks if the transaction is commited successfully.
+boolean wasRolledBack() checks if the transaction is rolledback successfully.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Hibernate Query Language (HQL) is same as SQL (Structured Query Language) but it doesn't depends on the table of the database. Instead of table name, we use class name in HQL. So it is database independent query language.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Can you explain what is lazy loading in hibernate?
+
+Lazy loading is mainly used for improving the application performance by helping to load the child objects on demand.
+
+It is to be noted that, since Hibernate 3 version, this feature has been enabled by default. This signifies that child objects are not loaded until the parent gets loaded.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Caching:
+
+Caching is a technique that allows frequently accessed data to be stored in memory so that it can be quickly retrieved without having to go back to the database every time. By caching data, Hibernate can reduce the number of database queries it needs to execute, improving performance and reducing the load on the database server.
+
+1 First-Level Cache (also known as Session Cache)
+
+First-level caching is an in-built caching mechanism provided by Hibernate that stores the data in the memory of the Session object. Whenever an entity is fetched from the database, it is stored in the cache. If the same entity is requested again within the same session, Hibernate retrieves it from the cache instead of hitting the database. This can significantly improve the performance of the application by reducing the number of database queries.
+
+The first-level cache has session-level scope, which means that the data stored in the cache is available only within the session. When the session is closed, the cache is cleared automatically. The cache is also not shared between different sessions, which means that each session has its own separate cache.
+
+
+2) Second level cache
+The second-level cache is by default disabled, the developer needs to enable it explicitly, and the SessionFactory object is responsible to maintain it. The second-level cache is accessible by the entire application means data hold by SessionFactory can be accessible to all the sessions. Keep in mind that, once the session factory is closed all the cache associated with that is also removed from the memory.
+
+Example :
+
+Let’s take an example: Suppose your application has 2 active sessions session1 and session2 respectively. Now, session1 has requested data having id=101 so that will be fetched from a database as it is the first call, and then it is stored into the second-level (SessionFactory) as well as in the first-level (session) cache also. Now, session2 requires the same data so it has also been queried with the same id=101. So this time session2 will get data from the SessionFactory, it will not going to hit the database. Take a look at the below code snippet.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+How is SQL query created in Hibernate?
+
+The SQL query is created with the help of the following syntax:
+Session.createSQLQuery
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+How is HQL query created?
+
+The HQL query is created with the help of the following syntax:
+Session.createQuery
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is lazy loading in hibernate?
+
+Lazy loading in hibernate improves the performance. It loads the child objects on demand.
+Since Hibernate 3, lazy loading is enabled by default, and you don't need to do lazy="true". It means not to load the child objects when the parent is loaded.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Hibernate Query Language (HQL) is not inherently faster than SQL. The performance of HQL and SQL can depend on various factors, including how they are used, the underlying database, and the specific use case. However, there are some reasons why Hibernate (and HQL) might seem faster or more efficient in certain scenarios:
+
+Caching: Hibernate has built-in caching mechanisms (first-level and second-level caching) that can significantly reduce database access times by storing frequently accessed data in memory. This can make repeated queries faster than executing raw SQL queries directly against the database every time.
+
+Batch Processing: Hibernate supports batch processing and batching of SQL statements. This means that multiple database operations can be grouped together, reducing the number of database round-trips and improving performance.
+
+
+Lazy Loading: Hibernate supports lazy loading of associations and collections, which means that related data is fetched only when it is actually needed. This can reduce the amount of data transferred from the database, making queries more efficient.
+
+Automatic Connection Management: Hibernate manages database connections efficiently, reusing and pooling connections to reduce the overhead of opening and closing connections frequently.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------

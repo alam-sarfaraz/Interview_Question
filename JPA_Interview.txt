@@ -1,0 +1,426 @@
+Difference between JPA Repository and CRUD Repository?
+In Spring Data JPA, both CrudRepository and JpaRepository are interfaces that provide data access operations for entities.
+
+CrudRepository
+Methods provided: save(), findById(), findAll(), delete(), count(), existsById(), etc.
+Use Case: When you only need simple CRUD operations without advanced JPA features.
+
+JpaRepository
+Purpose: Extends CrudRepository and PagingAndSortingRepository to provide: All CRUD methods,Paging & Sorting methods ,Additional JPA-specific features.
+Extra Methods provided: findAll(Sort sort),findAll(Pageable pageable), flush(),saveAndFlush(),deleteInBatch(),getOne() (lazy fetch proxy).
+Use Case: When you need pagination, sorting, and batch operations.
+
+Diagram :
+
+Repository
+   ↑
+CrudRepository
+   ↑
+PagingAndSortingRepository
+   ↑
+JpaRepository
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Explain the different JPA entity lifecycle states.
+
+New / Transient
+Managed / Persistent
+Detached
+Removed
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+How do you configure JPA in a Java application?
+
+Two Common Ways to Configure JPA
+
+1 Using persistence.xml (Classic JPA)
+1 Create META-INF/persistence.xml in your classpath (usually src/main/resources/META-INF/).
+2 Add your persistence unit configuration.
+
+EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPU");
+EntityManager em = emf.createEntityManager();
+
+2 Using application.properties or application.yml (Spring Boot)
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is Embeddable class?
+An Embeddable class in JPA is a value type class whose fields are mapped as part of another entity’s table instead of having its own table.
+It is not an entity — it doesn’t have an @Id and cannot exist independently in the data.
+
+@Embeddable
+public class Address {
+    private String street;
+    private String city;
+    private String zipcode;
+}
+@Entity
+public class Customer {
+    @Id
+    private Long id;
+
+    private String name;
+
+    @Embedded
+    private Address address; // Address fields stored in Customer table
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EntityManager: Manages the lifecycle of entity instances, performs CRUD operations, and executes queries. It is not thread-safe and should be used per transaction or per request.
+
+EntityManagerFactory: A factory for creating `EntityManager` instances. It is thread-safe and expensive to create, so it should be created once per application and reused.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the purpose of `EntityTransaction`?
+The `EntityTransaction` interface manages transaction boundaries. It allows you to begin, commit, and rollback transactions to ensure data consistency and integrity.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Describe in detail about the Persistence Unit in JPA?
+In JPA, a Persistence Unit is basically the configuration block that tells JPA which database to connect to, which entities to manage, and how to manage them.
+it Defined in persistence.xml (inside META-INF folder in your classpath).
+
+Persistence Unit = “JPA’s configuration blueprint” for managing entities and database connections. It defines what to store, where to store it, and how to interact with it.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Explain the difference between a shared cache mode and a local cache mode in JPA?
+JPA uses caching to avoid hitting the database for the same data repeatedly.
+There are two main types of 2nd-level cache behavior:
+
+Shared Cache Mode → Uses the second-level cache so that cached entities are available to all EntityManagers in the application.Can be configured globally in persistence.xml using shared-cache-mode (e.g., ALL, ENABLE_SELECTIVE).
+
+Local Cache Mode → Uses only the first-level cache (persistence context) inside a single EntityManager.Always enabled in JPA — you don’t need to configure it.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+How can you use JPA to handle optimistic concurrency control? Can you explain how the EntityManager.lock() method works?
+
+JPA provides a mechanism for optimistic concurrency control to handle situations where multiple transactions are trying to modify the same entity concurrently. In optimistic concurrency control, each transaction checks to see if any other transaction has modified the entity since it was last read. This is achieved by using a version field in the entity, which is incremented each time the entity is modified.
+
+JPA provides the @Version annotation to indicate which field in the entity should be used as the version field. When an entity is persisted or updated, JPA automatically checks the current version of the entity in the database and compares it with the version in the entity being persisted or updated. If the versions do not match, a “javax.persistence.OptimisticLockException” is thrown, indicating that the entity has been modified by another transaction.
+
+The EntityManager.lock() method allows you to specify the lock mode to use and the timeout for the lock. The lock mode can be either optimistic or pessimistic. With optimistic locking, the lock is released immediately after the transaction completes. With pessimistic locking, the lock is held until the transaction completes or the lock timeout expires.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the purpose of the @Version annotation in JPA? How is it used in optimistic locking? Explain the concept in detail.
+The purpose of the @Version annotation in JPA is to define a version field on an entity that can be used for optimistic locking.
+
+When an entity is updated in JPA, the persistence provider checks whether the version of the entity in the database matches the version of the entity in the persistence context. If the versions match, JPA updates the entity and increments the version number. If the versions do not match, it means that another transaction has modified the entity in the meantime, and JPA throws an optimistic locking exception.
+
+The @Version annotation is used to mark a field on an entity as the version field. This field should be an integer. 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+JpaRepository is more powerful than other repository interfaces like CrudRepository because it adds:
+
+✅ Batch operations (e.g., delete multiple records at once)
+
+✅ Flush control (save and instantly write to the database)
+
+✅ Extra JPA features like saveAndFlush() and deleteInBatch()
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+JPA stands for Java Persistence API. It is an object-relational mapping (ORM) framework that allows us to map Java objects to tables in a relational database.
+JPA is used to simplify the process of writing code for data persistence by providing a high-level abstraction layer over the underlying data storage technology, such as relational databases.
+
+In JPA, an entity is a lightweight Java class that represents a persistent data object. Entities are used to map Java objects to database tables, where each entity corresponds to a row in the table.
+
+Steps to Create a JPA Entity:
+JPA entities are Java classes that can be mapped to database tables and these classes define the structure of the data and act as a bridge between the object-oriented world of Java and the relational world of the database
+
+Define the java class and it can annotate it with the @Entity to mark it as an entity.
+Define fields in the class to represent columns in the database table.
+It can be annotated fields with the appropriate JPA annotations like @OneToOne and @OneToMany etc.
+It can configure the data source and the persistence unit in the persistance.xml file.
+It can use the EntityManager to perform the CRUD operations on the entities.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+JPQL stands for Java Persistence Query Language. It is a platform-independent object-oriented query language that is used to retrieve data from a relational database using Java Persistence API. JPQL is similar to SQL (Structured Query Language) in terms of syntax, but instead of operating on tables and columns, it operates on JPA entities and their corresponding attributes.
+
+String jpql = "SELECT e FROM Employee e WHERE e.department = :dept";
+
+TypedQuery<Employee> query = entityManager.createQuery(jpql, Employee.class);
+query.setParameter("dept", "IT");
+
+List<Employee> results = query.getResultList();
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+In JPA, transactions are used to manage the interactions between Java code and the underlying relational database. JPA provides a transaction management system that allows developers to define and control transactions in their applications.
+A transaction is typically used to ensure data consistency and integrity, by ensuring that either all of the operations in the transaction are executed, or none of them is executed.
+Obtain an instance of the ‘EntityManager’  interface.
+Begin a transaction using the ‘EntityTransaction’ interface's ‘begin()’ method.
+Perform one or more database operations using the ‘EntityManager’ interface's persistence methods, such as ‘persist()’, ‘merge()’, or ‘remove()’.
+Commit the transaction using the ‘EntityTransaction’ interface's ` method.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What are the advantages of using JPA over JDBC?
+
+Object-Relational Mapping: It offers an Object-Relational Mapping (ORM) framework that enables developers to map Java objects to database tables without having to create SQL queries. Developers will have to write less code as a result, and the codebase will be simpler to maintain.
+
+Portability: It is a standardized API that is independent of any specific database implementation. This means that applications written using JPA can be easily ported to different databases without having to rewrite the database access code.
+
+Improved Performance: By minimizing the number of database queries that are run, it uses a caching mechanism that can enhance performance. This may lead to quicker response times and improved scalability.
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+JPA Repository is an interface provided by Spring Data JPA that extends the JpaRepository interface. It provides a set of methods for performing common operations on entities, such as save, delete, findAll, and findById. In addition to these methods, it also allows you to define custom query methods using the @Query annotation.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+The @JoinColumn annotation in JPA is used to specify a join column for a relationship mapping between two entities.
+The @JoinColumn annotation can be applied to a field or property that is mapped as a foreign key column in the database.
+The @JoinColumn annotation can be used with the @ManyToOne, @OneToOne, @OneToMany, and @ManyToMany annotations to define the join columns for the relationship mapping.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ONE TO ONE MAPPING   
+  class Student{
+   
+   int id;
+   String name;
+   String Address;
+   
+   @oneToOne(mappedBy="student",cascade=cascadeType.ALL)
+   Laptop laptop;
+   }
+   
+   Class Laptop{
+      int laptop_id;
+      String laptopName;
+      String modelNo;
+      @oneToOne
+      @joinColumn(name="student_id")
+      Student student;
+   }
+  
+  When we used mappedBy then foreign key will be generated in Laptop table;
+  if we want to change the foreign key name we use  @joinColumn(name="student_id");
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ONE TO MANY
+
+    class Student{
+   
+   int id;
+   String name;
+    
+   @oneToMany(mappedBy="student")
+   List<Address> addressList; 
+    
+   } 
+   
+   class Address{
+   
+   int id;
+   String city;
+   String state;
+   String zipcode;
+   
+   @ManyToOne
+   @joinColumn(name="student_id")
+   Student student;
+   
+   }
+   
+   When we used mappedBy then foreign key will be generated in Address table;
+   if we want to change the foreign key name we use  @joinColumn(name="student_id");
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+MANY TO MANY
+
+  class user{
+  
+     int id
+     String name;
+     String email;
+     
+     @ManyToMany(mappedBy="userList")
+     List<Role> roleList
+     }
+     
+   class Role{
+    
+    int id
+    String roleName;
+     
+    @ManyToMany
+    @joinColumn(name="User_id")
+    List<User> userList;
+    
+    }
+    
+   When we used mappedBy then foreign key will be generated in Role table;
+   if we want to change the foreign key name we use  @joinColumn(name="User_id");
+     
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+To configure multiple data sources in Spring Boot in a simple way, follow these steps:
+
+### Step 1: Add Dependencies
+Add the necessary dependencies in your `pom.xml`:
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+<dependency>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+    <scope>runtime</scope>
+</dependency>
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <scope>runtime</scope>
+</dependency>
+```
+
+### Step 2: Configure Data Sources
+
+Create a configuration class for the primary data source:
+
+@Configuration
+@EnableJpaRepositories(
+    basePackages = "com.example.primary.repository",
+    entityManagerFactoryRef = "primaryEntityManagerFactory",
+    transactionManagerRef = "primaryTransactionManager"
+)
+public class PrimaryDataSourceConfig {
+
+    @Primary
+    @Bean(name = "primaryDataSource")
+    @ConfigurationProperties(prefix = "app.datasource.primary")
+    public DataSource primaryDataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Primary
+    @Bean(name = "primaryEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory(
+            EntityManagerFactoryBuilder builder, @Qualifier("primaryDataSource") DataSource dataSource) {
+        return builder
+                .dataSource(dataSource)
+                .packages("com.example.primary.model")
+                .persistenceUnit("primary")
+                .build();
+    }
+
+    @Primary
+    @Bean(name = "primaryTransactionManager")
+    public PlatformTransactionManager primaryTransactionManager(
+            @Qualifier("primaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
+    }
+}
+```
+
+#### Secondary Data Source Configuration
+
+Create a configuration class for the secondary data source:
+
+@Configuration
+@EnableJpaRepositories(
+    basePackages = "com.example.secondary.repository",
+    entityManagerFactoryRef = "secondaryEntityManagerFactory",
+    transactionManagerRef = "secondaryTransactionManager"
+)
+public class SecondaryDataSourceConfig {
+
+    @Bean(name = "secondaryDataSource")
+    @ConfigurationProperties(prefix = "app.datasource.secondary")
+    public DataSource secondaryDataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean(name = "secondaryEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory(
+            EntityManagerFactoryBuilder builder, @Qualifier("secondaryDataSource") DataSource dataSource) {
+        return builder
+                .dataSource(dataSource)
+                .packages("com.example.secondary.model")
+                .persistenceUnit("secondary")
+                .build();
+    }
+
+    @Bean(name = "secondaryTransactionManager")
+    public PlatformTransactionManager secondaryTransactionManager(
+            @Qualifier("secondaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
+    }
+}
+```
+
+### Step 3: Application Properties
+Define properties for each data source in your `application.properties`:
+
+```properties
+# Primary Data Source
+app.datasource.primary.url=jdbc:mysql://localhost:3306/primarydb
+app.datasource.primary.username=root
+app.datasource.primary.password=secret
+app.datasource.primary.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# Secondary Data Source
+app.datasource.secondary.url=jdbc:h2:mem:secondarydb
+app.datasource.secondary.username=sa
+app.datasource.secondary.password=password
+app.datasource.secondary.driver-class-name=org.h2.Driver
+```
+
+### Step 4: Entity Classes and Repositories
+
+#### Primary Data Source Entity and Repository
+
+Create the entity and repository for the primary data source:
+
+```java
+// PrimaryEntity.java
+@Entity
+public class PrimaryEntity {
+    @Id
+    private Long id;
+    private String name;
+    // getters and setters
+}
+
+// PrimaryRepository.java
+public interface PrimaryRepository extends JpaRepository<PrimaryEntity, Long> {
+}
+```
+
+#### Secondary Data Source Entity and Repository
+
+Create the entity and repository for the secondary data source:
+
+```java
+// SecondaryEntity.java
+@Entity
+public class SecondaryEntity {
+    @Id
+    private Long id;
+    private String description;
+    // getters and setters
+}
+
+// SecondaryRepository.java
+public interface SecondaryRepository extends JpaRepository<SecondaryEntity, Long> {
+}
+```
+
+### Step 5: Using the Repositories
+
+Autowire the repositories in your service or controller classes:
+
+```java
+@Service
+public class MyService {
+
+    @Autowired
+    private PrimaryRepository primaryRepository;
+
+    @Autowired
+    private SecondaryRepository secondaryRepository;
+
+    public void performDatabaseOperations() {
+        // Use primaryRepository and secondaryRepository as needed
+    }
+}
+```
+
+This setup allows you to configure and use multiple data sources in a Spring Boot application in a straightforward manner.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------

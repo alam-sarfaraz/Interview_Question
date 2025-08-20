@@ -1,0 +1,212 @@
+@Cacheable: Caches the result of a method. If the method is called with the same parameters, the cached result is returned instead of executing the method again.
+@CachePut: Updates the cache with the method’s result, even if the result already exists in the cache.
+@CacheEvict: Removes data from the cache. It can be used for clearing caches after an update.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+@Conditional annotations is one the powerful annotation in springboot throught which we can conditionally enable or disable beans, configurations, or features at runtime based on specific conditions.
+
+Example :
+@ConditionalOnClass → Loads a bean if a certain class is present on the classpath.
+@ConditionalOnMissingBean → Loads a bean if another bean of the same type is not already defined.
+@ConditionalOnBean → Opposite of above, loads if a specific bean exists.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+The @Transactional annotation in JPA is used to indicate that a method should be executed within a transaction. 
+It can be applied at the class or method level, 
+When a method annotated with @Transactional is called, a transaction will be started before the method is executed, and any changes made to the database within the method will be persisted to the database when the transaction is committed. If an exception is thrown within the method, the transaction will be rolled back, and any changes made to the database within the method will be discarded.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+The @Mock annotation is used to create a mock object of a class or interface, and the @InjectMocks annotation is used to inject the mock objects into a test class.
+
+Used to create mock objects for dependencies (i.e., classes/interfaces that your tested class depends on).
+You don’t need the actual implementation; Mockito creates a dummy object for testing.
+
+The @Spy annotation in Mockito is used to create a partial mock of an object.
+--------------------------------------------------------------------------------------------------------------------------------------------
+@RequestParam is used to extract query parameters from the request URL. Query parameters are typically appended to the URL after a question mark (?) and separated by ampersands (&). 
+
+@PathVariable annotation is used to extract values from URI templates. URI templates are parts of the URL path enclosed in curly braces ({}).
+--------------------------------------------------------------------------------------------------------------------------------------------
+@SpringBootApplication
+it is equivalent to declaring @Configuration, @EnableAutoConfiguration, and @ComponentScan.
+--------------------------------------------------------------------------------------------------------------------------------------------
+@EnableAutoConfiguration
+
+@EnableAutoConfiguration annotation is used to enable Spring Boot's auto-configuration feature, which automatically configures the application based on the classpath dependencies and other properties. It scans the classpath for various configurations and automatically configures the beans and other components accordingly.
+
+Or 
+
+The @EnableAutoConfiguration annotation enables the auto-configuration of Spring ApplicationContext by scanning the classpath components and registering the beans.
+--------------------------------------------------------------------------------------------------------------------------------------------
+@Configuration
+
+it is a class-level annotation which indicates that the class has @Bean definition methods. So Spring container can process the class and generate Spring Beans to be used in the application.
+
+@Configuration
+public class AppConfig {
+
+	@Bean
+	public BeanOne beanOne() {
+		return new BeanOne(beanTwo());
+	}
+
+	@Bean
+	public BeanTwo beanTwo() {
+		return new BeanTwo();
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------
+@ComponentScan
+The @ComponentScan annotation is used with the @Configuration annotation to tells Spring to scan the current package and all of its sub-packages.
+
+Or
+
+The @ComponentScan annotation is used with the @Configuration annotation to tell Spring the packages to scan for annotated components. @ComponentScan also used to specify base packages and base package classes using thebasePackageClasses or basePackages attributes of @ComponentScan.
+
+@Configuration
+@ComponentScan(basePackages = {"com.inn"})
+public class myclass {
+    public  void display(){
+       sout("Abcd");
+    }
+  
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+@Autowired
+
+It is one of the core annotations in Spring, used for automatic dependency injection. In simpler terms, it allows Spring to automatically wire the required beans (dependencies) into your classes, eliminating the need for manual configuration.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+@Component
+It is an annotation that allows Spring to detect our custom beans automatically. In other words, without having to write any explicit code, Spring will Scan our application for classes annotated with @Component. Instantiate them and inject any specified dependencies into them.
+
+OR
+
+@Component is a class-level annotation. During the component scan, Spring Framework automatically detects classes annotated with @Component annotation and creates Spring beans for those classes.
+      
+--------------------------------------------------------------------------------------------------------------------------------------------
+@Controller 
+
+The @Controller annotation indicates that a particular class serves the role of a controller.
+When using @Controller you typically use it in combination with @ResponseBody. So you annotate your endpoint methods with @ResponseBody to let Spring know what return type to expect from that particular endpoint.
+
+
+@Controller
+public ControllerClass {
+
+   @GetMapping("/greetings")
+   @ResponseBody
+   private String someEndpoint(){
+       return "hey";
+   }
+
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+@RestController
+It is a combination of @Controller and @ResponseBody, used for creating a restful controller. It converts the response to JSON or XML. It ensures that data returned by each method will be written straight into the response body instead of returning a template.
+
+@RestController simply combines @Controller and @ResponseBody. So you don't need to annotate your endpoint methods with @ResponseBody. A single anntoation of your controller class will do the magic. The return type of the endpoint methods are used as response body.
+
+@RestController
+public ControllerClass {
+
+   @GetMapping("/greetings")
+   private String someEndpoint(){
+       return "hey";
+   }
+
+}
+--------------------------------------------------------------------------------------------------------------------------------------------
+@service
+
+It can be applied only to classes.
+It is used to mark the class as a service provider. So overall @Service annotation is used with classes that provide some business functionalities.
+The @Service annotation is used to identify a class as a service provider. It is specifically applied to classes responsible for implementing services, encompassing tasks such as business logic, calculations, and interactions with external APIs.
+--------------------------------------------------------------------------------------------------------------------------------------------
+@Repository
+
+@Repository Annotation is a specialization of @Component annotation which is used to indicate that the class provides the mechanism for storage, retrieval, update, delete and search operation on objects
+--------------------------------------------------------------------------------------------------------------------------------------------
+@Qualifier
+
+The @Qualifier annotation is used to resolve ambiguity by specifying which exact bean should be wired where there are multiple beans of the same type.
+@Qualifier annotation along with @Autowired to specify which exact bean will be wired.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+@Primary
+
+@Primary annotation in Spring is used to indicate the primary bean when multiple beans of the same type are present for auto wiring. When multiple beans are eligible for auto wiring the @Primary annotation will help to determine which bean should be given preference.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+@RequestBody 
+
+@RequestBody  annotation indicates that Spring should deserialize a request body into an object.
+
+@RequestBody tells Spring Boot to take that data from the HTTP request and convert it into a Java object.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+@ResponseBody
+
+@ResponseBody annotation is used to convert your object into HTTP response in the form client is expecting like JSON, XML, or simply text. 
+--------------------------------------------------------------------------------------------------------------------------------------------
+What is the difference between @RestController and @Controller in Spring Boot?
+
+@Controller Map of the model object to view or template and make it human readable but @RestController simply returns the object and object data is directly written in HTTP response as JSON or XML.
+
+@Value :
+@Value is a core annotation in Spring that is primarily used for assigning default values to variables and method parameters. It also offers developers the capability to inject values from property files into class members such as fields and method parameters.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+@GetMapping:
+Purpose: Specifically designed to handle HTTP GET requests.
+Use Case: Used when you want to map a method to an HTTP GET request.
+
+@RequestMapping:
+Purpose: A more general-purpose annotation that can handle all types of HTTP requests (GET, POST, PUT, DELETE, etc.).
+Use Case: Used when you want to map a method to a specific HTTP request method or multiple methods.
+@RequestMapping(value = "/example", method = RequestMethod.GET)
+--------------------------------------------------------------------------------------------------------------------------------------------
+POST
+The POST method is used to submit an entity to a resource. It is used for creating a new resource or adding a new entity to an existing resource. When a POST request is sent, the server creates a new resource and assigns a new URL to it. 
+
+PUT
+The PUT method is used to update a resource or create a new resource if it does not exist. When a PUT request is sent, the entire resource is replaced with the new data. If the resource does not exist, it will be created.
+
+PATCH
+The PATCH method is used to partially update a resource. It is useful when you want to update only a few fields of a resource without replacing the entire resource. In a PATCH request, you specify the fields that need to be updated in the request body.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+@Before: This is used when we want to execute the preconditions or any initialisation based statements before running every test case.
+
+@BeforeClass: This is used when we want to execute statements before all test cases.
+
+@After: This is used when we want to execute statements after each test case. The statements can be resetting the variables, deleting extra memory used etc.
+
+@AfterClass: This is used when certain statements are required to be executed after all the test cases of the class are run. Releasing resource connections post-execution of test cases is one such example.
+
+@DisplayName is used for defining the test name displayed to the user.
+
+assertEquals() method is used for validating whether the expected and actual values are equal.
+
+In Hibernate, @Entity is an annotation used to mark a class as an entity, indicating that it is associated with a database table. 
+
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

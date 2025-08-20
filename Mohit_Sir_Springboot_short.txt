@@ -1,0 +1,918 @@
+Core Java
+Day 1: Introduction to Java and its features. Understand the Java development environment setup and write basic programs. (2 hours)
+Day 2: Data types, variables, and operators in Java. Learn about primitive data types, reference types, and type conversion. (3 hours)
+Day 3: Control statements: if-else, switch-case, loops (for, while, do-while), and break/continue statements. Understand their syntax and usage. (4 hours)
+Day 4: Arrays in Java: Single-dimensional and multi-dimensional arrays. Learn how to declare, initialize, and manipulate arrays. (3 hours)
+Day 5: Object-oriented programming (OOP) concepts: Classes, objects, inheritance, polymorphism, and encapsulation. Understand the basics of OOP and their implementation in Java. (4 hours)
+
+Java 8
+Day 6: Introduction to Java 8 features: Lambda expressions and functional interfaces. Learn how to write and use lambda expressions. (3 hours)
+Day 7: Functional interfaces in Java 8: Predicate, Consumer, Function, Supplier. Understand their purpose and usage. (3 hours)
+Day 8: Stream API: Introduction to streams, stream creation, and stream operations (filter, map, reduce). Learn how to process collections using streams. (4 hours)
+Day 9: Optional class in Java 8: Handle null values effectively using Optional class. Understand its benefits and usage. (2 hours)
+Day 10: Default and static methods in interfaces: Explore the new possibilities introduced in Java 8 interfaces. Learn how to use default and static methods. (3 hours)
+
+Multithreading
+Day 11: Introduction to threads: Basics of multithreading, creating and starting threads in Java. (3 hours)
+Day 12: Thread synchronization: Learn about synchronized blocks and methods to ensure thread safety. Understand the concepts of locks and critical sections. (4 hours)
+Day 13: Thread communication: Explore mechanisms like wait(), notify(), and notifyAll() to coordinate threads and achieve synchronization. (3 hours)
+Day 14: Thread pools and Executors: Understand the benefits of thread pools and how to use the Executors framework for efficient thread management. (3 hours)
+Day 15: Concurrent collections: Explore concurrent collections like ConcurrentHashMap and ConcurrentLinkedQueue for thread-safe operations. (4 hours)
+
+Spring Framework
+Day 16: Introduction to the Spring Framework: Understand the core concepts, features, and benefits of using Spring. (3 hours)
+Day 17: Dependency Injection: Learn about different types of dependency injection (constructor, setter, and field injection) and their implementation in Spring. (4 hours)
+Day 18: Aspect-Oriented Programming (AOP): Understand AOP concepts, aspect-oriented programming in Spring, and how to use aspects for cross-cutting concerns. (4 hours)
+Day 19: Spring MVC: Explore the Model-View-Controller architecture and learn how to build web applications using Spring MVC. (5 hours)
+Day 20: Spring Data: Introduction to Spring Data and its support for various data access technologies. Learn how to integrate Spring Data with databases. (3 hours)
+
+Spring Boot
+Day 21: Introduction to Spring Boot: Understand the features and benefits of Spring Boot for rapid application development. Set up a basic Spring Boot project. (3 hours)
+Day 22: Auto-configuration: Learn how Spring Boot’s auto-configuration works and how to customize it. (3 hours)
+Day 23: Spring Boot starters: Explore the concept of starters and how they simplify dependency management in Spring Boot projects. (3 hours)
+Day 24: Spring Boot Actuator: Learn how to monitor and manage Spring Boot applications using Actuator endpoints. (3 hours)
+Day 25: Spring Boot Testing: Understand various testing approaches in Spring Boot, including unit testing, integration testing, and end-to-end testing. (4 hours)
+
+Microservices
+Day 26: Introduction to Microservices: Understand the principles, benefits, and challenges of Microservices architecture. (3 hours)
+Day 27: Service discovery: Learn how to implement service discovery using tools like Eureka or Consul. (4 hours)
+Day 28: Load balancing: Explore different load balancing techniques for distributing requests across Microservices instances. (3 hours)
+Day 29: Circuit breakers: Understand the concept of circuit breakers and their role in ensuring system resilience. (4 hours)
+Day 30: API gateways: Learn how to implement API gateways for routing, filtering, and securing Microservices APIs. (4 hours)
+
+Practice and Review
+Spend the remaining days practicing coding exercises, implementing small projects, and reviewing the topics you’ve covered so far.
+Solve interview-style coding problems, work on sample projects, and revise any weak areas.
+Allocate time for in-depth understanding of advanced concepts, such as advanced data structures, design patterns, and performance optimization techniques.
+
+--------------------------Interview prepreation steps----------------------
+Step-1. Know the project that you have working on, of the current job in and out. We should be able to talk about the below things.
+
+a. Projects Functionality including what it does, and what problem it solves for customers, Basically you should know your project functional overview.
+b. Know your project Architecture and Technical stack. Also, you can dig deeper to know about flow end to end.
+c. Technical Stack wise talk about what has been used in the project. Like Which front-end is used(angular, react), which backend is used(like Java, Python), and which Database(Postgres, DynamoDB).
+d. What kind of CI-CD model is used here, like the deployment part that developers are mostly unaware of?
+
+The above project-related stuff should be thoroughly studied by you so that you can drive the interview on your side, This is important, remember your answers generally drives the interview.
+
+Step 2. As a Java Developer, you should know the below topics which will increase your chance of getting selected.
+
+Object Oriented programming topics including SOLID principles. (prepare for inheritance puzzles)
+Multithreading and Concurrency(prepare for Executor framework and concurrency API
+Collection framework (Prepare for the internal working of each collection data structure like HashMap, Concurrent hashmap, HashSet)
+Serialization (How it works)
+Design Patterns (prepare at least 4–5 design patterns like creational, behavioral, and structural patterns)
+Garbage Collections
+Java Generics
+Java 8 (Stream and Functional Programming-prepare for Java 8 coding programs on streams)
+SQL Queries (prepare to write queries on JOINS and employee table like highest salary and all)
+Coding practice (prepare Array and String problems as much as you can)
+Memory Management (Know about Java 8 and above version memory management changes)
+
+
+
+----------------------Popular springboot and Core java Questions--------------------
+1. How to use a custom exception handler in spring Boot?How to use @controladvice for the exception handler?
+   
+   Ex:- @ControllerAdvice
+		public class ControllerExceptionHandler {
+
+			@ExceptionHandler(ResourceNotFoundException.class)
+			public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+				ErrorMessage message = new ErrorMessage(HttpStatus.OK.value(), new Date(), ex.getMessage(),request.getDescription(false));
+				return new ResponseEntity<ErrorMessage>(message, HttpStatus.OK);
+			}
+		}	
+
+Note:- for more refer ControllerExceptionHandler.class in hospital management
+   
+2. How to use transaction management in spring boot?
+
+ex:-	@Service
+		public class BankService {
+
+			@Autowired
+			private AccountRepository accountRepository;
+
+			@Transactional(propagation = Propagation.REQUIRED)
+			public void transferFunds(String fromAccount, String toAccount, double amount) {
+				Account sourceAccount = accountRepository.findByAccountNumber(fromAccount);
+				Account targetAccount = accountRepository.findByAccountNumber(toAccount);
+				withdrawMoney(sourceAccount, amount);
+				depositMoney(targetAccount, amount);
+			}
+
+			@Transactional(propagation = Propagation.REQUIRED)
+			public void withdrawMoney(Account account, double amount) {
+				// Logic to withdraw money from an account
+			}
+
+			@Transactional(propagation = Propagation.REQUIRED)
+			public void depositMoney(Account account, double amount) {
+				// Logic to deposit money into an account
+			}
+		}
+
+In this example, we have three methods: transferFunds, withdrawMoney, and depositMoney. All of them have @Transactional(propagation = Propagation.REQUIRED) annotations.
+Let's explain the propagation types with this example:
+
+a. Propagation.REQUIRED (Default): transferFunds method starts a new transaction if not exist. If a transaction is already in progress (from an outer method), it use same transaction.If an exception occurs in any of the methods (withdrawMoney/depositMoney), the entire transaction (including all method calls) will be rolled back.
+
+b.Propagation.REQUIRES_NEW: transferFunds method starts a new transaction,by suspending existing transaction even if a transaction is already exist, transferFunds will run its separate transaction.If an exception occurs in any methods, only current method's transaction will be rolled back, and the outer transaction (if any) will continue.
+
+c. Propagation.NESTED: transferFunds method starts a new nested transaction in the scope of existing transaction. If no existing transaction then it behaves like REQUIRED.If an exception occurs in any methods, only the current method's transaction will be rolled back, and the outer transaction will be unaffected.
+
+d. Propagation.MANDATORY: This requires that there must be an existing transaction when transferFunds is called. If no transaction exists, it throws an exception.
+
+e. Propagation.NEVER: This specifies that transferFunds should not run in transaction context. If transaction exist then it throws an exception.
+
+f. Propagation.SUPPORTS: This allows transferFunds to run within an existing transaction but does not start a new transaction if there isn't one.
+
+g. Propagation.NOT_SUPPORTED: This runs transferFunds without a transaction context. If there's an existing transaction, it suspends it until the method is complete.
+
+
+3. How to handle security in spring-boot? What is a JWT token and how does spring boot fetch that information from spring boot?
+   Ans: Refer HospitalSecurityConfigurer class in hospital management.
+   
+4. Can singleton bean scope handle multiple parallel requests?
+ 
+Ans:- In a web application, multiple requests can be processed simultaneously by different threads. The same singleton bean instance will be used by all these threads. Spring beans are typically stateless, which means they don't store request-specific data as instance variables. They rely on method arguments and local variables for processing, which makes them safe to use in a multi-threaded environment.  	
+
+5. Is singleton bean scope thread-safe? answer is No then How to make it thread-safe.
+
+Ans:- We need to ensure that the methods of a singleton bean are thread-safe, means methods should not use shared mutable state thatlead to race/inconsistent behavior when accessed concurrently. If a singleton bean has any mutable state, it should be managed carefully using synchronization or other concurrency control mechanisms.
+
+6. Difference between @component and @service and @repository annotations?
+
+Ans:- @Component:- annotation marks a java class as a bean.
+	 @Repository:- @Component is good enough but we can use more suitable annotation that provides additional benefits specifically for DAOs i.e. @Repository annotation. 
+	 @Service:- This annotation is also a specialization of the component annotation. It doesn’t currently provide any additional behavior over the @Component annotation,
+     @Controller:-  annotation marks a class as a Spring Web MVC controller. 
+
+7. Tell me the Design pattern used inside the spring framework.
+
+Ans:- Singleton pattern. - BEANS created by default singlton pattern
+	Factory Method pattern. -  BeanFactory and ApplicationContext interfaces to create and manage application components.
+	Proxy pattern.  - AOP uses this pattern for transaction and proxy pattern
+	Template pattern. - Spring provides template classes (e.g., JdbcTemplate) that follow the Template Method pattern.
+
+8. How do factory design patterns work in terms of the spring framework?
+
+1. The BeanFactory serves as a container for bean definitions, which specify how beans are created and configured.
+2. When you request a bean from the BeanFactory, it checks its internal registry check the bean has created or If not it creates the bean based on the bean definition.
+3. The BeanFactory allows for lazy initialization of beans, meaning that a bean is only created when it's first requested.
+4. The BeanFactory is typically used by ApplicationContext,having more feature-rich capabilities like event handling, internationalization.
+
+9. How proxy design pattern is used spring.
+
+Ans:- Spring leverages the Proxy Design Pattern to achieve various objectives, including AOP, lazy loading, and transaction management. By using proxies, Spring can add functionality to beans without modifying their source code, making it easier to maintain separation of concerns and improve the modularity of your application.
+
+10. Tell me About SpringBoot’s Entry point. What it does do? 
+
+Ans:-  The Spring Boot entry point class, ie MySpringBootApplication(in below example), is responsible for initializing the Spring Boot application context, enabling auto-configuration, starting the embedded web server (if needed), and running the application. It's the starting point of Spring Boot application and provides a convenient way to bootstrap the application with minimal configuration.
+
+		@SpringBootApplication
+		public class MySpringBootApplication {
+
+			public static void main(String[] args) {
+				SpringApplication.run(MySpringBootApplication.class, args);
+			}
+		}
+		
+When application start, the SpringApplication.run() method initializes the Spring Boot application context. This context manages and wires up all the Spring components (beans) defined in the application. @SpringBootApplication annotation  combines annotations like @Configuration, @EnableAutoConfiguration, and @ComponentScan. 
+
+
+11. What component scan does? how to exclude any configuration?
+-> @ComponentScan(excludeFilters = @Filter(IgnoreDuringScan.class))
+	public class MySpringConfiguration {}
+
+12. Types of fault tolerance mechanisms in Spring microservices?
+Spring Microservices, like any distributed system, need to implement fault tolerance mechanisms to ensure that the system remains available, reliable, and resilient in case of failures. Spring provides several fault tolerance mechanisms like Circuit Breaker Pattern,Retry Mechanism,Timeouts,Fallback Mechanism etc
+
+
+13.Which one is better configuring your application using XML, or Annotations?
+In recent years, the trend has shifted towards using annotations for Spring configuration due to their readability, conciseness, and enhanced tooling support. Annotations can make the codebase more maintainable and easier to understand, especially for smaller projects or when leveraging Spring Boot's convention-over-configuration approach.
+
+14. How to break a singleton design pattern? and what can we do to stop that?
+
+a. By using Java's reflection API, you can access the private constructor of a Singleton class and create multiple instances.
+	
+	Constructor<Singleton> constructor = Singleton.class.getDeclaredConstructor();
+	constructor.setAccessible(true);
+	Singleton instance1 = constructor.newInstance();
+	 
+To prevent this, you can add a check in the constructor to ensure that no more than one instance is created
+
+	private Singleton() {
+		if (instance != null) {
+			throw new RuntimeException("Singleton instance already created.");
+		}
+		// Initialize the instance.
+	}
+	 
+b. When a Singleton class is serialized then deserialized, it create new instances.To prevent this we can implement readResolve method to return the existing instance.	
+	
+		protected Object readResolve() {
+		  return getInstance();
+		}
+
+
+15. How to build a restful web service that can fetch 1GB of data from the database and send it back without using Pagination, so the question is if you have a big size response how would you send it back from a rest web service?
+
+Ans:- Sending such a large amount of data (1GB) in a single HTTP response is not a recommended practice, as it can lead to various issues, including slow response times, increased memory usage, and potential timeouts. Instead, it's advisable to implement a mechanism to efficiently stream or chunk the data to the client in smaller parts.
+
+Streaming API: Design your RESTful API to support streaming. By creating a separate endpoint for streaming data or using a query parameter to specify the chunk size.
+Clients can make multiple requests to fetch data in chunks.
+
+Ex: 
+   @GetMapping("/stream")
+    public ResponseEntity<StreamingResponseBody> streamLargeData() {
+        StreamingResponseBody responseBody = outputStream -> {
+            // Stream and write the data in chunks to the response output stream
+            largeDataService.streamData(outputStream);
+        };
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+        return ResponseEntity.ok()headers(headers) .body(responseBody);
+    }
+
+16. How would you design a binary tree kind of data structure in database design, basically the interviewer wants to know how you would design a database in a hierarchical way.
+
+		Adjacency List Tree Model table structure
+		CREATE TABLE Hierarchy (
+			id INT PRIMARY KEY,
+			name VARCHAR(255),
+			parent_id INT,
+			FOREIGN KEY (parent_id) REFERENCES Hierarchy(id)
+		);
+
+		Nested Set Modeltable structure
+		CREATE TABLE Hierarchy (
+			id INT PRIMARY KEY,
+			name VARCHAR(255),
+			left_value INT,
+			right_value INT
+		);
+
+17.How would you store millions of records in a table? How many tables does it require, any database pattern can you use here?
+
+Ans :- Storing millions of records in a database is a common scenario in many applications, and the approach you take depends on various factors, including the type of data, the query patterns, and the scalability requirements. 
+a) A DBMS table can handle millions of records efficiently, DBMS is properly configured like table indexing,Partitioning (if supported).
+b) NoSQL Databases: Ifdata is unstructured or semi-structured, or if you need high write throughput, consider using NoSQL databases like MongoDB, Cassandra, or HBase. 
+c) Caching:Utilize caching mechanisms like Redis or Memcached to store frequently accessed data in memory
+d) Sharding: it involves horizontally partitioning huge data across multiple tables or databases.
+e) Database Patterns:Elasticsearch(if text data searched) DB, Time-Series(data related to time-series ie IoT sensor,log data),Graph DB(ie.social networks)
+ 
+18.In a database there is an index, what is the data type of the index?
+
+Ans:- the data type of an index is not a single data type; it depends on the data type of the indexed columns or fields
+Ex- If you create an index on an integer column, the data type of the index is based on integers.
+	If you create an index on a varchar column (for text data), the index data type corresponds to varchar.
+
+19.Can you explain the role of the DispatcherServlet in a Spring Boot application?
+
+Ans:- It's responsible for handling incoming HTTP requests, dispatching those requests to the appropriate controller, and managing the entire request-response lifecycle
+Incoming Request Handling,request URL Mapping from configuration, appropiate Controller Selection,Execution of controller and view rendering.
+
+20.How do you configure a datasource in Spring Boot?
+
+Ans:- Spring Boot's auto-configuration simplifies the process of configuring datasources for various databases. It provides default configurations for common database systems, so you only need to specify the relevant properties in your configuration files. Additionally, you can further customize datasource configuration by creating a DataSource bean with your custom settings if needed.
+
+Steps:- 1. Add Dependencies in pom.xml
+		2. Configure application.properties or application.yml
+		3. Use @SpringBootApplication which internally uses @EnableAutoConfiguration
+		4. Use the Datasource in Your Application if default spring data not required 
+			@Autowired
+			private DataSource dataSource;
+		
+21.Can you explain how Spring Boot autoconfiguration works?
+Ans:- Spring Boot Autoconfiguration allows developers to automatically configure Spring Beans by scanning the classpath for certain classes and annotations
+
+22. Can you explain the difference between @RestController and @Controller in Spring MVC?
+
+Ans:- @Controller Annotation: It is a common annotation used to mark a class as a Spring MVC Controller.
+It is typically used in combination with annotated handler methods based on the @RequestMapping annotation.
+It can return a view in Spring Web MVC.
+It does not call @ResponseBody for all of the Controller’s methods by default.
+The @ResponseBody annotation enables automatic serialization of the return object into the HttpResponse.
+
+@RestController Annotation:It is a special controller used in RESTful web services.
+It is the combination of @Controller and @ResponseBody annotation
+It allows the class to handle all REST APIs such as GET, POST, Delete, and PUT requests.
+All @RequestMapping methods assume @ResponseBody semantics by default and It cannot return a view
+
+
+23. Can you explain the difference between a Bean and a Component in Spring?
+
+Ans:- A Bean is an object that is managed by the Spring IoC container. Beans are created, configured, and managed by the container. In Spring, a Bean is defined by a class with the @Component annotation. Beans can also be defined by the @Service, @Repository, and @Controller annotations.
+A Component is a type of Bean.The class is annotated with @Component or any of its specializations like @Service, @Repository, and @Controller. These annotations classes are eligible for component scanning. Whenever Spring comes across these annotations, it creates and registers Bean instance in the application context.
+
+24. How do you implement caching in a Spring Boot application?
+
+Ans:-  Spring Boot application, We need to enable caching. Need to use the @EnableCaching annotation on application's configuration class.
+
+		@Configuration
+		@EnableCaching
+		public class CacheConfig extends CachingConfigurerSupport {
+			@Bean
+			public CacheManager cacheManager() {
+				return new ConcurrentMapCacheManager("productsByBrand");
+				// Add more cache names as needed for other grouping operations
+			}
+		}
+
+@Cacheable: this annotation indicates that a method's result should be cached. Subsequent invocations of the method with the same arguments will return the cached result instead of executing the method's code.
+
+@CachePut: This annotation updates the cache with the method's result but does not affect the method's return value. It is useful when you want to refresh or populate the cache.
+
+@CacheEvict: This annotation removes entries from the cache when a method is called. It can be used to evict specific entries or clear the entire cache.
+	
+			@Service
+			public class MyService {
+				
+				@Cacheable(value = "myCache", key = "#input") // Cache result in "myCache" with a specific key
+				public String expensiveOperation(String input) {
+					// Expensive operation here
+					return result;
+				}
+				
+				@CachePut(value = "myCache", key = "#input") // Update cache in "myCache" with a specific key
+				public String refreshCache(String input) {
+					// Expensive operation here
+					return updatedResult;
+				}
+				
+				@CacheEvict(value = "myCache", key = "#input") // Evict a specific cache entry
+				public void evictCache(String input) {
+					// Perform some operation, and the cache entry with the specified key will be removed
+				}
+			}
+
+In application.propeties  // # Configure caching using Caffeine
+spring.cache.cache-names=myCache
+spring.cache.caffeine.spec=maximumSize=100
+
+24.Can you explain how the Spring Data JPA repository works?
+
+25.How do you create and configure a RESTful web service using Spring Boot?
+
+26.How do you handle exceptions in a Spring Boot application?
+
+Ans:- In Spring Boot, you can handle exceptions in several ways. 
+One way is to use the @ExceptionHandler annotation on a controller method to handle specific exceptions. 
+Another way is to use a global exception handler by creating a class that implements the HandlerExceptionResolver interface.
+You can also use the @ControllerAdvice annotation on a class to create a global exception handler that can handle exceptions across multiple controllers. 
+Additionally, you can configure a custom error page in your application.properties file to handle exceptions.
+
+27. How do you implement a custom scope in Spring?
+
+Ans:-Custom scopes in Spring allow you to define your own bean lifecycle management strategies beyond the standard singleton, prototype, request, and session scopes provided by Spring.Example, A web application where users can create and work with multiple documents simultaneously. Each document is a complex object that needs to be maintained in memory while a user interacts with it during their session. However we don't want to keep all documents in memory as it would consume too much memory.
+In this scenario, we can create a custom session scope that maintains a separate set of document instances for each user session.
+
+26. Can you explain the difference between @Autowired and @Inject in Spring?
+
+Ans:- @Autowired and @Inject is used for dependency injection in Spring applications, @Autowired provides more extensive customization options part of Spring's dependency injection. @Inject offers a more standardized and concise approach, making it suitable for applications is part of Java EE standards
+
+27. How do you configure and use AOP in a Spring application?
+
+Ans:-Aspect is class and advise is method. we can use AOP for Logging(AfterReturning advice) ,Security,Transaction Management(Around Advice),Caching(Around advice),Exception Handling(AfterThrowing advice),Performance Monitoring(Around advice), Auditing purpose.
+
+28. Can you explain the difference between Spring and Spring Boot?
+
+Ans:-  Both Spring and Spring Boot are part of the Spring ecosystem, Spring Boot is a more opinionated and streamlined framework designed for faster development and deployment, particularly for microservices. Spring, on the other hand, provides a broader set of features and flexibility for a wide range of application types.
+
+29. Can you explain how Spring Boot's Actuator works and how it can be used to monitor a Spring Boot application?
+
+Ans:- Spring actuators provide a range of built-in endpoints that expose information about application's health, metrics, configurations etc. We need to add the spring-boot-starter-actuator dependency in pom.xml  and some addition configuration at application.properties file.
+
+# Configure Actuator endpoints
+management.endpoints.web.base-path=/actuator
+management.endpoint.health.show-details=always
+
+/actuator/health: Provides information about the application's health. This endpoint can be used to check if the application is up and running.
+/actuator/metrics: Exposes various metrics related to your application, such as memory usage, garbage collection, and custom metrics you can define.
+/actuator/env: Displays information about the application's environment properties.
+/actuator/info: Allows you to provide custom application information.
+/actuator/beans: Lists all Spring beans in the application context.
+/actuator/mappings: Provides information about the request mappings in your application.
+
+Note:- Actuator endpoints can be integrated with Tools like Prometheus, Grafana, and ELK stack (Elasticsearch, Logstash, Kibana) for monitoring Spring Boot applications.
+
+30. How do you use Spring's RestTemplate to consume RESTful web services?
+
+Ans:- Spring application. RestTemplate provides various methods for making different types of HTTP requests (GET, POST, PUT, DELETE), handling request and response headers, and more, making it a versatile tool for interacting with RESTful APIs.
+
+Ex:- 		@Service
+			public class UserService {
+				private final String apiUrl = "https://jsonplaceholder.typicode.com/users";
+				
+				@Autowired
+				private final RestTemplate restTemplate;
+
+				public User[] getUsers() {
+					return restTemplate.getForObject(apiUrl, User[].class);
+				}
+			}	
+
+31. Can you explain how to use Spring's TaskExecutor for asynchronous tasks?
+
+Ans:- TaskExecutor is used for executing tasks asynchronously. It abstracts the execution of tasks, allowing you to run them in separate threads or thread pools. Here are the steps to use it:Configure a TaskExecutor Bean
+
+		@Configuration
+		public class AppConfig {
+			@Bean
+			public TaskExecutor taskExecutor() {
+				ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+				executor.setCorePoolSize(5); // Set the core pool size
+				executor.setMaxPoolSize(10); // Set the maximum pool size
+				executor.setQueueCapacity(25); // Set the queue capacity
+				executor.initialize();
+				return executor;
+			}
+		}
+
+Create Async Method:-
+
+		@Service
+		public class MyService {
+			@Async
+			public void doAsyncTask() {
+				// Your asynchronous task logic here
+			}
+		}
+
+32. Can you explain how to use Spring's TaskScheduler for asynchronous tasks?
+
+Ans:- TaskScheduler is used for scheduling tasks to run at specific times or on a regular basis
+
+			@Configuration
+			public class AppConfig {
+				@Bean
+				public TaskScheduler taskScheduler() {
+					ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+					scheduler.setPoolSize(5); // Set the pool size
+					scheduler.setThreadNamePrefix("my-scheduled-task-");
+					return scheduler;
+				}
+			}
+			
+	
+Scheduled Task:-
+			
+		@Scheduled(fixedRate = 5000) // Run every 5 seconds
+		public void doScheduledTask() {
+			// Your scheduled task logic here
+		}	
+
+How do you use Spring's support for OAuth2 and OpenID Connect?
+
+
+32. How do you configure and use Spring's JMS support for messaging?
+
+Ans:- Refer kafka and Active MQ implementation.
+
+33. Can you explain how to use Spring's validation support for input validation?
+Ans:- Refer notes
+
+How do you use Spring's support for internationalization and localization?
+Can you explain how to use Spring's support for non-blocking I/O with WebFlux?
+
+
+
+-----------------------------------Microservice Design Pattern--------------------------------------------
+
+1. Can you Explain Event-Driven pattern and how is it used in Microservices architecture?
+Ans:- In a Spring Boot microservices environment, we can use Spring Cloud Stream/Events or Kafka to implement event-driven communication. These frameworks provide abstractions for message brokers and simplify the development of event-driven microservices.
+
+2. Can you Explain Service Registry pattern and how is it used in Microservices architecture?
+Ans:-
+
+Can you Explain Sidecar pattern and how is it used in Microservices architecture?
+Can you Explain Service Mesh pattern and how is it used in Microservices architecture?
+Can you Explain Backend for Frontend pattern and how is it used in Microservices architecture?
+Can you Explain Bulkhead pattern and how is it used in Microservices architecture?
+What is Saga pattern? What problem does it solve?
+Can you Explain Outbox pattern and how is it used in Microservices architecture?
+What is Self-Containment pattern and how is it used in Microservices architecture?
+Can you Explain External Configuration pattern and how is it used in Microservices architecture?
+What is Strangler pattern and how is it used in Microservices architecture?
+How to ensure that Microservices are loosely coupled and highly cohesive? (hint — keep it small)
+How does a Java Microservice and .NET Microservice can talk with teach? (hint json)
+How to handle cross-cutting concerns, such as security, in a Microservices architecture?
+Why debugging is so tough on Microservice Architecture?
+How to handle data consistency in a Microservices architecture?
+How do you ensure that Microservices are scalable and resilient?
+How to handle service discovery and registration in a Microservices architecture?
+How to handle service communication and data sharing in a Microservices architecture?
+How to handle service versioning and backward compatibility in a Microservices architecture?
+How to monitor and troubleshoot Microservices?
+How to handle deployments and rollbacks in a Microservices architecture?
+How to handle testing and continuous integration in a Microservices architecture?
+In Microservices architecture, testing and continuous integration should be done at service level, with automated tests and continuous delivery pipeline for each service. This allows for independent deployment and scaling of services.
+How to handle service governance and lifecycle management in a Microservices architecture?
+How to handle security and access control in a Microservices architecture?
+Howdo you data integration and data migration in a Microservices architecture?
+How to handle service composition and orchestration in a Microservices architecture?
+How do you deploy your Java Microservices?
+We use Docker and Kubernetes for deploying our Microservices in cloud. Docker is used to create a Docker image of whole service and then Kubernetes to deploy it on AWS or Azure. Service is managed by K8 so it takes care of starting stopped instances and increasing them if load is increased
+How to handle service resiliency in case of failures?
+K8 does that for you and start new MicroService or restart the same one.
+What are Java Frameworks you can use to create Microservices?
+hint — Quarkus, Spring Boot, and MicroNaut
+How many Microservices you have in your project? How do you find if a user says that one of his order is missing in databsae?
+hint — one database per microservice is a pattern
+
+What is API Gateway pattern and how is it used in Microservices architecture? Please explain what problem does it solve and whether its mandatory for Microservices or not?
+Can you Explain Circuit Breaker pattern and how is it used to handle service failures in Microservices architecture? What problem does it solve.
+What is Command Query Responsibility Segregation (CQRS) pattern and when is it appropriate to use in Microservices architecture?
+What is retry pattern in Microservices? When and how to use it?
+
+
+How to data partitioning and data replication in MS?
+Have you done any service partitioning and service scaling in a microservices architecture? If not, how can you do it?
+Explain service orchestration and service choreography in a microservices ?
+What challenges have you faced while developing a Microservices in your project?
+How do you handle service security and service encryption in a microservices?
+How will you implement service monitoring and service logging in a microservices architecture?
+How do you handle service tracing and service debugging in a microservices architecture?
+What is service testing and service quality assurance in a microservices architecture?
+How do you handle service deployment and service rollback in a microservices architecture?
+How do you handle service governance and service lifecycle management in a Microservices Architecture?
+How do you handle service migration and service modernization in a microservices architecture?
+How do you handle service integration and service API management in a microservices architecture?
+How do you handle service performance and service optimization in a microservices architecture?
+How will you make sure that your Microservices is not affecting other Microservices in the same host?
+How do you organize your Microservices? Does all code remain same repo or you create multiple repo for different Microservices?
+
+What is better? Different database for different Microservice or single database for all Microservices? and Why?
+
+
+----------------------------------Spring-cloud------------------------------------
+1. What is Spring Cloud?
+
+Ans:- Spring Cloud is a framework that provides tools and libraries to build and deploy cloud-native applications on top of the Spring Boot framework. It provides features like service discovery, configuration management, load balancing, and fault tolerance to make it easier to build distributed systems.
+
+2. What are the main components of Spring Cloud?
+Ans:- Spring Cloud has several components, including Spring Cloud Config, Spring Cloud Netflix, Spring Cloud Gateway, Spring Cloud Security, Spring Cloud Stream, and Spring Cloud Sleuth, among others.
+
+3. What is a service registry in Spring Cloud?
+Ans:- A service registry is a component of Spring Cloud that helps services to register and discover other services in a distributed system. It allows services to locate and communicate with each other without the need for hard-coded addresses or configurations. ex Eureka,Consul
+
+4. What is service discovery in Spring Cloud?
+Ans:- Service discovery is the process of locating other services in a distributed system. In Spring Cloud, service discovery is accomplished through a service registry, which maintains a list of available services. ex Eureka,Consul
+
+5. What is client-side load balancing in Spring Cloud?
+
+Ans:- Location: the load balancing logic is embedded in the client application like Netflix Ribbon or Spring Cloud LoadBalancer. Spring Cloud provides client-side load balancing capabilities.
+Responsibility: The client application is responsible for discovering available service instances and choosing which instance to send a request to.
+Use Cases: Widely used in microservices architectures where services are often deployed dynamically. It's a key feature of Spring Cloud's service discovery.
+	
+6. What is server-side load balancing in Spring Cloud?
+
+Ans:- Server-side load balancing is a technique used to distribute incoming requests across multiple instances of a service running on the same server. In Spring Cloud, server-side load balancing can be accomplished through libraries like Netflix Zuul or Spring Cloud Gateway.
+
+Location: the load balancer is a separate server or component that sits between the client and the services. It's responsible for distributing incoming requests to the available service instances.
+Responsibility: The load balancer handles routing and distribution of requests to the service instances. Clients are typically unaware of the load balancer's existence.
+Use Cases: Server-side load balancing is often used in traditional monolithic or non-microservices applications. It can also be used in microservices architectures, but it requires additional infrastructure for load balancing.
+
+7. What is a circuit breaker in Spring Cloud?
+
+Ans:- A circuit breaker is a pattern used to prevent cascading failures in a distributed system. It works by monitoring the health of downstream services and automatically opening the circuit when a failure threshold is reached. Spring Cloud provides the Hystrix or Resilience4j library to implement circuit breakers.
+
+How Circuit Breakers Work:
+
+Closed State: In a normal, operational state, the circuit breaker is in a "closed" state, allowing requests to flow through.
+Threshold: The circuit breaker monitors requests to the target service. If failures like timeouts, errors reached at thershold then it transitions to the "open" state.
+Open State: In the "open" state, the circuit breaker prevents requests from reaching the failing service. Instead, it redirects requests to a fallback mechanism, such as providing cached data or responding with a default response.
+Half-Open State: After some time or based on a defined strategy, the circuit breaker transitions to a "half-open" state, allows a limited number of test requests to pass through. If these requests succeed, the circuit breaker transitions back to the "closed" state. If the test requests fail, it remains in the "open" state.
+
+Ex:-		
+			@SpringBootApplication
+			@EnableHystrix
+			public class EcommerceApplication {
+				public static void main(String[] args) {
+					SpringApplication.run(EcommerceApplication.class, args);
+				}
+			}
+
+
+			@Service
+			public class PaymentService {
+				@HystrixCommand(fallbackMethod = "paymentFallback")
+				public String processPayment() {
+					// Payment processing logic
+				}
+
+				public String paymentFallback() {
+					// Fallback logic specific to payment failures
+				}
+			}
+
+
+
+8. What is distributed tracing in Spring Cloud?
+
+Ans:- Distributed tracing is a technique used to track the flow of a request as it moves through a distributed system. In Spring Cloud, distributed tracing is accomplished through libraries like Spring Cloud Sleuth, which adds trace and span IDs to requests. How it works explain below
+
+Implementation : Each microservice implement tracing libraries like Spring Cloud Sleuth. These libraries generate unique trace and span IDs for each request at service. 
+Propagation: When a request enters a service, the trace and span IDs are propagated to downstream services via HTTP headers.
+Collection: A central component, such as a Zipkin server, collects trace data from all services and assembles them into a single trace.
+Visualization: The collected trace data can be visualized using tools like Zipkin, Jaeger, or Grafana. You can see the entire journey of a request, including the time spent in each service and any errors encountered.
+
+
+9. What is configuration management in Spring Cloud?
+
+Ans:- Challenges without Configuration Management:
+Hardcoding Configurations: Hardcode configuration settings in each microservice's code.this approach is inflexible, error-prone, and difficult to maintain.
+Manual Configuration: Manually configurations for multiple services can be cumbersome, when services are deployed in various environments (development, production).
+
+Configuration management is the process of managing the configuration of a distributed system. In Spring Cloud, configuration management is done through the Spring Cloud Config server, which stores configuration files in a central location.
+
+Spring Cloud Config is a component of Spring Cloud that provides centralized configuration management for distributed systems. It allows you to store configuration files in a Git repository or a file system, and provides a REST API to access and modify them.
+
+Config server configration:- 
+				@SpringBootApplication
+				@EnableConfigServer
+				public class ConfigServerApplication {
+					public static void main(String[] args) {
+						SpringApplication.run(ConfigServerApplication.class, args);
+					}
+				}
+				
+				spring.cloud.config.server.git.uri=/your-repo-path/config-repo  -- //Path where order-service.properties placed 
+				server.port=8888
+
+
+Client application Configuration:-
+
+			@RestController
+			@Api(tags={"MsgConfigServer"})
+			public class MessageFromConfig {
+				
+				@Value("${msg:Hello - Config Server is not working..pelase check}")
+				private String message;
+				
+				@RequestMapping("/message")
+				String getMessage() {
+					return this.message;
+				}
+
+		}
+			
+	spring.application.name=order-service
+	spring.cloud.config.uri=http://config-server-host:8888
+		
+				
+10. What is Spring Cloud Bus?
+
+Ans:- Spring Cloud Bus is a component of Spring Cloud that enables communication between microservices in a distributed system. It uses a message broker like RabbitMQ or Kafka to propagate configuration changes across multiple services.
+
+11. What is Spring Cloud Stream?
+Ans:- Spring Cloud Stream is a component of Spring Cloud that provides a framework for building message-driven microservices. It allows you to send and receive messages through message brokers like RabbitMQ or Kafka, and provides a simple programming model for message processing.
+
+12. What is Spring Cloud Security?
+Ans:- Spring Cloud Security is a component of Spring Cloud that provides authentication and authorization for microservices in a distributed system. It provides integration with OAuth2 and JWT for securing communication between services.
+
+13.What is Spring Cloud Gateway?
+Ans:- Spring Cloud Gateway is a component of Spring Cloud that provides a reverse proxy for microservices in a distributed system. It allows you to route requests based on various criteria, and provides features like rate limiting and circuit breaking.
+
+14.What is Spring Cloud Netflix?
+Ans:- Spring Cloud Netflix is a set of libraries that provide integrations with Netflix OSS (Open Source Software) components, including Eureka (service registry), Ribbon (client-side load balancing), Zuul (server-side load balancing and routing), Hystrix (circuit breaking), and others.
+
+15.What is Spring Cloud Sleuth?
+Ans:- Spring Cloud Sleuth is a component of Spring Cloud that provides distributed tracing capabilities for microservices in a distributed system. It adds trace and span IDs to requests and propagates them across services, making it easier to track the flow of a request.
+
+16.What is Spring Cloud Contract?
+Ans:- Spring Cloud Contract is a component of Spring Cloud that provides a way to define and test HTTP and message-based APIs between microservices. It allows you to write contract tests for your APIs, which can then be used to generate stubs and documentation.
+
+17.What is Spring Cloud Data Flow?
+Ans:- Spring Cloud Data Flow is a component of Spring Cloud that provides a framework for building and deploying data pipelines in a distributed system. It allows you to define and manage data processing tasks, and provides integrations with various data processing tools.
+
+18.What is Spring Cloud Task?
+Ans:- Spring Cloud Task is a component of Spring Cloud that provides a framework for building and running short-lived tasks in a distributed system. It allows you to define and execute tasks, and provides integrations with various task scheduling tools.
+
+19.What is Spring Cloud Vault?
+Ans:- Spring Cloud Vault is a component of Spring Cloud that provides integration with HashiCorp Vault, a tool for managing secrets and sensitive data. It allows you to securely store and retrieve secrets from Vault, and provides integrations with other Spring Cloud components.
+
+20.What is Spring Cloud Kubernetes?
+Ans:- Spring Cloud Kubernetes is a component of Spring Cloud that provides integration with Kubernetes, a popular container orchestration platform. It allows you to deploy and manage Spring Boot applications on Kubernetes, and provides integrations with other Spring Cloud components.
+
+21.What is Spring Cloud OpenFeign?
+Ans:- Spring Cloud OpenFeign is a component of Spring Cloud that provides a declarative REST client for microservices in a distributed system. It allows you to define interfaces for your REST APIs, and generates implementations that can be used to make requests to other services.
+
+22.What is Spring Cloud Consul?
+Ans:- Spring Cloud Consul is a component of Spring Cloud that provides integration with Consul, a tool for service discovery and configuration management. It allows you to register and discover services in Consul, and provides integrations with other Spring Cloud components.
+
+23.What is Spring Cloud Zookeeper?
+Ans:- Spring Cloud Zookeeper is a component of Spring Cloud that provides integration with Apache Zookeeper, a tool for distributed coordination and configuration management. It allows you to register and discover services in Zookeeper, and provides integrations with other Spring Cloud components.
+
+24.What is the difference between Spring Cloud and Spring Boot?
+Ans:- Spring Boot is a framework for building standalone Spring applications, while Spring Cloud is a framework for building distributed systems. Spring Cloud builds on top of Spring Boot and provides additional tools and libraries for building and deploying cloud-native applications.
+
+25.What is the difference between Eureka and Consul in Spring Cloud?
+Ans:- Both Eureka and Consul are service registries used in Spring Cloud. Eureka is a Netflix OSS component that is widely used in Spring Cloud applications, while Consul is a tool developed by HashiCorp that provides additional features like configuration management and distributed locking.
+
+26.What is the difference between Zuul and Spring Cloud Gateway?
+Ans:- Both Zuul and Spring Cloud Gateway are used for server-side load balancing and routing in Spring Cloud applications. Zuul is a Netflix OSS component that has been widely used in Spring Cloud applications, while Spring Cloud Gateway is a newer, more lightweight alternative with better performance and more features.
+
+27.What is the role of Ribbon in Spring Cloud?
+Ans:- Ribbon is a client-side load balancing component in Spring Cloud. It allows you to distribute incoming requests across multiple instances of a service, improving availability and scalability. Ribbon works by maintaining a list of available service instances and using various algorithms to choose which instance to send each request to.
+
+28.What is the role of Hystrix in Spring Cloud?
+Ans:- Hystrix is a circuit breaker component in Spring Cloud. It helps to prevent cascading failures in a distributed system by monitoring the health of services and breaking the circuit if a service is unavailable or unresponsive. Hystrix provides fallback mechanisms to handle failures and ensure that the system remains responsive.
+
+29.How does Spring Cloud help with microservices architecture?
+Ans:- Spring Cloud provides a set of tools and libraries that make it easier to build and deploy microservices in a distributed system. It provides components for service discovery, load balancing, routing, configuration management, distributed tracing, and more. These tools help to simplify the development and operation of microservices, making it easier to build scalable, resilient, and flexible applications.
+
+30. Which annotation/ configuration is required to enable the native SQL in JPA?
+Ans:- We can use native SQL queries by using the @NamedNativeQuery annotation or XML configuration for named native queries. This allows  to execute SQL queries directly on the database. To enable native SQL in JPA @NamedNativeQuery annotation or its equivalent XML configuration
+
+Ex:- 			@Entity
+				@NamedNativeQuery(
+					name = "findAllEmployees",
+					query = "SELECT * FROM employees",
+					resultClass = Employee.class
+				)
+				public class Employee {
+					// Entity class definition
+				}
+
+At DAO class
+
+				EntityManager em = entityManagerFactory.createEntityManager();
+				List<Employee> employees = em.createNamedQuery("findAllEmployees", Employee.class).getResultList();
+
+
+
+30. Explain Entity in JPA and all annotations used to create Entity class.
+Ans:- @Entity,@Table,@Id,@GeneratedValue are the basic annotation that used to create an JPA entity.
+
+31. Which JPA Annotation used for a composite attribute?
+Ans:- use the @Embedded annotation to define a composite attribute
+
+Ex:- 	
+			@Entity
+			@Table(name = "employee")
+			public class Employee {
+				@Id
+				@GeneratedValue(strategy = GenerationType.IDENTITY)
+				private Long id;
+				private String firstName;
+				private String lastName;
+				@Embedded
+				private Address address;
+				// Constructors, getters, and setters
+			}
+
+			@Embeddable
+			public class Address {
+				private String street;
+				private String city;
+				private String zipCode;
+			  // Constructors, getters, and setters
+			}
+
+
+32.Which JPA Annotation to handle the Parent and child relationship?
+Ans:- Annotations, such as @Column, @ManyToOne, @OneToMany, @ManyToMany, etc., are used to specify relationships between entities.
+
+33.How do handle unidirectional join and bidirectional join at the Entity level?
+Ans:- Join is handle by using @ManyToOne, @OneToMany, @ManyToMany annotation. 'mappedBy' keyword is used to maintain bidirectional mapping.
+
+34.Which annotation is used to enable Kafka?
+Ans:- @EnableKafka annotation to enable Kafka integration in a Spring application
+
+35. How to set the properties across different environments like Dev, QA, PROD, etc.
+Ans:- Spring's built-in mechanisms for managing environment-specific configuration step-by-step approach to handle environment-specific properties:
+Step1 - Create Application Property Files for Each Environment
+Step2 - Set the spring.profiles.active property in your application's properties
+		spring.profiles.active=qa
+or
+		We can specify the active profile as a command-line argument when running your Spring Boot application:
+		java -jar your-application.jar --spring.profiles.active=qa
+		
+	
+
+36. Describe the AOP concept and which all annotations are used. How to define the pointcuts?
+
+Ans- 
+Aspect: An aspect is a module that encapsulates cross-cutting concerns. Aspects contain advice and pointcuts. You define aspects using the @Aspect annotation.
+Advice: Advice is the code that you want to execute at specific points in your program. There are different types of advice, including @Before, @After, @Around, @AfterReturning, and @AfterThrowing, depending on when you want the code to execute.
+Pointcut: A pointcut is an expression that specifies where advice should be applied in your code. You can use pointcut expressions to define conditions for when the advice should run.
+Join Point: A join point is a specific point in the execution of your program, such as method calls, field access, or object initialization. Pointcuts define where join points occur.
+
+
+---------------------------------------------------------------------------------------
+Microservices:
+
+What are the design principles of Microservices?
+
+What is the advantage of microservices against Spring Boot Application + Spring Cloud?
+
+Which design patterns are used for database design in microservices?
+Ans:- Database-per-Service,Shared Database,CQRS (Command Query Responsibility Segregation),API Composition.
+
+Explain the CQRS concept. 
+
+Explain the Choreography concept.
+Ans:- choreography is a design approach that emphasizes the coordination of services through the exchange of events. In a choreographed system, each microservice is responsible for its own behavior and communicates with other services by publishing and subscribing to events.
+Key aspects of choreography in microservices include: Event-Driven Communication,Loose Coupling,Decentralized Control,Resilience
+
+Ex:- Consider an e-commerce system with microservices for Order, Inventory, and Notification. When a customer places an order, the Order service generates an "OrderPlaced" event. The Inventory service, subscribed to this event, adjusts the stock levels accordingly. Simultaneously, the Notification service, also subscribed to the "OrderPlaced" event, sends an order confirmation email to the customer.
+ 
+Explain the circuit breaker concept and how to implement it.
+
+Which library you have used to implement it? Explain the annotations used for it. How distributed tracing is done?
+
+Microservices — Suggest a design for how to connect internal and external services in microservices.
+
+Saga and Decorator Pattern?
+
+Design Pattern:
+
+Which design patterns you have used?
+
+Explain about Singleton design pattern.
+
+How to break the singleton design pattern?
+
+What is the solution to fix the above problem?
+
+If a child class overrides the parent where the singleton pattern is implemented, then will it break the same? If Yes/No, why?
+
+Which design pattern is used by spring AOP? Explain with logic. How can you create a prototype bean?
+
+JAVA EE:
+
+Explain the difference between ArrayList and LinkedList in terms of internal implementation. When to use ArrayList and when to use LinkedList?
+
+Explain the internal implementation of LinkedList. 
+Explain the internal implementation of HashMap.
+Using which concept of Java we can achieve parallel processing?
+
+If a try /catch block is there with the finally block as well and there is a return statement in the catch as well as in the finally block, then will the finally block’s return statement get executed? In try with resources, which Classes are eligible to be used inside the resource block? How to create custom exceptions?
+
+What are fail-safe and fail-fast iterators?
+
+
+Explain the producer & consumer-based architecture of Kafka.
+
+How to configure the Kafka details?
+
+What is offset in Kafka? If any consumer fails or crashes and then comes alive after some time, then can it continue consuming the messages?
+
+How does Kafka handle this case? What is __consumer_offset?
+
+How to determine the replication factor?
+
+How to persist data directly from Kafka topic.is it possible or not?
+
+
+
+Which HTTP method is idempotent and why? What are all methods supported in REST?
+Ans:- The HTTP method that is considered idempotent is the GET,PUT,DELETE and TRACE method. 
+
+Difference between PUT & POST. What is sent in headers? Can we intercept the header? if yes, how?
+Ans:- PUT:
+			Purpose: Used to update or create a resource on the server.
+			Idempotent: Yes, multiple identical requests should have the same effect as a single request.
+			Usage Example: Updating an existing user profile with new information.
+	POST:
+			Purpose: Used to submit data to be processed to a specified resource.
+			Idempotent: Generally considered not idempotent, as multiple identical requests may have different effects.
+			Usage Example: Creating a new user account with provided details.
+
+
+Hibernate JPA & Database:
+
+Which DB you have used?
+
+Write a query to find duplicate entries in a table against a column.
+
+Do you know triggers and how does it work?
+
+Differences between Indexing and Partitioning?
+
+Scenario Based questions:
+
+Service A is calling Service B, C, and D. I want to log or handle specific conditions before calling B, C, and D but in a generic way. How can you handle this situation?
+
+If one of the microservice is having high latency, how can you handle that, and in which direction you can think of to resolve this problem? There are a couple of more questions related design patterns scenario. The questions were related to the Adapter pattern & Proxy pattern.
+
+miscellaneous:
+
+Difference between hashmap and linked hashmap?
+How do overcome concurrent modification exceptions in the list?
+Differences between Dockerization and Virtualisation?
+Program to find the nearest target number in the array?
+AWS — VPC in depth?
+SOLID Principles with real-time?
+
+
+
+
+
+
+

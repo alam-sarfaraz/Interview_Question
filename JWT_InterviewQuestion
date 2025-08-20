@@ -1,0 +1,290 @@
+What is Spring security authentication and authorization?
+
+Authentication – "Who are you?"
+                 It’s the process of verifying a user’s identity.
+
+Example: You enter your username & password → Spring Security checks them (via DB, LDAP, OAuth, etc.).
+If correct, Spring Security creates an Authentication object and stores it in the SecurityContext for that request/session.
+
+Authorization – "What are you allowed to do?"
+                Happens after authentication.
+It decides whether the authenticated user can access a resource (API, page, method, etc.).
+Example: You’re logged in as a USER, but trying to access an ADMIN page → Spring Security blocks you (403 Forbidden).
+------------------------------------------------------------------------------------------------------------------------
+JWT (JSON Web Token) is a compact, URL-safe token used to securely transmit information between parties.
+We use it mainly for stateless authentication, where the server does not store session data — all needed info is in the token.
+
+Header – contains metadata, such as the token type (JWT) and the signing algorithm (HS256, RS256, etc.).
+Payload – contains the claims (the actual data you want to send), like:
+          sub (subject/user ID)
+          name
+          exp (expiry time)
+Signature – ensures the token hasn’t been altered.
+
+How it works in authentication?
+
+1 User logs in with username/password.
+2 Server verifies credentials and creates a JWT.
+3 JWT is sent back to the client.
+4 Client stores the token (usually in localStorage or cookies).
+5 For every request, the client sends the token in the Authorization header:
+  Authorization: Bearer <token>
+6 Server verifies the token’s signature and expiry before allowing access.
+------------------------------------------------------------------------------------------------------------------------
+How do you handle JWT expiration in long-lived sessions?
+
+A JWT usually expires quickly (like 15 minutes) for security.
+
+To keep the user logged in for a long time without making them log in again, we give them two tokens:
+   Access token – short life, used for normal requests.
+   Refresh token – longer life, used only to get a new access token when the old one expires.
+
+Flow:
+    User logs in → gets both tokens.
+    Access token expires → app sends refresh token to server.
+    Server checks it → gives a new access token.
+    If refresh token is expired or invalid → user must log in again.
+------------------------------------------------------------------------------------------------------------------------
+2. What do you mean by digest authentication?
+Digest Authentication is an HTTP authentication method where your password is not sent directly over the network.
+Instead, it’s turned into a hashed value before being sent, making it more secure than Basic Authentication.
+
+Instead:
+
+The server sends you a random code (nonce).
+Your browser/app mixes that code with your password and turns it into a hash.
+The hash is sent to the server.
+The server does the same calculation and checks if it matches.
+------------------------------------------------------------------------------------------------------------------------
+What do you mean by basic authentication?
+
+Basic authentication is a login method where your username and password are sent to the server in a simple encoded form (Base64) with every request.
+It’s easy to use but not secure unless it’s sent over HTTPS, because anyone could decode it.
+
+1 Client side (you / your app):
+Takes username:password → converts to Base64 → sends it in the Authorization header.
+        Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+        
+2 Server side:
+Decodes the Base64 string back to username:password and checks if it’s correct.      
+------------------------------------------------------------------------------------------------------------------------
+Explain salting and its usage.
+Salting is a security technique used when storing passwords to make them harder to crack.
+A salt is a random string of characters added to a password before hashing it.
+
+password + random_salt123 → hash(passwordrandom_salt123) = 8a7f4d...
+
+How it works in practice
+    When a user creates a password:
+    Generate a random salt.
+    Combine the password + salt.
+    Hash the combination.
+    Store both the salt and the hash in the database.
+
+When a user logs in:
+    Retrieve the stored salt.
+    Combine it with the entered password.
+    Hash again and compare with stored hash.
+    
+Typical flow:
+      Client → Sends the raw password (securely via HTTPS) to the server.
+Server:
+      Fetches the user’s salt from the database.
+      Adds the salt to the received password.
+      Hashes the combination.
+      Compares with the stored hash.
+     
+[Client Side]
+User types password: "mypassword"
+        |
+        |  (sent securely over HTTPS)
+        v
+[Server Side]
+1. Server looks up stored salt for the user
+      salt = "X7g!9kP@"
+2. Server combines:
+      "mypassword" + "X7g!9kP@"
+3. Server hashes the combination:
+      hash = bcrypt("mypasswordX7g!9kP@")
+4. Server compares hash with stored hash in DB:
+      If match → Login success
+      If not → Login failed
+ 
+     
+        
+------------------------------------------------------------------------------------------------------------------------
+What is peppering?
+Pepper is like salt, but instead of being stored in the database, it’s a secret key kept somewhere else (like in your server’s environment variables or a secure key vault).
+It’s added to the password before hashing, just like salt.
+
+Why use it?
+If a hacker steals your database:
+With salting only → they get both the salt and the hash, so they can still try to crack passwords.
+With peppering too → they still can’t crack passwords without the secret pepper (which isn’t in the database).
+
+Here’s a Salt + Pepper password hashing diagram in simple form:
+
+[Client Side]
+User types password: "mypassword"
+        |
+        | (sent securely via HTTPS)
+        v
+   [Server Side]
+1. Look up user's salt from database:
+      salt = "X7g!9kP@"
+2. Get pepper from secure storage (not DB):
+      pepper = "S3cr3tP3pp3rKey!"
+3. Combine:
+      "mypassword" + "X7g!9kP@" + "S3cr3tP3pp3rKey!"
+4. Hash the combination (e.g., bcrypt):
+      hash = bcrypt("mypasswordX7g!9kP@S3cr3tP3pp3rKey!")
+5. Store in DB:
+      username | salt      | hash
+      ---------|-----------|---------------------------------
+      alice    | X7g!9kP@  | 9f8e7d6c4a3b2...
+
+------------------------------------------------------------------------------------------------------------------------
+Explain spring security OAuth2.
+Spring Security OAuth2 is a feature in Spring that helps your app log in users or access data from other services (like Google, GitHub, Facebook) using the OAuth 2.0 standard — without needing to store their username and password.
+
+Why it exists
+
+    Instead of asking users for their password directly:
+    You send them to Google (or another provider) to log in.
+    They come back to your app with a token.
+    You use this token to get their info or access resources
+
+
+[1] User clicks "Login with Google"
+        |
+        v
+[2] Spring Security redirects to Google Login page
+        |
+        v
+[3] User logs in at Google and approves your app
+        |
+        v
+[4] Google sends back an Authorization Code to your app
+        |
+        v
+[5] Spring Security uses that code to ask Google for an Access Token
+        |
+        v
+[6] Google sends Access Token (and maybe Refresh Token) to your app
+        |
+        v
+[7] Your app uses Access Token to:
+      - Get user info from Google
+      - Log the user into your system
+    
+
+------------------------------------------------------------------------------------------------------------------------
+13. Explain SecurityContext and SecurityContext Holder in Spring security.
+
+SecurityContext :
+SecurityContext is box that holds security-related information for the current user (like who they are and what roles they have).
+It contains an Authentication object, which stores:
+   Principal (user details)
+   Credentials (usually cleared after login)
+   Authorities (roles/permissions)
+
+SecurityContextHolder:
+        SecurityContextHolder is a helper class that gives you access to the SecurityContext.
+        You can get the current logged-in user info anywhere in your app with
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+[1] User sends login request (username & password)
+        |
+        v
+[2] Spring Security AuthenticationManager verifies credentials
+        |
+        v
+[3] If valid → create Authentication object:
+       - Principal (user details)
+       - Authorities (roles)
+       - Credentials (usually cleared)
+        |
+        v
+[4] Store Authentication object in SecurityContext
+        |
+        v
+[5] SecurityContext is kept inside SecurityContextHolder
+        |
+        v
+[6] In later requests:
+      - Spring Security gets Authentication from SecurityContextHolder
+      - Checks roles/permissions for authorization
+        |
+        v
+[7] If user logs out:
+      - SecurityContextHolder is cleared
+
+------------------------------------------------------------------------------------------------------------------------
+What is SpEL (Spring Expression Language)?
+It’s a special language in Spring that lets you write small formulas or rules inside annotations or configs to get values, call methods, or check conditions.
+
+@PreAuthorize 
+@PreFilter 
+@PostAuthorize 
+@PostFilter  
+
+@PreAuthorize("hasRole('ADMIN')")
+public void deleteUser(Long id) { ... }
+
+@PreAuthorize("hasAuthority('READ_PRIVILEGE')")
+public void readData() { ... }
+
+hasRole() and hasAuthority() are built-in Spring Security methods available in SpEL for checking permissions.
+
+Example:
+@Value("#{2 + 3}")        // injects 5
+@Value("#{user.age > 18}") // injects true if user age > 18
+
+------------------------------------------------------------------------------------------------------------------------
+Explain what is AuthenticationManager in Spring security.
+AuthenticationManager in Spring Security is the main engine that processes authentication.
+
+How it works?
+    You send login details.
+    Spring Security builds an Authentication object with those details.
+    This object is passed to AuthenticationManager.authenticate().
+    The AuthenticationManager delegates to one or more AuthenticationProviders to verify the credentials.
+    If successful → returns a fully authenticated Authentication object (with roles, permissions, etc.).
+    
+Example :
+@Autowired
+private AuthenticationManager authenticationManager;
+
+public void login(String username, String password) {
+    Authentication auth = authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(username, password)
+    );
+    
+    SecurityContextHolder.getContext().setAuthentication(auth);
+}
+
+
+------------------------------------------------------------------------------------------------------------------------
+What is Stateless and Stateful Authentication?
+
+Stateful Authentication :
+The server remembers who you are.
+
+Flow in simple words
+   You log in → Server creates a session and stores your data in memory/DB.
+   Server sends back a Set-Cookie: JSESSIONID=xyz123 in the HTTP response.
+   Client stores that cookie (sessionId).
+   On the next request, client sends Cookie: JSESSIONID=xyz123 automatically.
+   Server looks up that sessionId in its store to find your login data.
+
+Stateless authentication :
+The server does not store any login session.
+Instead, after you log in, the server gives you a token (like a JWT) that contains all the information needed to verify you.
+You store this token on the client (cookie, local storage, etc.) and send it with every request. The server checks the token directly without looking up any stored session.
+
+The server does not remember anything.
+When you log in, the server gives you a token (like JWT) containing your login info.
+The client sends this token with every request.
+The server verifies the token each time but doesn’t store session data.
+------------------------------------------------------------------------------------------------------------------------

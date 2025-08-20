@@ -1,0 +1,103 @@
+How does string deduplication work in Java, and when was it introduced?
+String Deduplication is a JVM optimization feature introduced with the G1 Garbage Collector in Java 8u20. It reduces memory usage by making multiple String objects with the same content share a single underlying character array, instead of keeping separate copies. This happens automatically during garbage collection and is enabled with the -XX:+UseStringDeduplication flag.
+Example :
+     String a = new String("hello");
+     String b = new String("hello");
+     String c = new String("hello");
+     Here, 3 different String objects are created, each with its own copy of "hello" characters → which wastes memory.
+
+String Deduplication is a JVM feature (introduced in Java 8 update 20 with G1 Garbage Collector) that:
+Automatically finds duplicate strings in memory.
+Makes them share the same character array instead of keeping separate copies.
+So after deduplication, only one copy of "hello" characters is stored in memory, and all string objects point to it.
+
+Heap:
+String "hello" → ['h','e','l','l','o']  (shared)
+String "hello" → --------------------^
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+How does the CompactString feature in recent Java versions impact string memory usage?
+Compact Strings, introduced in Java 9, optimize memory by storing string data in a byte array instead of char array. ASCII/Latin-1 strings use 1 byte per character instead of 2, cutting memory usage by up to half.
+For strings that contain only Latin-1 characters (which can be represented in a single byte), this reduces the memory footprint by about 50%. The JVM automatically chooses the most efficient representation.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is StringTokenizer in Java?
+In Java, StringTokenizer is a utility class (in java.util package) that is used to split a string into tokens (small pieces) based on delimiters (like space, comma, etc.).
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Which object is popular as the HashMap key and why?
+String is the popular HashMap key.  This is because String is immutable in Java. So, the hashcode of the String is cached every time it is created and doesn't need to be calculated again. This makes the processing faster than other HashMap keys. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the String class in Java? Is String a data type?
+String is a class in Java and is defined in the java.lang package. 
+It’s not a primitive data type like int and long. The String class represents character strings.
+String in immutable and final in Java and the JVM uses a string pool to store all the String objects.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the “stack” and “heap” in memory management in Java, and how are variables stored in these areas?
+Answer: In Java, the “stack” is used for local variables and method calls, while the “heap” is used for objects and dynamically allocated memory. Local variables are stored on the stack, while objects and instance variables are stored in the heap.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is a “constant pool” in Java, and how is it related to string literals and variable initialization?
+String Pool, also known as SCP (String Constant Pool), is a special storage space in Java heap memory that is used to store unique string objects. Whenever a string object is created, it first checks whether the String object with the same string value is already present in the String pool or not, and if it is available, then the reference to the string object from the string pool is returned. Otherwise, the new string object is added to the string pool, and the respective reference will be returned.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Why is it recommended to use StringBuilder for string manipulation instead of String?
+
+String objects are immutable, meaning that every time you modify a string, a new String object is created, which can be inefficient. StringBuilder (or StringBuffer for thread-safe operations) allows for mutable sequences of characters, making it more efficient for frequent string manipulation.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the difference between StringBuilder and StringBuffer?
+
+Answer: Both StringBuilder and StringBuffer are used for creating mutable strings. The main difference is that StringBuffer is synchronized and thread-safe, making it slower in single-threaded environments. StringBuilder is not synchronized, making it faster but not thread-safe.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+How will you create an immutable class in java?
+we can create an immutable class in Java by implementing the following points:
+
+Declare the class as final so it can't be extended.
+Make all fields private and final to prevent direct access and changes.
+Do not provide setter methods — only getters.
+Initialize all fields in the constructor.
+If fields are mutable objects, make deep copies in the getter methods.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Why is Java provided with String constant pool as we can store the objects in heap memory?
+String constant pool provides the facility of reusability of the existing string objects. When a new string object is created using the string literals, then JVM first checks in the pool if this String already exists or not. If it exists, then it will reference the existing String rather than creating a new object. This will help in the speeding up of the application and also helps in saving the memory as no two objects will have the same content.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What are the different ways to create string objects?
+String objects can be created in two ways:
+
+Using the 'new' operator.
+Using double-quotes. 
+String S = new String("coding ninjas"); // using new operator.
+String S = "coding ninjas"; // using double quotes.
+
+When the String is created with the double quotes, JVM searches it for in the string pool; if the same value is found, it returns the reference to that String else creates a new object with the new value provided.
+
+In the other case, if the String is created with the 'new' operator, then JVM creates a new object but not in the string pool. If we want to create the object in the string pool, we can use the intern() method. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+How many objects are created in the following code snippet?
+String s1 = "coding ninjas";
+String s2 = new String ("coding ninjas");
+
+Two objects are created in the above code snippet. 
+
+s1 String is created in the string constant pool as it is created by string literals.
+s2 String is created in heap memory as it is created by the 'new' operator. No new object will be created in the string constant pool as it is already created by s1.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+How many objects are created in the following code snippet?
+String s1 = new String ("coding ninjas");
+String s2 = new String ("coding ninjas");
+
+Three objects will be created.
+
+For string s1, two objects will be created, one in heap memory and the other in String constant pool.
+For string s2, only one object will be created in heap memory, but no new object will be created in the string constant pool as the object with the same value is already present in the string constant pool.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+What does the string intern() method do in Java?
+If you apply the intern() method to a few strings, you will ensure that all strings having the same content share the same memory. As soon as a String object is invoked with intern(), it first checks if the string value of the String object is already present in the string pool and if it is available, then the reference to that string from the string constant pool is returned. If not, a new string object is added to the string pool, and a reference to it is returned.
+
+Example:
+
+String str1 = new String("Scaler by InterviewBit").intern();  //Line1  
+String str2 = new String("Scaler by InterviewBit").intern(); //Line2  
+System.out.println(str1 == str2); //prints true  
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+When the String is created with the double quotes, JVM searches it for in the string pool; if the same value is found, it returns the reference to that String else creates a new object with the new value provided.
+
+In the other case, if the String is created with the 'new' operator, then JVM creates a new object but not in the string pool. If we want to create the object in the string pool, we can use the intern() method.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,65 @@
+What is Apache Kafka?
+Apache Kafka is an open-source, distributed event streaming platform used to publish, subscribe to, store, and process streams of records in real time.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Kafka cluster -- A Kafka cluster is a group of Kafka servers (called brokers) working together to handle and manage large streams of data.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Kafka Broker -- A Kafka Broker is a server in a Kafka cluster that stores data (messages in partitions) and serves client requests from producers and consumers.
+In short: A broker is the Kafka server that handles reads, writes, and replication of messages.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Kafka Topic -- A topic is like a folder where data is stored, and it is further split into partitions for scalability.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+partition --A Partition in Kafka is a division of a topic that stores an ordered sequence of messages, each identified by a unique offset.
+
+In Kafka, each partition has:
+     Leader Replica → handles all reads/writes.
+     Follower Replicas → keep copies of the leader’s data.
+     ISR (In-Sync Replicas) → replicas that are fully caught up with the leader.
+
+Key Points about Partitions:
+    Ordering → Messages inside one partition are stored in the order they arrive.
+    Offset → Each message in a partition has a unique number (offset) that identifies its position.
+    Scalability → A topic is split into multiple partitions so data can be spread across brokers.
+    Parallelism → Multiple consumers can read from different partitions at the same time, increasing speed.
+    Fault Tolerance → Each partition has replicas (copies) on other brokers.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+10. What do you understand about a consumer group in Kafka?
+A Consumer Group is a group of one or more consumers that work together to read data from a Kafka topic in parallel.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the role of ZooKeeper in Kafka?
+ZooKeeper is used for managing and coordinating Kafka brokers. It serves as a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services. ZooKeeper keeps track of the status of Kafka cluster nodes, Kafka topics, and partitions.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the purpose of the offset in Kafka?
+The offset is a unique identifier of a record within a partition. It denotes the position of the consumer in the partition. Kafka maintains this offset per partition, per consumer group, allowing each consumer group to read from a different position in the partition. This enables Kafka to provide both queue and publish-subscribe messaging models.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+ What is the role of the group coordinator in Kafka?
+The group coordinator in Kafka is responsible for managing consumer groups. It handles consumer group membership, assigns partitions to consumers within a group, and manages offset commits. When a consumer joins or leaves a group, the group coordinator triggers a rebalance to reassign partitions among the remaining consumers.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+Commands
+
+To start zookeeper 
+.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+
+To start kafka server
+.\bin\windows\kafka-server-start.bat .\config\server.properties
+
+To create a new topic
+.\bin\windows\kafka-topics.bat --create --topic demo --bootstrap-server localhost:9092
+
+To produce a message in current topic
+.\bin\windows\kafka-console-producer.bat --topic Order_Topic --bootstrap-server localhost:9092
+
+To subscribe or consume a message
+.\bin\windows\kafka-console-consumer.bat --topic Order_Topic  --from-beginning --bootstrap-server localhost:9092
+
+To describe topic 
+.\bin\windows\kafka-topics.bat --describe --topic Order_Topic  --bootstrap-server localhost:9092
+
+To see all the topic
+bin\windows\kafka-topics.bat --bootstrap-server localhost:9092 --list
+

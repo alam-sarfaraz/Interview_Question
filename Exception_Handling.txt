@@ -1,0 +1,126 @@
+Is it possible to throw checked exceptions from a static block?
+    A static block in Java runs only once, when the class is loaded into memory by the JVM.
+    It’s executed before main() and before any object is created.
+    - No, a static block cannot throw checked exceptions.
+    ✅ Why Not?
+            A checked exception must either be:
+            Declared using throws in the method signature, or
+            Handled with try-catch.
+            But a static block is not a method.
+            It has no signature, so it can’t declare throws.
+            The compiler doesn’t allow propagating checked exceptions out of it.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Are we allowed to use only try blocks without a catch and finally blocks?
+   A normal try block → must have catch or finally.
+   A try-with-resources block → can stand alone without catch/finally, because resources are auto-closed.
+   Resources used must implement AutoCloseable (like FileReader, BufferedReader, Connection, etc.).
+   
+In try-with-resources, the objects declared in the try parentheses must implement AutoCloseable (e.g., FileReader, BufferedReader, Connection, Statement, ResultSet, etc.).
+The close() method is then called automatically at the end of the block.   
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What are the rules we should follow when overriding a method throwing an Exception?
+Rule 1: 
+       If the parent class method is not throwing any exceptions, then the overridden child class method should not throw checked exceptions. But it can throw an unchecked exception. 
+       
+Rule 2: 
+        If the parent class method is throwing one or more checked exceptions, then the overridden method in the child class can throw any unchecked exceptions or any exceptions that are the same as checked exceptions of the parent method or the subclasses of those checked exceptions.  
+        
+Rule 3: 
+        If the parent class method has a throws clause having unchecked exceptions, then the overriding child method can throw any number of unchecked exceptions even if they are not related to each other.  
+        
+class Parent {
+    void show() throws IOException {   // parent throws IOException
+        System.out.println("Parent");
+    }
+}
+class Child extends Parent {
+    // ✅ Allowed: same exception
+    void show() throws IOException { }
+
+    // ✅ Allowed: subclass of IOException
+    // void show() throws FileNotFoundException { }
+
+    // ✅ Allowed: no exception
+    // void show() { }
+
+    // ❌ Not allowed: new broader checked exception
+    // void show() throws Exception { }
+}
+    | **Parent Method**                                    | **Child Method (Override)**                                               | ✅ / ❌         |
+| ---------------------------------------------------- | ------------------------------------------------------------------------- | ------------- |
+| Throws a **checked exception** (e.g., `IOException`) | Can throw **same exception**                                              | ✅ Allowed     |
+|                                                      | Can throw a **subclass exception** (e.g., `FileNotFoundException`)        | ✅ Allowed     |
+|                                                      | Can throw **no exception**                                                | ✅ Allowed     |
+|                                                      | Can throw a **broader or new checked exception** (e.g., `Exception`)      | ❌ Not Allowed |
+| Throws **no checked exception**                      | Can throw **no checked exception**                                        | ✅ Allowed     |
+|                                                      | Can throw a **checked exception**                                         | ❌ Not Allowed |
+|                                                      | Can throw **unchecked exception** (e.g., `RuntimeException`)              | ✅ Allowed     |
+| Throws an **unchecked exception**                    | Can throw **any exception** (checked or unchecked) subject to above rules | ✅ Allowed     |
+                
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is exception propagation in Java?
+Exception propagation means if a method doesn’t handle an exception, it is passed to the caller method, and keeps going up the call stack until some method handles it (using try-catch).
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Exception:
+Exception is an unwanted or unexpected event, which occurs during the execution of a program, i.e. at run time, that disrupts the normal flow of the program’s instructions.
+
+When an exception occurs within a method, it creates an object. This object is called the exception object. It contains information about the exception, such as the name and description of the exception and the state of the program when the exception occurred.
+
+Java creates an exception object when an error occurs while executing a statement. The exception object contains a lot of debugging information such as method hierarchy, line number where the exception occurred, and type of exception.
+
+Major reasons why an exception Occurs:
+1 Invalid user input
+2 Device failure
+3 Loss of network connection
+4 Physical limitations (out-of-disk memory)
+5 Code errors
+6 Opening an unavailable file
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Hierarchy of Java Exception classes
+The java.lang.Throwable class is the root class of Java Exception hierarchy inherited by two subclasses: Exception and Error.
+
+There are mainly two types of exceptions:
+
+1 Checked Exception
+2 Unchecked Exception
+
+Checked Exceptions: 
+Checked exceptions are called compile-time exceptions because these exceptions are checked at compile-time by the compiler.
+To handle a checked exception, you can use a try-catch block.
+Checked exceptions are the ones that are checked during compilation time. If a code within a method throws a checked exception, then it should either be handled by a method or specify it using the throws keyword.
+
+There are two ways in which exceptions in java can be handled.
+
+Method - 1 :
+Declare the exception using the throws keyword (throws).
+EXAMPLE
+public void readFile() throws FileNotFoundException
+
+Method - 2 :
+Handle them using try-catch blocks (try-catch).
+EXAMPLE
+
+        try {
+               FileInputStream stream = new FileInputStream(file);
+            } catch (FileNotFoundException e) {
+               e.printStackTrace();
+            }
+        
+Example:
+
+IOException: Thrown when an input or output operation fails, such as file I/O errors.
+SQLException: Thrown when there is an issue with database connectivity or queries.
+FileNotFoundException: Thrown when attempting to access a file that does not exist.
+ClassNotFoundException: Thrown when the Java runtime cannot find a specified class.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Runtime exceptions are those exceptions that occur at the run time of the program execution. These exceptions are not noticed by the compiler at the compile time and hence the program successfully gets compiled. Therefore, they are also called unchecked exceptions. All subclasses of the java.lang.RunTimeException class and java.lang.Error class belongs to runtime exceptions. Examples of runtime exceptions include NullPointerException, NumberFormatException, ArrayIndexOutOfBoundException, StackOverflowError, ClassCastException, ArithmeticException, ConcurrentModificationException, etc.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the difference between ClassNotFoundException and NoClassDefFoundError?
+
+ClassNotFoundException: This exception occurs when we try to load a class that is not found in the classpath at runtime by making use of the loadClass() or Class.forName() methods.
+
+NoClassDefFoundError: This exception occurs when a class was present at compile-time but was not found at runtime.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------

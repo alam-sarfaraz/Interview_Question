@@ -1,0 +1,75 @@
+What is Jenkins?
+Jenkins is an open-source automation server mainly used to automate the building, testing, and delivering or deploying software. 
+
+How Jenkins actually works step-by-step in a typical CI/CD pipeline.
+
+1. Code Commit & Trigger
+    A developer pushes code to a version control system.
+    This event triggers a Jenkins job or pipeline.
+
+2 Jenkins Pulls the Latest Code
+    Jenkins fetches the latest source code from the repository.
+    Jenkins compiles/builds the application using build tools line maven.
+    If the build fails, Jenkins stops the pipeline and reports the failure.
+    
+4 Test Stage  
+    Jenkins runs automated tests:
+    Unit tests (JUnit, TestNG, etc.)
+    Integration tests
+    Test results are published in the Jenkins dashboard.    
+
+5 Static Code Analysis (Optional but recommended)
+    Jenkins runs code quality tools like SonarQube, Checkstyle, PMD, etc.
+    Helps catch code smells, bugs, and vulnerabilities before deployment.
+
+6 Packaging
+   Application is packaged into:  
+   .jar / .war (Java),Docker image
+   This artifact is stored in an artifact repository.  
+
+7 Deployment Stage
+   Jenkins deploys the application to: Test / QA environment (for further validation),Production environment (if it’s a CD pipeline).
+   Deployment methods can be: 
+       SSH to server
+       Docker/Kubernetes deployment
+       Cloud services (AWS, Azure, GCP)  
+
+8 Notifications
+    Jenkins sends build/deployment results to:
+    Email
+    Slack / Teams
+    Jira update
+
+9 Continuous Feedback Loop
+   If something fails → Jenkins reports instantly.
+   Developers fix the issue and push again → cycle repeats.   
+   
+Code change → Trigger → Build → Test → Package → Deploy → Notify
+---------------------------------------------------------------------------------------------------------------------------------
+2. Continuous Integration, Continuous Delivery, and Continuous Deployment?
+
+Continuous Integration (CI)
+Developers keep merging their code often into a shared branch, and Jenkins (or similar) automatically builds and tests it.
+Goal: Find bugs early.
+
+2 Continuous Delivery (CD – Delivery)
+Like CI, but after building and testing, the app is automatically prepared for release and put in a staging area.
+Goal: Always have a production-ready build.
+Note: You still manually click to release it.
+
+3 Continuous Deployment (CD – Deployment)
+Like Continuous Delivery, but here the release happens automatically after tests pass — no manual approval.
+Goal: Deliver changes to users immediately.
+---------------------------------------------------------------------------------------------------------------------------------
+What is a Jenkins job?
+A Jenkins job is basically a task or set of instructions that Jenkins runs — like a recipe telling Jenkins what to do, when to do it, and how to do it.
+
+---------------------------------------------------------------------------------------------------------------------------------
+What is a Jenkins Pipeline?
+A Jenkins Pipeline is an automated process, written as code, that tells Jenkins exactly how to build, test, and deploy your application in a sequence of steps.
+
+Stage 1 → Pull code from Git
+Stage 2 → Build the application
+Stage 3 → Run tests
+Stage 4 → Deploy to staging or production
+---------------------------------------------------------------------------------------------------------------------------------
