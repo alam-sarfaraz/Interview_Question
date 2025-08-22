@@ -1,4 +1,11 @@
-Idempotency in microservices means no matter how many times you repeat the same request, the result will be the same, which makes systems safe and reliable.
+What is Shadow Deployment?
+Shadow deployment is a deployment strategy where a new version of a service runs in parallel with the existing (live) version, and receives real production traffic but does not impact real users. The new version processes the traffic in the background ("shadow mode"), and its responses are not returned to users.
+
+Real-World Example
+   Suppose you have an existing payment microservice and you developed a new version with optimized code. Instead of releasing it directly, you deploy it in shadow mode. The load balancer duplicates all real payment requests to this new version. It processes them and logs the results, but the actual payment transaction for customers is still handled by the old version. After monitoring for a week, if no critical issues appear, you gradually transition traffic to the new version.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Idempotency:
+        Idempotency in microservices means no matter how many times you repeat the same request, the result will be the same, which makes systems safe and reliable.
 
 Why it matters in microservices
     - In distributed systems, failures and retries are common (network timeouts, service crashes, etc.).
@@ -9,14 +16,8 @@ Eventual Consistency in microservices means data in different services may not m
 
 👉 Example: When you place an order, the Order Service updates first, then after a short delay, the Payment and Inventory Services also update. For a moment things look different, but finally everything matches.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
-Command-Query Responsibility Segregation
-Command-Query Responsibility Segregation (CQRS) means separating “write” operations (commands that change data) from “read” operations (queries that only fetch data) so both can be handled and optimized differently.
-
-OR
-CQRS is an architectural pattern where the operations that read data (queries) are separated from those that modify data (commands). This approach helps to optimize read and write operations, especially in complex applications where the requirements
-
-👉 Command = change data
-👉 Query = read data
+What is Retry in Microservices?
+Retry is a resilience pattern that automatically re-attempts a failed operation in a microservices architecture. It is mainly used to handle transient failures like network timeouts, temporary service unavailability, or slow responses, without immediately failing the request.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 Event-Driven Communication 
 Event-Driven Communication is a way for different parts of a system (or microservices) to talk to each other by sending and listening to events instead of calling each other directly.
@@ -69,7 +70,7 @@ Tool:
       Eureka Server is an application that holds the information about all the microservices. Every Micro service will register into the Eureka server and Eureka server knows all the client applications running on each port and IP address. Eureka Server is also known as Discovery Server.
       The @EnableEurekaServer annotation is used to make your Spring Boot application acts as a Eureka Server.
 
-
+------------------------------------------------------------------------
 2. API Gateway
 The API Gateway Pattern is a design pattern used in microservices.
 An API gateway acts as a reverse proxy, sitting between client applications and the backend microservices.When its receives incoming requests, performs authentication (if enabled) and forwards requests to actual microservice. It provides a single entry point and hides the complexities of services in the backend.
@@ -81,7 +82,7 @@ Logging & monitoring
 
 Tool :
 Netflix Zuul,Spring Cloud Gateway,Kong,NGINX
-
+------------------------------------------------------------------------
 3. Circuit Breaker
 Circuit Breaker is design pattern in microservices is like a safety mechanism that prevents one broken part from bringing down the whole system. It detects when a service is not working correctly and stops sending requests to it temporarily. This helps keep the rest of the system running smoothly and prevents problems from spreading. Once the broken part is fixed, it allows requests to flow again.
 
@@ -103,7 +104,7 @@ Your application can then handle these situations gracefully, such as showing a 
 After a set period, the Circuit Breaker may allow a few test requests to see if the authentication service has recovered.
 If the service is working again, the Circuit Breaker "closes" and resumes sending requests normally.
 If the service is still problematic, the Circuit Breaker remains open to prevent further issues and protect the rest of your application.
-
+------------------------------------------------------------------------
 4. Saga Pattern
 The Saga Pattern is used to manage distributed transactions across microservices. Each service executes a local transaction and publishes an event. If any service in the sequence fails, compensating transactions are executed to undo previous steps.(Compensating action = business-defined undo step.)
 
@@ -124,7 +125,7 @@ The Saga Pattern is used to manage distributed transactions across microservices
        - The orchestrator has detailed knowledge of each service and their responsibilities in the saga.
        - The orchestrator manages failure recovery and calls the compensating actions if needed.
 
-
+------------------------------------------------------------------------
 5. CDC (Consumer-Driven Contracts)
 Consumer-Driven Contracts are agreements between API consumers and providers, driven by the consumer’s needs, verified automatically to ensure changes don’t break communication.
 
@@ -132,13 +133,13 @@ Think of it like ordering food:
 You (consumer) tell the chef (provider) exactly how you want your sandwich.
 The chef agrees and writes it down (contract).
 Every time they make it, they check if it still matches your order before serving.
-
+------------------------------------------------------------------------
 6. Bulkhead Pattern
 A way to isolate parts of a system so if one fails or slows down, it doesn’t sink the whole system.
 In microservices, bulkhead pattern means isolating resources (like threads, database connections, memory) for each part of the system so a failure in one part doesn’t bring down others.
 Example:
 If the Payment Service gets overloaded, only payment-related requests fail, while Order Service and Inventory Service keep running normally.
-
+------------------------------------------------------------------------
 7. Event Sourcing 
 Instead of storing just the current state of data, you store all the events that happened to reach that state.
 The current state can be rebuilt anytime by replaying those events.
@@ -155,9 +156,18 @@ Example :
         Withdrawn ₹200
         Current balance = ₹1000 + ₹500 - ₹200 = ₹1300
         So instead of only storing the balance, you store the events that led to it.
-
+------------------------------------------------------------------------
 8. Data Sharding
 In microservices design patterns, Data Sharding is used to make each microservice’s database faster and more scalable by splitting large datasets into smaller, manageable parts (shards) stored on different database instances.
+------------------------------------------------------------------------
+9. Command-Query Responsibility Segregation
+Command-Query Responsibility Segregation (CQRS) means separating “write” operations (commands that change data) from “read” operations (queries that only fetch data) so both can be handled and optimized differently.
+
+OR
+CQRS is an architectural pattern where the operations that read data (queries) are separated from those that modify data (commands). This approach helps to optimize read and write operations, especially in complex applications where the requirements
+
+👉 Command = change data
+👉 Query = read data
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 Load balancer
 Load balancer in microservices → A tool that spreads incoming requests across multiple instances of a microservice so no single instance gets overloaded, ensuring better performance, reliability, and availability

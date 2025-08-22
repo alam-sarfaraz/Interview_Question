@@ -1,3 +1,29 @@
+What is a semaphore?
+A semaphore is a synchronization mechanism in concurrent programming used to control access to a shared resource by multiple threads. It works like a counter that regulates how many threads can access a resource at the same time.
+
+Real-World Analogy of Semaphore
+    Imagine a parking lot with 3 parking spots (permits = 3).
+    Each car = a thread.
+    Parking spot = shared resource.
+    Gatekeeper = semaphore.
+How it works:
+    If 3 cars are parked (permits used), the 4th car must wait at the gate (acquire() blocks).
+    When a car leaves (release()), a new permit is available, and the next waiting car enters.
+This is exactly how a counting semaphore manages concurrent access.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is Runnable and Callable Interface? Write the difference between them.
+Runnable is used when you want a task to run without returning a result, while Callable is used when you want a task to return a result and possibly throw checked exceptions.
+
+Runnable
+   Package: java.lang
+   Method: void run();
+   It was introduced in JDK 1.0.
+      
+Callable   
+    Package: java.util.concurrent
+    Method: V call() throws Exception;
+    It was introduced in JDK 5.0, so one cannot use it before Java 5. 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 Green thread model 
     - The thread which is managed compeleted by jvm without taking underline os support is called Green thread model .
     - Very few operating system like sun sobries provides support by Green thread model anyway Green thread model is debricated and not recommended to use.
