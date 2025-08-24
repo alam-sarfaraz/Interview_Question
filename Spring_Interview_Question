@@ -1,4 +1,21 @@
+What is ContextLoaderListener and what does it do?
+ContextLoaderListener is a ServletContext listener in Spring that initializes the root WebApplicationContext at application startup, loads the shared beans, and ensures proper cleanup at shutdown. It is mainly used in traditional Spring MVC applications, while Spring Boot manages this automatically.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+BeanFactory and ApplicationContext.
+BeanFactory is the basic IoC container with lazy loading and minimal features, while ApplicationContext is a more advanced container with eager loading, event handling, internationalization, and AOP support, making it the default choice for Spring applications.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+How do you optimize the startup time of a Spring Boot application in a production environment?
+We can optimize Spring Boot startup in production by enabling lazy initialization, excluding unused auto-configurations, using profiles, limiting classpath scanning, optimizing database initialization, reducing logging overhead, and leveraging Spring Native AOT compilation for near-instant startup.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What are Spring Interceptors?
+Spring Interceptors are components in the Spring MVC framework that allow you to intercept HTTP requests and responses at three different stages of their lifecycle, before they reach the controller and after the view is rendered.    
+Interceptor: Works at the Spring MVC level, after the DispatcherServlet has chosen the handler.  
+To create an interceptor, you implement HandlerInterceptor or extend HandlerInterceptorAdapter
 
+Key Responsibilities of Interceptors
+   Pre-processing of requests (e.g., authentication, logging, input validation)
+   Post-processing of responses (e.g., modifying the model, adding common attributes)
+   After-completion tasks (e.g., cleaning up resources, logging performance metrics)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 CSRF (Cross-Site Request Forgery) is an attack where a malicious site tricks a user’s browser into sending unwanted requests to your application (like transferring money, changing password, etc.) while the user is logged in.
 
@@ -98,11 +115,26 @@ Setter Injection: The IOC container will inject the dependent bean object into t
 Constructor Injection: The IOC container will inject the dependent bean object into the target bean object by calling the target bean constructor.
 Field Injection: The IOC container will inject the dependent bean object into the target bean object by Reflection API.
 
+Explain the difference between constructor and setter injection?
+
+Constructor Injection
+        Dependencies are provided at the time of object creation through the class constructor.
+        Ensures that the bean is fully initialized with all required dependencies when it is created.
+        Promotes immutability because dependencies cannot be changed after creation.
+        Useful for mandatory dependencies.
+        
+Setter Injection
+        Dependencies are provided after object creation via setter methods.
+        Allows changing dependencies even after the bean is created (mutable).
+        Useful for optional dependencies.
+        If you forget to set a required dependency, the bean may still be created but fail later.
+        
 Which DI is Best and Why?
-Constructor Injection is generally best because:
-    Supports immutability — dependencies can’t be changed later.
-    It clearly shows what the class needs to work.
-    Easier to test with mock objects.
+Constructor Injection (Preferred in most cases)
+    Immutability: Dependencies cannot change after the microservice starts, which improves stability.
+    Mandatory Dependencies: Microservices usually require well-defined, critical dependencies (databases, messaging queues, etc.) to function.
+    Easier Testing: Encourages dependency injection through constructors, which integrates well with unit testing and frameworks like JUnit/Mockito.
+    Fail Fast: If a mandatory dependency is missing, the microservice fails during startup rather than at runtime.
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 

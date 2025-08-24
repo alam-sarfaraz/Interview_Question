@@ -1,3 +1,13 @@
+What is Inject?
+@Inject is a Java standard annotation (JSR-330) used for dependency injection.
+Where is it used?
+    It is applied to constructors, fields, or setter methods to automatically inject the required dependency.
+Key points:
+    Comes from javax.inject.Inject.
+    Works like Spring's @Autowired.
+    Does not have required attribute (assumes the dependency must be present).
+    Can use @Named for specifying which bean to inject when multiple beans exist.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 @Cacheable: Caches the result of a method. If the method is called with the same parameters, the cached result is returned instead of executing the method again.
 @CachePut: Updates the cache with the method’s result, even if the result already exists in the cache.
 @CacheEvict: Removes data from the cache. It can be used for clearing caches after an update.

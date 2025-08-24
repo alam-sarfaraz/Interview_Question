@@ -13,3 +13,89 @@ Java 18 →  Simple Web Server, UTF-8 default
 Java 19 →  Virtual Threads (Preview)
 Java 20 →  Scoped Values, Record Patterns (Preview)
 Java 21 →  Virtual Threads (Standard), Sequenced Collections, String Templates (Preview)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+As of August 2025, the latest Java release is JDK 24.0.2 (GA), with JDK 25 expected in mid-September. In the Spring stack, the current stable versions are Spring Boot 3.5.5, Spring Data JPA 3.5.3, and Hibernate ORM 7.1.0.Final.
+
+      -----------------------------------------------------------------------------------------------
+      | Component           | Latest Version           | Release Context                            |
+      | ------------------- | ------------------------ | ------------------------------------------ |
+      | **Java (JDK)**      | **24.0.2**               | Latest GA (July 15, 2025) → full features  |
+      |                     | **25 (RC, GA mid-Sept)** | Upcoming next LTS version (RC phase)       |
+      | **Spring Boot**     | **3.5.5**                | Latest stable (August 21, 2025)            |
+      | **Spring Data JPA** | **3.5.3**                | Latest stable (August 15, 2025)            |
+      | **Hibernate ORM**   | **7.1.0.Final**          | Latest stable with Jakarta JPA 3.2 support |
+      -----------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Chart showing Spring Boot versions vs Java support:
+      +-----------------+-----------------------+-------------------------------+
+      | Spring Boot     | Java Version Support  | Notes                         |
+      +-----------------+-----------------------+-------------------------------+
+      | 1.x (≤ 1.5.x)   | Java 6, 7, 8          | Fully supports Java 8         |
+      +-----------------+-----------------------+-------------------------------+
+      | 2.x (2.0–2.7.x) | Java 8 – 17           | Java 8 is the baseline        |
+      +-----------------+-----------------------+-------------------------------+
+      | 3.x (≥ 3.0.0)   | Java 17 – 21+         | **Java 8 not supported**      |
+      +-----------------+-----------------------+-------------------------------+
+      | 4.x (upcoming)  | Java 21+ (planned)    | Aligns with newer LTS versions|
+      +-----------------+-----------------------+-------------------------------+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Java Records are a special kind of class introduced in Java 14 (preview) and made stable in Java 16, designed to model immutable data in a compact, boilerplate-free way.
+
+A record is a type of class that:
+    Is final by default (cannot be extended).
+    Automatically provides:
+    private final fields for each component.
+    A canonical constructor.
+    Getters (without get prefix).
+    equals(), hashCode(), and toString() methods.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sealed Classes
+Sealed Classes were introduced in Java 15 (preview) and became stable in Java 17. They let you restrict which classes can extend or implement a class or interface, giving you more control over inheritance.
+
+A sealed class defines a limited set of permitted subclasses at compile time.
+    Only the classes specified with permits can extend/implement it.
+    Improves encapsulation and type safety.
+    Works well with pattern matching (switch) in newer Java versions.
+
+public sealed class Shape permits Circle, Rectangle, Square { }
+final class Circle extends Shape { }
+final class Rectangle extends Shape { }
+non-sealed class Square extends Shape { }
+
+sealed → declares the class/interface as sealed.
+permits → lists the classes that can extend it.
+    Subclasses must be:
+    final → cannot be extended further.
+    sealed → further restrict their own subclasses.
+    non-sealed → removes the restriction for that subclass.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What are Switch Expressions in Java?
+Switch expressions are an enhancement to the traditional switch statement that allow it to return a value and make the syntax more concise. Introduced as a preview in Java 12 and standardized in Java 14, they eliminate fall-through by default and support the arrow syntax (->).
+
+yield is used in a switch expression to return a value from a case block when multiple statements are needed.
+
+Key Points (What Interviewers Expect)
+    Introduced: Preview in Java 12, stable from Java 14.
+    Purpose: Makes switch more concise and functional.
+    No fall-through by default: Each case is self-contained.
+    Can return values directly: Useful for inline assignments.
+    Supports yield: For complex logic inside a case.
+    Works well with enums and sealed classes (Java 17+).
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is Pattern Matching for Switch?
+Pattern Matching for Switch was introduced as a preview feature in Java 17 and is still evolving in newer versions (Java 21+). It enhances the switch statement/expression by allowing you to use patterns (types, conditions) directly in case labels, making code more concise and type-safe.
+    Traditionally, switch could only work with primitive types, enums, and strings.
+    Pattern Matching allows switch to:
+    Match on types (e.g., instanceof) directly.
+    Use guarded patterns (when) for extra conditions.
+    Work seamlessly with sealed classes for exhaustive checks.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Virtual Threads:
+Virtual Threads (standard in Java 21) are lightweight, JVM-managed threads that allow millions of concurrent tasks with minimal memory and scheduling overhead, ideal for I/O-bound applications.
+
+What are Virtual Threads?
+    Traditional threads (java.lang.Thread) are OS-managed and expensive (memory-heavy, limited in number).
+    Virtual threads are lightweight threads managed by the JVM, not the OS.
+    Thousands or even millions of virtual threads can run concurrently with minimal overhead.
