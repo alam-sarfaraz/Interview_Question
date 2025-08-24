@@ -1,3 +1,32 @@
+What is the Sidecar pattern in Microservices?
+The Sidecar pattern is a design pattern where a helper or support service runs alongside a main microservice in the same environment (usually the same container or pod).
+It offloads common concerns like logging, monitoring, security, or networking from the main service.
+
+Example Use Cases
+Logging/Monitoring: A sidecar collects logs and metrics and forwards them to a central system.
+Network Proxy: A sidecar handles service discovery, load balancing, and TLS for the main service.
+Configuration Updates: Dynamically fetches configuration from a central server.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is a service mesh in Microservices architecture?
+A service mesh is an infrastructure layer that manages service-to-service communication, security, and observability in a microservices architecture without changing application code.”
+Tools like Istio, Linkerd, and Consul help manage traffic policies, security protocols, and observability without requiring changes to the application code.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Can you tell me about the 3C’s of Microservices?
+The 3C’s of Microservices represent three essential pillars for building, managing, and scaling microservices effectively:
+    Componentization – Break the system into independent, business-focused services.
+    Continuous Delivery – Automate build, test, and deployment for frequent releases.
+    Culture of DevOps – Teams own the full lifecycle with collaboration and automation.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+JAR (Java ARchive): Packages libraries or standalone applications; contains classes, metadata, and resources. It can be executed directly with java -jar if it has a main class.
+
+WAR (Web Application ARchive): Packages complete web applications; includes JSPs, HTML, and a WEB-INF folder for deployment to an external servlet container (e.g., Tomcat).
+
+By default, Spring Boot creates a JAR (self-contained with embedded Tomcat/Jetty/Undertow).
+WAR is used only when you want to deploy on an external server.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+How to Convert JAR to WAR in Spring Boot?
+To convert a Spring Boot JAR to a WAR, I change the packaging to war, set Tomcat as provided, and extend SpringBootServletInitializer so it can run in an external servlet container. This is useful when migrating legacy systems that rely on shared servers, while JAR remains the preferred packaging for microservices.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is Shadow Deployment?
 Shadow deployment is a deployment strategy where a new version of a service runs in parallel with the existing (live) version, and receives real production traffic but does not impact real users. The new version processes the traffic in the background ("shadow mode"), and its responses are not returned to users.
 
@@ -260,6 +289,23 @@ Can you explain how you would handle cross-cutting concerns like logging, authen
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 Can you explain how to manage distributed transactions with the Saga pattern?
 The Saga pattern manages distributed transactions by breaking them into a series of local transactions in each service. If one step fails, compensating transactions undo the previous steps. There are two approaches: Choreography (event-driven, decentralized) and Orchestration (central coordinator). This ensures eventual consistency without relying on 2PC.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the 12-factor app methodology?
+The 12-Factor App methodology is a set of best practices for building modern, scalable, and maintainable Software-as-a-Service (SaaS) applications. It was introduced by Heroku to help developers design applications that are portable, resilient, and easy to deploy across different environments (development, staging, production, etc.).
+
+Mnemonic: "Cool Developers Build Bright Projects, Providing Clever, Clean, Deep Logs And Apps"
+1. Codebase - One codebase, many deploys – A single version-controlled codebase is used for multiple deployments (dev, staging, prod).
+2. Dependencies - Explicitly declare dependencies – Use a dependency manager to avoid hidden, system-level dependencies.
+3. Config - Store config in the environment – Keep credentials, URLs, and keys outside the codebase using environment variables.
+4. Backing Services -  Treat services as attached resources – Databases, queues, and caches should be swappable without changing code.
+5. Build, Release, Run - Separate build, release, and run – Ensure builds are immutable and configuration is applied only at release.
+6. Processes - Execute as stateless processes – Do not store session or data in-process; use external storage.
+7. Port Binding - Export services via port binding – The app should run independently by exposing HTTP or other services on a port.
+8. Concurrency - Scale by process model – Scale horizontally by adding more processes, not by creating threads inside one.
+9. Disposability - Fast start, graceful shutdown – Processes should boot quickly and handle termination signals properly.
+10. Dev/Prod Parity - Keep environments similar – Minimize differences between development, staging, and production.
+11. Logs - Treat logs as event streams – Output logs to stdout/stderr and let the environment handle aggregation.
+12. Admin Processes - Run admin tasks as one-off processes – Execute migrations, scripts, and maintenance tasks separately.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 Maven is a build automation and project management tool primarily used for Java projects. It uses a project object model (POM) file to manage project dependencies, build processes, and project documentation. Maven simplifies the build process by providing a standard way to handle project configuration, dependencies, and plugins.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
