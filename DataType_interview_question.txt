@@ -1,6 +1,59 @@
-If you are iterating an ArrayList in Java and delete an element at the same time, what happens depends on how you are iterating and deleting:
-ArrayList<String> list = new ArrayList<>(Arrays.asList("A", "B", "C", "D"));
+What is composition?
+Composition is an object-oriented design principle where one class contains a reference to another class to use its functionality.
+It represents a "has-a" relationship (e.g., Car has an Engine, House has a Room).
+The contained object’s lifecycle is usually tied to the container.
+Example: Car and Engine
+         Car has an Engine.
+         Engine cannot exist separately without a Car.
 
+What is an association?
+Association is a relationship between two classes where they can interact but do not depend on each other's lifecycle.
+It represents a "uses-a" or "works-with" relationship.
+Example: Teacher and Student
+         Teacher can exist without a Student.
+         Student can exist without a Teacher.
+         
+What is aggregation?
+Aggregation is a special type of association that represents a "has-a" relationship but with a weaker bond compared to composition.
+In aggregation, the contained object can exist independently of the container.
+Example: University and Department
+         University has Departments.
+         Departments can exist even if the University is closed.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is false sharing in the context of multi-threading?
+False sharing in multi-threading is a performance problem that occurs when multiple threads modify variables that reside on the same cache line, even though the threads are working on different variables independently.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Tell us something about JIT compiler.
+The Just-In-Time (JIT) compiler is a part of the Java Virtual Machine (JVM) that improves the performance of Java applications.
+
+When Java code is compiled, it is first converted into bytecode, which the JVM interprets. However, interpreting is slower because it executes each instruction line by line.
+
+The JIT compiler steps in at runtime and converts frequently used parts of the bytecode (hotspots) into native machine code. This native code is directly executed by the CPU, which makes the execution much faster.
+
+Example:
+Suppose you have a method that runs thousands of times in a loop. Initially, the JVM interprets it, but as it detects frequent execution, the JIT compiler compiles it into native machine code. From that point, the method runs much faster.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Define Copy constructor in java.
+A copy constructor in Java is a special constructor used to create a new object by copying the values of another object of the same class.
+
+Key Points:
+    Java does not provide a default copy constructor like C++, but you can define one.
+    It takes an object of the same class as a parameter.
+    It is mainly used to create a duplicate object with the same values, without modifying the original object.
+    
+// Copy constructor
+    Student(Student s) {
+        this.name = s.name;
+        this.age = s.age;
+    } 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+When can you use super keyword?
+The super keyword is used to access hidden fields and overridden methods or attributes of the parent class.
+Following are the cases when this keyword can be used:
+    Accessing data members of parent class when the member names of the class and its child subclasses are same.
+    To call the default and parameterized constructor of the parent class inside the child class.
+    Accessing the parent class methods when the child classes have overridden them. 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 Fail-Fast
    Throws ConcurrentModificationException if the collection is modified while iterating.
@@ -301,11 +354,34 @@ wait(), notify() notifyAll() methods
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is the difference between shallow copy and deep copy?
 
-Answer:
-A shallow copy in Java means copying the object’s field values. However, if the object contains references (to other objects), only the references are copied, not the actual objects.
+Shallow Copy
+A shallow copy creates a new object, but copies only the field values.
+If the object contains primitive fields (int, char, boolean), their values are copied directly.
+If it contains object references, only the reference (address) is copied, not the actual object.
 
-A deep copy means copying an object along with all nested objects. Changes in the copy do not affect the original object.
+Effect:
+    Both the original and the copied object share the same reference for mutable objects.
+    Changing the mutable field in one object will also reflect in the other.
 
+// Shallow Copy Constructor
+    Person(Person p) {
+        this.name = p.name;
+        this.address = p.address; // Reference copied
+    }
+    
+Deep Copy
+A deep copy creates a new object and also creates new copies of all objects referenced by it.
+This means that the original and the copied object do not share the same reference.
+
+Effect:
+    Both objects are completely independent.
+    Changes in one object do not affect the other. 
+
+// Deep Copy Constructor
+    Person(Person p) {
+        this.name = p.name;
+        this.address = new Address(p.address); // New object created
+    }   
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 Java ClassLoader
 

@@ -1,0 +1,15 @@
+What major features were introduced from Java 8 to Java 21?
+Java 8  →  Lambdas, Streams, Optional, Date-Time API
+Java 9  →  Modules, JShell, Factory Methods
+Java 10 →  var keyword, App CDS
+Java 11 →  HTTP Client, String APIs, Single-file programs
+Java 12 →  Switch Expressions (Preview)
+Java 13 →  Text Blocks (Preview)
+Java 14 →  Records (Preview), Helpful NPEs
+Java 15 →  Sealed Classes (Preview)
+Java 16 →  Records (Standard), Pattern Matching (Standard)
+Java 17 →  Sealed Classes, Pattern Matching for Switch (Preview)
+Java 18 →  Simple Web Server, UTF-8 default
+Java 19 →  Virtual Threads (Preview)
+Java 20 →  Scoped Values, Record Patterns (Preview)
+Java 21 →  Virtual Threads (Standard), Sequenced Collections, String Templates (Preview)
