@@ -1,3 +1,5 @@
+What are the benefits of using design patterns?
+Design patterns provide reusable, proven solutions to common software problems, improving code readability, maintainability, and scalability. They promote best practices like SOLID principles, reduce development effort, and enhance communication among developers by offering a common vocabulary (e.g., Singleton, Factory, Observer). Using them leads to faster development, fewer errors, and better collaboration in large-scale projects.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 In Java, SOLID principles are an object-oriented approach that are applied to software structure design. It is conceptualized by Robert C. Martin (also known as Uncle Bob). These five principles have changed the world of object-oriented programming, and also changed the way of writing software. It also ensures that the software is modular, easy to understand, debug, and refactor.
 
@@ -45,13 +47,8 @@ OR
 The principle states that we must use abstraction instead of concrete implementations. High-level modules should not depend on the low-level module but both should depend on the abstraction.
 
 https://medium.com/@javatechie/solid-design-principle-java-ae96a48db97
----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Design patterns
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------------Design patterns
 Design patterns are solutions to general problems that software developers faced during software development.
-Or
-A design pattern is a generic repeatable solution to a frequently occurring problem in software design that is used in software engineering.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 Types of Design Patterns in Java
 1 creational design patterns. 
@@ -69,7 +66,7 @@ Creational design patterns provide solutions to instantiate an Object in the bes
 5 Prototype Method
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
-Singleton Method : The singleton pattern restricts the instantiation of a Class and ensures that only one instance of the class exists in the Java Virtual Machine. The implementation of the singleton pattern has always been a controversial topic among developers.
+Singleton Method : The singleton pattern restricts the instantiation of a Class and ensures that only one instance of the class exists in the Java Virtual Machine.
 
 Purpose of Singleton Class
 The primary purpose of a java Singleton class is to restrict the limit of the number of object creations to only one. This often ensures that there is access control to resources, for example, socket or database connection.
@@ -79,6 +76,12 @@ The primary purpose of a java Singleton class is to restrict the limit of the nu
 3. Declaring all constructors of the class to be private.
 4. Providing a static method that returns a reference to the instance. The lazy initialization concept is used to write the static methods.
 5. The instance is stored as a private static variable.
+
+Why is it Important?
+    Resource management: Prevents multiple instances of heavy resources (DB connections, loggers).
+    Consistency: Ensures a single source of truth across the application.
+    Performance: Reduces unnecessary object creation.
+    Widely used in frameworks: Spring Beans (default scope), Runtime, Logger.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Forms of Singleton Class Pattern
@@ -175,14 +178,13 @@ public class ReflectionSingletonTest {
 }
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
-Factory Method :
-The factory design pattern is used when we have a superclass with multiple subclasses and based on input, we need to return one of the subclasses.
+Factory Method 
+The Factory Method Pattern provides an interface for creating objects in a superclass but allows subclasses to decide which class to instantiate.
 
-Factory Design Pattern Advantages
-
-1 Factory design pattern provides approach to code for interface rather than implementation.
-2 Factory pattern removes the instantiation of actual implementation classes from client code. Factory pattern makes our code more robust, less coupled and easy to extend. For example, we can easily change PC class implementation because client program is unaware of this.
-3 Factory pattern provides abstraction between implementation and client classes through inheritance.
+Why is it Important?
+    Encapsulates object creation logic.
+    Promotes loose coupling and follows the Open/Closed Principle (OCP).
+    Improves maintainability and scalability of the application.
 
 https://www.digitalocean.com/community/tutorials/factory-design-pattern-in-java
 --------------------------------------------------------------------------------------------------------------------------------------------------------------

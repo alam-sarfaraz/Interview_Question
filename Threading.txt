@@ -1,3 +1,32 @@
+Why are wait(), notify(), and notifyAll() in Object class?
+     In Java, every object has a lock (monitor).
+     When you use synchronized, it locks on an object, not on a thread.
+     These methods (wait(), notify(), notifyAll()) are used to make threads communicate using that object’s lock.
+
+How they work:
+     wait() → Makes the current thread pause and release the object’s lock.
+     notify() → Wakes up one thread waiting on that object’s lock.
+     notifyAll() → Wakes up all waiting threads on that object’s lock.
+
+Why in Object class?
+     Because every object can be used as a lock, these methods must be available for all objects.
+     If they were in Thread class, they wouldn’t know which object’s lock to release or notify.
+ 
+Defintion:     
+     wait() → Thread releases the lock and waits until another thread calls notify()/notifyAll() on the same object.
+     notify() → Wakes up one thread waiting on this object’s monitor.
+     notifyAll() → Wakes up all threads waiting on this object’s monitor.     
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the ForkJoinPool, and how does it work?
+It was introduced in Java 7 as part of the java.util.concurrent package.
+It is a special type of thread pool in Java that helps you split a big task into smaller tasks, run them in parallel, and then combine the results.
+Default implementation uses a work-stealing algorithm, which improves parallelism by allowing idle threads to "steal" tasks from busy threads.
+
+How it works (step by step)
+     Fork (Split) – The big task is divided into smaller subtasks.
+     Work-Stealing – Each thread works on its own tasks. If a thread finishes early, it “steals” tasks from other threads.
+     Join (Combine) – Once all subtasks finish, their results are combined into the final result.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is a semaphore?
 A semaphore is a synchronization mechanism in concurrent programming used to control access to a shared resource by multiple threads. It works like a counter that regulates how many threads can access a resource at the same time.
 
