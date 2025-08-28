@@ -105,11 +105,13 @@ The @Version annotation is used to mark a field on an entity as the version fiel
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 JpaRepository is more powerful than other repository interfaces like CrudRepository because it adds:
 
-✅ Batch operations (e.g., delete multiple records at once)
+Batch operations (e.g., delete multiple records at once)
+Flush control (save and instantly write to the database)
+Extra JPA features like saveAndFlush() and deleteInBatch()
 
-✅ Flush control (save and instantly write to the database)
-
-✅ Extra JPA features like saveAndFlush() and deleteInBatch()
+Save and saveAndFlush
+    save() → Saves the entity in memory (persistence context). It writes to the database later, usually when the transaction ends (commit time).
+    saveAndFlush() → Saves the entity and immediately writes (flushes) it to the database.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 JPA stands for Java Persistence API. It is an object-relational mapping (ORM) framework that allows us to map Java objects to tables in a relational database.

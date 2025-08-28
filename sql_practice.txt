@@ -487,7 +487,7 @@ INSERT INTO order_items (order_id, product_id, quantity) VALUES
 (4, 2, 1),
 (5, 3, 3);
 ------------------------------------------------------------------------
-----------------------------------------------------------Beginner Level
+---------------------------------------------------------- Beginner Level
 List all customers and their cities.
 Show all products with price greater than 200.
 Find all orders placed in August 2025.

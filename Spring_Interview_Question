@@ -5,10 +5,17 @@ BeanFactory and ApplicationContext.
 BeanFactory is the basic IoC container with lazy loading and minimal features, while ApplicationContext is a more advanced container with eager loading, event handling, internationalization, and AOP support, making it the default choice for Spring applications.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 How do you optimize the startup time of a Spring Boot application in a production environment?
-We can optimize Spring Boot startup in production by enabling lazy initialization, excluding unused auto-configurations, using profiles, limiting classpath scanning, optimizing database initialization, reducing logging overhead, and leveraging Spring Native AOT compilation for near-instant startup.
+We can optimize Spring Boot startup in production by 
+enabling lazy initialization,
+excluding unused auto-configurations, 
+using profiles,
+limiting classpath scanning,
+optimizing database initialization,
+reducing logging overhead,
+and leveraging Spring Native AOT compilation for near-instant startup.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What are Spring Interceptors?
-Spring Interceptors are components in the Spring MVC framework that allow you to intercept HTTP requests and responses at three different stages of their lifecycle, before they reach the controller and after the view is rendered.    
+Spring Interceptors are components in the Spring MVC framework that allow us to intercept HTTP requests and responses at three different stages of their lifecycle, before they reach the controller and after the view is rendered.    
 Interceptor: Works at the Spring MVC level, after the DispatcherServlet has chosen the handler.  
 To create an interceptor, you implement HandlerInterceptor or extend HandlerInterceptorAdapter
 

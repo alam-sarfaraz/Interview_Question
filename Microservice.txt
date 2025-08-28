@@ -1,6 +1,6 @@
 What is the Sidecar pattern in Microservices?
-The Sidecar pattern is a design pattern where a helper or support service runs alongside a main microservice in the same environment (usually the same container or pod).
-It offloads common concerns like logging, monitoring, security, or networking from the main service.
+The Sidecar pattern is a design pattern where a support service runs alongside a main microservice in the same environment (usually the same container or pod).
+It offloads common concerns logging, monitoring, security, or networking from the main service.
 
 Example Use Cases
 Logging/Monitoring: A sidecar collects logs and metrics and forwards them to a central system.
@@ -8,7 +8,7 @@ Network Proxy: A sidecar handles service discovery, load balancing, and TLS for 
 Configuration Updates: Dynamically fetches configuration from a central server.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is a service mesh in Microservices architecture?
-A service mesh is an infrastructure layer that manages service-to-service communication, security, and observability in a microservices architecture without changing application code.”
+A service mesh is an infrastructure layer that manages service-to-service communication, security, and observability in a microservices architecture without changing application code.
 Tools like Istio, Linkerd, and Consul help manage traffic policies, security protocols, and observability without requiring changes to the application code.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 Can you tell me about the 3C’s of Microservices?
@@ -156,18 +156,24 @@ The Saga Pattern is used to manage distributed transactions across microservices
 
 ------------------------------------------------------------------------
 5. CDC (Consumer-Driven Contracts)
+    It’s a way for two systems (consumer and provider) to agree on how they talk to each other (API contract).
+    The consumer (client) defines what it needs from the provider (server).
+    These needs are saved as a contract (like a rule book).
+    Every time the provider changes its API, this contract is automatically tested to make sure nothing breaks for the consumer.
+OR
 Consumer-Driven Contracts are agreements between API consumers and providers, driven by the consumer’s needs, verified automatically to ensure changes don’t break communication.
 
-Think of it like ordering food:
-You (consumer) tell the chef (provider) exactly how you want your sandwich.
-The chef agrees and writes it down (contract).
-Every time they make it, they check if it still matches your order before serving.
+Example:
+    Your frontend app (consumer) needs /users API to give name and email.
+    You create a contract saying: “I need name and email fields.”
+    Backend (provider) must follow this contract.
+    If backend removes email by mistake, tests fail → you catch the issue early.
 ------------------------------------------------------------------------
 6. Bulkhead Pattern
 A way to isolate parts of a system so if one fails or slows down, it doesn’t sink the whole system.
 In microservices, bulkhead pattern means isolating resources (like threads, database connections, memory) for each part of the system so a failure in one part doesn’t bring down others.
 Example:
-If the Payment Service gets overloaded, only payment-related requests fail, while Order Service and Inventory Service keep running normally.
+    If the Payment Service gets overloaded, only payment-related requests fail, while Order Service and Inventory Service keep running normally.
 ------------------------------------------------------------------------
 7. Event Sourcing 
 Instead of storing just the current state of data, you store all the events that happened to reach that state.
@@ -268,7 +274,6 @@ What are the common challenges in implementing microservices?
 Implementing microservices comes with several challenges:
     - Service Communication – Managing synchronous (REST) vs asynchronous (events) communication.
     - Data Consistency – Each service has its own database, making distributed transactions complex.
-    - Fault Tolerance – One failing service can impact others; requires patterns like Circuit Breaker, Retry, and Timeout.
     - Deployment & Operations – Managing many services increases CI/CD, container orchestration, and infrastructure complexity.
     - Testing – End-to-end and integration testing are more difficult compared to monoliths.
     - Security – Enforcing authentication and authorization across multiple services.
@@ -369,6 +374,16 @@ Authenticator Apps: Applications like Google Authenticator or Authy generate tim
 -------------------------------------------------------------------------------------------------------------------------------------------------------------.
 Swagger is an open-source API design and documentation tool that helps developers design, build, document, and test RESTful APIs faster and more easily.
 Swagger is the way of defining the structure of APIs (Application Programming Interface). Swagger is specifically developed for REST (Representational State Transfer) APIs, where REST is a Web based API. These APIs can be defined in a file, called Swagger file, which includes certain information like the type of data that needs to be sent in a request, the type of data that needs to be received as the response from the request sent, the server locations, authorization for the request, status codes etc. The Swagger Specification is also known as the Open API Specification (OAS). Using swagger, APIs can be created in either YAML or JSON. The different tools used for swagger are: Swagger Editor, Swagger UI and Swagger Codegen. The latest version of OAS is OpenAPI 3.0.
+
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.5.0</version>
+</dependency>
+
+Url:
+http://localhost:8080/swagger-ui/index.html
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 SonarQube
 SonarQube is a powerful tool for continuous inspection of code quality and security. It performs static code analysis to detect bugs, code smells, and security vulnerabilities in your project. Integrating SonarQube with a Spring Boot application involves setting up SonarQube, configuring your Spring Boot project to use SonarQube, and running the analysis.

@@ -1,7 +1,8 @@
 What is composition?
 Composition is an object-oriented design principle where one class contains a reference to another class to use its functionality.
-It represents a "has-a" relationship (e.g., Car has an Engine, House has a Room).
-The contained object’s lifecycle is usually tied to the container.
+It represents a Has-a" relationship (but stronger than normal association).
+The contained object cannot exist without the container (its lifecycle is fully dependent on the parent).
+If the parent object is destroyed, the contained object is also destroyed.
 Example: Car and Engine
          Car has an Engine.
          Engine cannot exist separately without a Car.
@@ -9,17 +10,40 @@ Example: Car and Engine
 What is an association?
 Association is a relationship between two classes where they can interact but do not depend on each other's lifecycle.
 It represents a "uses-a" or "works-with" relationship.
+
+Types of Association
+     One-to-One → One object is associated with one object.
+     One-to-Many / Many-to-One → One object is associated with many objects (or vice versa).
+     Many-to-Many → Many objects are associated with many objects.
+
 Example: Teacher and Student
          Teacher can exist without a Student.
          Student can exist without a Teacher.
          
 What is aggregation?
 Aggregation is a special type of association that represents a "has-a" relationship but with a weaker bond compared to composition.
+Child can exist without the parent.
+If the parent object is destroyed, the child object can still exist.
 In aggregation, the contained object can exist independently of the container.
 Example: University and Department
          University has Departments.
          Departments can exist even if the University is closed.
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------  IS-A Relationship (Inheritance)
+     Represents inheritance.
+     One class is a type of another class.
+     Created using extends (for classes) or implements (for interfaces).
+     Used for generalization and specialization.         
+Example:
+     A Car IS-A Vehicle (Car inherits from Vehicle).
+     Every Car is a type of Vehicle.
+     
+HAS-A Relationship (Association, Aggregation, or Composition)
+     Represents association between two classes.
+     One class has a reference to another class.
+     Used for code reusability and modular design.  
+Example:
+     A Car HAS-A Engine, but a Car is not an Engine.       
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is false sharing in the context of multi-threading?
 False sharing in multi-threading is a performance problem that occurs when multiple threads modify variables that reside on the same cache line, even though the threads are working on different variables independently.
