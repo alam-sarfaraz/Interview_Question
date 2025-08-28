@@ -1,0 +1,604 @@
+Java 8 — 100 Questions (Input → Output)
+
+Filter Even Numbers
+Input: [1, 2, 3, 4, 5, 6]
+Output: [2, 4, 6]
+
+Square Each Element
+Input: [2, 3, 4]
+Output: [4, 9, 16]
+
+Count Strings Starting with "A"
+Input: ["Apple","Banana","Avocado","Berry"]
+Output: 2
+
+Find Maximum Number
+Input: [10, 20, 5, 70, 15]
+Output: 70
+
+Find Minimum Number
+Input: [10, 20, 5, 70, 15]
+Output: 5
+
+Remove Duplicates
+Input: [1, 2, 2, 3, 4, 4, 5]
+Output: [1, 2, 3, 4, 5]
+
+Sort Ascending
+Input: [5, 3, 9, 1, 4]
+Output: [1, 3, 4, 5, 9]
+
+Sort Descending
+Input: [5, 3, 9, 1, 4]
+Output: [9, 5, 4, 3, 1]
+
+Get First Element
+Input: ["A","B","C"]
+Output: A
+
+Get Any Element (deterministic for this input)
+Input: ["X","Y","Z"]
+Output: X
+
+Sum of All Numbers
+Input: [1, 2, 3, 4, 5]
+Output: 15
+
+Average of Numbers
+Input: [10, 20, 30, 40]
+Output: 25.0
+
+Join Strings with Space
+Input: ["Hello","Java","World"]
+Output: Hello Java World
+
+Convert List to Set
+Input: ["A","B","A","C"]
+Output: ["A","B","C"]
+
+List to Map (string → length)
+Input: ["A","BC","DEF"]
+Output: {A=1, BC=2, DEF=3}
+
+Count Distinct Elements
+Input: [1, 2, 2, 3, 3, 3]
+Output: 3
+
+Skip First Two Elements
+Input: [10, 20, 30, 40]
+Output: [30, 40]
+
+Limit to First Three Elements
+Input: [5, 10, 15, 20, 25]
+Output: [5, 10, 15]
+
+Check If All Positive
+Input: [1, 2, 3, 4]
+Output: true
+
+Check If Any Negative
+Input: [1, -2, 3, 4]
+Output: true
+
+Partition Even and Odd
+Input: [1, 2, 3, 4, 5, 6]
+Output: {false=[1,3,5], true=[2,4,6]}
+
+Group Strings by Length
+Input: ["Hi","Java","Code","Fun"]
+Output: {2=[Hi], 3=[Fun], 4=[Java, Code]}
+
+Flatten List of Lists
+Input: [[1,2],[3,4],[5]]
+Output: [1,2,3,4,5]
+
+Convert List of Objects to Map (id → name)
+Input: [{id:1,name:John},{id:2,name:Mary}]
+Output: {1=John, 2=Mary}
+
+Find Second Highest Number
+Input: [10, 40, 30, 20, 50]
+Output: 40
+
+Find Second Lowest Number
+Input: [10, 40, 30, 20, 50]
+Output: 20
+
+Reverse a List
+Input: [1, 2, 3, 4]
+Output: [4, 3, 2, 1]
+
+First Non-Repeated Character in String
+Input: "swiss"
+Output: w
+
+First Repeated Character in String
+Input: "programming"
+Output: r
+
+Frequency of Elements in List
+Input: [1, 2, 2, 3, 3, 3]
+Output: {1=1, 2=2, 3=3}
+
+Character Occurrences in String
+Input: "hello"
+Output: {h=1, e=1, l=2, o=1}
+
+Find Longest String in List
+Input: ["cat","elephant","dog"]
+Output: elephant
+
+Find Shortest String in List
+Input: ["cat","elephant","dog"]
+Output: cat
+
+Remove Nulls from List
+Input: [1, null, 2, null, 3]
+Output: [1,2,3]
+
+Remove Empty Strings from List
+Input: ["Java","","Code",""]
+Output: ["Java","Code"]
+
+Convert List to Comma-Separated String
+Input: [1,2,3]
+Output: 1,2,3
+
+Factorial Using Streams (n=5)
+Input: 5
+Output: 120
+
+Generate First 10 Even Numbers
+Input: 10
+Output: [2,4,6,8,10,12,14,16,18,20]
+
+Fibonacci Sequence First 7
+Input: 7
+Output: [0,1,1,2,3,5,8]
+
+Sum of Digits of a Number
+Input: 12345
+Output: 15
+
+Extract Uppercase Letters from String
+Input: "HeLLo WOrLd"
+Output: HLLWOL
+
+Extract Digits from String
+Input: "a1b2c3d4"
+Output: 1234
+
+Check Palindrome String
+Input: "madam"
+Output: true
+
+Merge Two Lists & Remove Duplicates
+Input: [1,2,3], [2,3,4]
+Output: [1,2,3,4]
+
+Find Common Elements Between Two Lists
+Input: [1,2,3,4], [3,4,5]
+Output: [3,4]
+
+Elements Present in First List but Not in Second
+Input: [1,2,3,4], [3,4,5]
+Output: [1,2]
+
+Intersection of Two Sets
+Input: {1,2,3}, {2,3,4}
+Output: {2,3}
+
+Create Infinite Stream (0..n-1) Limit 5
+Input: 5
+Output: [0,1,2,3,4]
+
+Generate 5 Deterministic "Random" Doubles
+Input: 5
+Output: [0.10,0.23,0.37,0.48,0.66] (sample fixed values for reproducibility)
+
+Find Oldest Person
+Input: [John-25, Mary-30, Alex-45]
+Output: Alex-45
+
+Find Youngest Person
+Input: [John-25, Mary-30, Alex-45]
+Output: John-25
+
+Sort Employees by Salary Ascending
+Input: [ (John,5000), (Sara,7000), (Alex,6000) ]
+Output: [(John,5000),(Alex,6000),(Sara,7000)]
+
+Sort Employees by Name Descending
+Input: [ (John), (Sara), (Alex) ]
+Output: [Sara, John, Alex]
+
+Group Employees by Department (count)
+Input: [ (John,HR), (Sara,IT), (Alex,HR), (Tom,IT) ]
+Output: {HR=2, IT=2}
+
+Average Salary by Department
+Input: [ (John,HR,5000), (Alex,HR,7000), (Sara,IT,6000) ]
+Output: {HR=6000.0, IT=6000.0}
+
+List Employees Earning > 6000
+Input: [ (John,5000),(Sara,7000),(Alex,6000) ]
+Output: [(Sara,7000)]
+
+Count Employees per Department (detailed)
+Input: [ (John,HR),(Alex,HR),(Sara,IT) ]
+Output: {HR=2, IT=1}
+
+Partition Employees by Salary >=6000
+Input: [ (John,5000),(Sara,7000),(Alex,6000) ]
+Output: {false=[(John,5000)], true=[(Sara,7000),(Alex,6000)]}
+
+Convert Map to List of Key-Value Pairs
+Input: {a=1,b=2,c=3}
+Output: [(a,1),(b,2),(c,3)]
+
+Convert List of Pairs to Map
+Input: [(a,1),(b,2),(c,3)]
+Output: {a=1, b=2, c=3}
+
+Sum of All Salaries
+Input: [ (John,5000),(Sara,7000),(Alex,6000) ]
+Output: 18000
+
+Highest Paid Employee
+Input: [ (John,5000),(Sara,7000),(Alex,6000) ]
+Output: (Sara,7000)
+
+Lowest Paid Employee
+Input: [ (John,5000),(Sara,7000),(Alex,6000) ]
+Output: (John,5000)
+
+Count Names Starting with 'A'
+Input: ["Alice","Bob","Andrew","Mark"]
+Output: 2
+
+Find Names Containing Substring "ar"
+Input: ["Mark","Sara","Peter","Daryl"]
+Output: ["Sara","Daryl"]
+
+Extract Email Domains
+Input: ["a@gmail.com","b@yahoo.com","c@gmail.com"]
+Output: ["gmail.com","yahoo.com"]
+
+Convert Numbers to Strings
+Input: [1,2,3]
+Output: ["1","2","3"]
+
+Custom Collector: Count Even Numbers
+Input: [1,2,3,4,5,6]
+Output: 3
+
+Use reduce() to Multiply All Numbers
+Input: [2,3,4]
+Output: 24
+
+Use reduce() to Concatenate Strings with Comma
+Input: ["A","B","C"]
+Output: A,B,C
+
+Use reduce() to Find Largest Without max()
+Input: [10,50,30,20]
+Output: 50
+
+Parallel Stream Sum (deterministic)
+Input: [1,2,3,4,5,6,7,8,9,10]
+Output: 55
+
+Find Prime Numbers in Range 2..20
+Input: 2..20
+Output: [2,3,5,7,11,13,17,19]
+
+Remove Negative Numbers
+Input: [5,-3,2,-1,0,4]
+Output: [5,2,0,4]
+
+Replace Nulls with Default (0)
+Input: [1,null,3,null,5]
+Output: [1,0,3,0,5]
+
+Find Longest Word in Sentence
+Input: "Java stream operations are powerful"
+Output: operations
+
+Count Vowels in String
+Input: "hello world"
+Output: 3
+
+Count Consonants in String
+Input: "hello"
+Output: 3
+
+Extract Unique Words from Sentence
+Input: "java java streams code java code"
+Output: ["java","streams","code"]
+
+Count Words in Paragraph
+Input: "Java 8 streams make collection processing easy"
+Output: 7
+
+Find Duplicate Elements in List
+Input: [1,2,2,3,4,4,5]
+Output: [2,4]
+
+List Only Duplicates (unique duplicates)
+Input: [a,a,b,c,b,d,a]
+Output: ["a","b"]
+
+Sort List of Maps by Specific Key
+Input: [{name:John,age:30},{name:Alex,age:25},{name:Sara,age:28}]
+Output: [{name:Alex,age:25},{name:Sara,age:28},{name:John,age:30}]
+
+Merge Two Maps (sum values on key clash)
+Input: {a=1,b=2}, {b=3,c=4}
+Output: {a=1, b=5, c=4}
+
+Remove Map Entries Based on Condition (value < 3)
+Input: {a=1,b=4,c=2,d=5}
+Output: {b=4, d=5}
+
+Convert Map to JSON-like String
+Input: {a=1,b=2}
+Output: {"a":1,"b":2}
+
+Create IntStream from Array & Sum
+Input: [1,2,3,4]
+Output: 10
+
+Convert Array of Strings to Uppercase
+Input: ["a","b","c"]
+Output: ["A","B","C"]
+
+Filter Prime Numbers from Array
+Input: [2,3,4,5,6,7,8,9,10]
+Output: [2,3,5,7]
+
+Sum of Squares of Odd Numbers
+Input: [1,2,3,4,5]
+Output: 1^2 + 3^2 + 5^2 = 35
+
+Cube Each Element and Sum
+Input: [1,2,3]
+Output: 1 + 8 + 27 = 36
+
+Create List 1..100 Without Loops
+Input: 100
+Output: [1,2,3,...,100]
+
+Top 3 Highest Numbers
+Input: [5,1,9,7,3,8]
+Output: [9,8,7]
+
+Bottom 3 Lowest Numbers
+Input: [5,1,9,7,3,8]
+Output: [1,3,5]
+
+Difference Between Two Lists (A - B)
+Input: A=[1,2,3,4], B=[3,4,5]
+Output: [1,2]
+
+Optional: Get Value or Default
+Input: Optional.empty(), default="N/A"
+Output: N/A
+
+Optional: Chain Optionals to Get First Present
+Input: [Optional.empty(), Optional.of("X"), Optional.of("Y")]
+Output: X
+
+Stream of Maps: GroupingBy Key and Summing Values
+Input: [{dept:HR,sal:5000},{dept:HR,sal:7000},{dept:IT,sal:6000}]
+Output: {HR=12000, IT=6000}
+
+Custom Comparator: Sort by String Length then Alphabetical
+Input: ["apple","bat","banana","app"]
+Output: ["app","bat","apple","banana"]
+
+Compose Multiple Stream Ops to Produce Formatted Report
+Input: List<Person> [ (John,25), (Sara,30), (Alex,25) ]
+Output: ["Age 25: John, Alex","Age 30: Sara"]
+
+
+--------------------------------------------------------Java 8 Map-Focused Questions (1–50)
+
+Create Map from List (element → length)
+Input: ["Java", "Spring", "Boot"]
+Output: {"Java":4, "Spring":6, "Boot":4}
+
+Count Frequency of Strings in List
+Input: ["a","b","a","c","b","a"]
+Output: {"a":3,"b":2,"c":1}
+
+Group Employees by Department (count)
+Input: [ (John,HR), (Sara,IT), (Alex,HR), (Tom,IT) ]
+Output: {HR=2, IT=2}
+
+Average Salary by Department
+Input: [ (John,HR,5000), (Alex,HR,7000), (Sara,IT,6000) ]
+Output: {HR=6000.0, IT=6000.0}
+
+Partition Employees by Salary >= 6000
+Input: [ (John,5000),(Sara,7000),(Alex,6000) ]
+Output: {false=[(John,5000)], true=[(Sara,7000),(Alex,6000)]}
+
+Find Highest Paid Employee per Department
+Input: [ (John,HR,5000),(Alex,HR,7000),(Sara,IT,6000) ]
+Output: {HR=(Alex,7000), IT=(Sara,6000)}
+
+Merge Two Maps (sum values on key clash)
+Input: {a=1,b=2}, {b=3,c=4}
+Output: {a=1, b=5, c=4}
+
+Sort Map by Value Descending
+Input: {a=10, b=30, c=20}
+Output: {b=30, c=20, a=10}
+
+Filter Map Entries (value > 15)
+Input: {a=10, b=30, c=20}
+Output: {b=30, c=20}
+
+Convert Map Keys to Uppercase
+Input: {a=1,b=2}
+Output: {A=1,B=2}
+
+Swap Map Key and Value
+Input: {a=1,b=2,c=3}
+Output: {1=a,2=b,3=c}
+
+Convert List of Objects to Map (id → name)
+Input: [ {id:1,name:John},{id:2,name:Mary} ]
+Output: {1=John, 2=Mary}
+
+Count Characters in String Using Map
+Input: "programming"
+Output: {p=1,r=2,o=1,g=2,a=1,m=2,i=1,n=1}
+
+Map Filtering Using Streams (even values)
+Input: {a=1,b=2,c=3,d=4}
+Output: {b=2, d=4}
+
+Top N Entries by Value
+Input: {a=50,b=20,c=70,d=30}, N=2
+Output: {c=70,a=50}
+
+Check If Map Contains Key with Certain Value
+Input: {a=10,b=20,c=30}, value >25
+Output: true
+
+Sum All Values in Map
+Input: {a=10,b=20,c=30}
+Output: 60
+
+Map to List of Key-Value Strings
+Input: {a=1,b=2}
+Output: ["a=1","b=2"]
+
+Group Strings by First Character into Map
+Input: ["apple","apricot","banana","blueberry"]
+Output: {a=["apple","apricot"], b=["banana","blueberry"]}
+
+Create Map from Two Lists (keyList → valueList)
+Input: keys=["a","b","c"], values=[1,2,3]
+Output: {a=1,b=2,c=3}
+
+Nested Grouping: Employees by Department then Age Group
+Input: [ (John,HR,25),(Alex,HR,35),(Sara,IT,28) ]
+Output: {HR={Young=[John], Senior=[Alex]}, IT={Young=[Sara]}}
+
+Reduce Map Values to Compute Total Salary
+Input: {John=5000, Sara=7000, Alex=6000}
+Output: 18000
+
+Find Map Entry with Max Value
+Input: {a=10,b=50,c=30}
+Output: {b=50}
+
+Find Map Entry with Min Value
+Input: {a=10,b=50,c=30}
+Output: {a=10}
+
+Convert Map Values to List of Squares
+Input: {a=2,b=3,c=4}
+Output: {a=4,b=9,c=16}
+
+Convert Map Values to Uppercase Strings
+Input: {a="hi",b="java"}
+Output: {a="HI",b="JAVA"}
+
+Merge Maps and Keep Maximum Value per Key
+Input: {a=10,b=30},{a=20,b=25}
+Output: {a=20,b=30}
+
+Map Key Exists and Value Matches
+Input: {a=10,b=20}, key="b", value>15
+Output: true
+
+Flatten Map of Lists to Single List
+Input: {a=[1,2], b=[3,4]}
+Output: [1,2,3,4]
+
+Filter Map by Key Starting with 'a'
+Input: {apple=10, banana=20, apricot=30}
+Output: {apple=10, apricot=30}
+
+Count Keys with Value Greater than X
+Input: {a=10,b=30,c=20}, X=15
+Output: 2
+
+Reverse Map Values (value → list of keys)
+Input: {a=10,b=20,c=10}
+Output: {10=[a,c], 20=[b]}
+
+Create Map from Stream of Objects Using toMap
+Input: [Person(1,John), Person(2,Mary)]
+Output: {1=John,2=Mary}
+
+Find Duplicate Values in Map
+Input: {a=10,b=20,c=10,d=30}
+Output: [10]
+
+Group Numbers by Even/Odd using Map
+Input: [1,2,3,4,5]
+Output: {true=[2,4], false=[1,3,5]}
+
+Count Words in Paragraph into Map
+Input: "Java Java streams code Java code"
+Output: {Java=3, streams=1, code=2}
+
+Map Values Filtering (value %2==0)
+Input: {a=1,b=2,c=3,d=4}
+Output: {b=2,d=4}
+
+Map Keys to Lowercase
+Input: {A=1,B=2}
+Output: {a=1,b=2}
+
+Top N Keys with Maximum Values
+Input: {a=5,b=10,c=8,d=3}, N=2
+Output: {b=10,c=8}
+
+Sum Values Grouped by Key Pattern
+Input: {a1=10,a2=20,b1=30}
+Output: {a=30,b=30}
+
+Count Elements by Map Value Ranges
+Input: {a=5,b=15,c=25,d=35}, ranges 0-10,11-20,21-40
+Output: {0-10=1,11-20=1,21-40=2}
+
+Transform Map Entries to Custom String
+Input: {a=1,b=2}
+Output: ["Key a has value 1","Key b has value 2"]
+
+Optional: Get Value for Key or Default
+Input: {a=10,b=20}, key="c", default=0
+Output: 0
+
+Optional: Check Value > Threshold for Key
+Input: {a=10,b=30}, key="b", threshold=25
+Output: true
+
+Multi-level Grouping: Employees by Department & Age >30
+Input: [ (John,HR,25),(Alex,HR,35),(Sara,IT,28) ]
+Output: {HR={true=[Alex],false=[John]}, IT={true=[], false=[Sara]}}
+
+Map to Stream and Compute Average Value
+Input: {a=10,b=20,c=30}
+Output: 20.0
+
+Map Filter + Sort by Value Ascending
+Input: {a=30,b=10,c=20}, filter value>15
+Output: {c=20,a=30}
+
+Combine Two Maps Prioritizing First Map Values
+Input: {a=10,b=20},{a=50,b=30,c=40}
+Output: {a=10,b=20,c=40}
+
+Map of Lists to Flattened Map
+Input: {a=[1,2],b=[3,4]}
+Output: {a=1,b=2,a=2,b=3,a=2,b=4} (example format to illustrate transformation)
+
+Group Strings by Length and Alphabetically Sort
+Input: ["apple","bat","banana","app"]
+Output: {3=[app,bat],5=[apple],6=[banana]}
