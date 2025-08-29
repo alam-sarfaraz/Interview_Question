@@ -1,3 +1,18 @@
+How does the hashCode() method relate to the equals() method? What are the implications of overriding one but not the other?
+
+Contract between them (from Object class specification):
+    If two objects are equal according to equals(), they must have the same hashCode().
+    If two objects have the same hashCode(), they are not necessarily equal.
+
+Implications of overriding one but not the other
+   
+    Override equals() but NOT hashCode()                  
+        Two objects may be equal, but have different hash codes → collections like HashSet or HashMap may treat them as different objects.
+    
+    Override hashCode() but NOT equals()
+        Objects may have the same hash code, but equals() says they are not equal → can cause duplicate entries in hash-based collections.
+   
+-------------------------------------------------------------------------------------------------------------------------------------------------------------  
 What is composition?
 Composition is an object-oriented design principle where one class contains a reference to another class to use its functionality.
 It represents a Has-a" relationship (but stronger than normal association).

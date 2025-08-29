@@ -1,3 +1,11 @@
+How do you ensure fault tolerance in microservices?
+    In microservices, fault tolerance means system keeps running even if some services fail.
+Retry mechanisms: Retry failed calls.
+Circuit breakers: Using libraries like Hystrix, Resilience4j.
+Fallbacks: Provide default responses.
+Bulkheads: Isolate resources for critical services.   
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is the Sidecar pattern in Microservices?
 The Sidecar pattern is a design pattern where a support service runs alongside a main microservice in the same environment (usually the same container or pod).
 It offloads common concerns logging, monitoring, security, or networking from the main service.

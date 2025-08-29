@@ -221,12 +221,21 @@ A thread can interupet a sleeping thread or waiting thread by using interupet me
 public void interupet();
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+RACE CONDITION:
+if multiple thread are operating simultaneously on same java object then there may be chance of data inconsistency problem this is called race condition.
+We can overcome this problem by using synchronized keyword.
+
 SYNCHRONIZATION :
 
 synchronized is a modifier applicable only for method and blocks but not for classes and variables.
 If multiple threads are trying to oprate simultaneously on the same java object then there may be chance of data inconsistency problem.
 To overcome this problem we should for synchronized keyword.
 If a method or block declared as synchronized then at a time only one thread is allowed to execute method or block give object so that data inconsistency problem will be resolved.
+
+
+synchronized block :
+if very few lines of code required synchronization then it not recomended to declare entire method as synchronized we have to enclose those few line of code by using synchronized block.
+The main advantage of synchronized block over synchronized menthod is it reduces waiting time of thread and improve performace of syastem or application.
 
 Advantage and disadvantage :
 
@@ -260,15 +269,6 @@ while a thread executing static synchronized method the remaning thread are not 
 Normal static method --- public static void display(){}
 synchronized instance method -- public synchronized void display(){}
 normal instance method --  public void display(){}
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------
-synchronized block :
-if very few lines of code required synchronization then it not recomended to declare entire method as synchronized we have to enclose those few line of code by using synchronized block.
-The main advantage of synchronized block over synchronized menthod is it reduces waiting time of thread and improve performace of syastem or application.
-
-RACE CONDITION:
-if multiple thread are operating simultaneously on same java object then there may be chance of data inconsistency problem this is called race condition.
-We can overcome this problem by using synchronized keyword.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 INTER THREAD COMMUNICATION.

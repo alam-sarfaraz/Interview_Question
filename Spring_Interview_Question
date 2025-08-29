@@ -1,5 +1,18 @@
-What is ContextLoaderListener and what does it do?
-ContextLoaderListener is a ServletContext listener in Spring that initializes the root WebApplicationContext at application startup, loads the shared beans, and ensures proper cleanup at shutdown. It is mainly used in traditional Spring MVC applications, while Spring Boot manages this automatically.
+Can read configuration from external files other than application.properties or application.yml.
+Yes, Spring Boot supports external properties files, YAML files, environment variables, command-line args, or config servers, giving flexibility beyond application.properties.
+
+1 Custom Properties/YAML File – Use @PropertySource("classpath:custom.properties") or file: for external files.
+   @PropertySource("classpath:config/external.properties")
+   @Configuration
+   public class AppConfig { }
+
+2 Environment Variables – Spring Boot automatically maps OS environment variables to properties.
+3 Command-Line Arguments – Pass properties like --server.port=9090 when starting the app.
+4 Spring Cloud Config – Centralized config server providing properties to multiple services.
+5 Programmatic Loading – Load any file manually using Properties.load(new FileInputStream("/path/file.properties")).
+   Properties props = new Properties();
+   props.load(new FileInputStream("/path/config.properties"));
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 BeanFactory and ApplicationContext.
 BeanFactory is the basic IoC container with lazy loading and minimal features, while ApplicationContext is a more advanced container with eager loading, event handling, internationalization, and AOP support, making it the default choice for Spring applications.
