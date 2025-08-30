@@ -1,0 +1,118 @@
+1. Add Dependencies
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-j</artifactId>
+</dependency>
+________________________________________________________________________
+2. application.properties (or YAML)
+
+# Primary Database
+spring.datasource.primary.url=jdbc:mysql://localhost:3306/db1
+spring.datasource.primary.username=root
+spring.datasource.primary.password=root
+
+# Secondary Database
+spring.datasource.secondary.url=jdbc:mysql://localhost:3306/db2
+spring.datasource.secondary.username=root
+spring.datasource.secondary.password=root
+________________________________________________________________________
+3. Create Configuration Classes
+
+                                    Primary Database Config
+
+@Configuration
+@EnableJpaRepositories(
+    basePackages = "com.example.primary.repo",
+    entityManagerFactoryRef = "primaryEntityManagerFactory",
+    transactionManagerRef = "primaryTransactionManager"
+)
+public class PrimaryDBConfig {
+
+    @Bean
+    @Primary
+    @ConfigurationProperties(prefix = "spring.datasource.primary")
+    public DataSource primaryDataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean
+    @Primary
+    public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory(EntityManagerFactoryBuilder builder) {
+            return builder
+                .dataSource(primaryDataSource())
+                .packages("com.example.primary.entity")
+                .persistenceUnit("primary")
+                .build();
+    }
+
+    @Bean
+    @Primary
+    public PlatformTransactionManager primaryTransactionManager(@Qualifier("primaryEntityManagerFactory") EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
+    }
+}
+***************************************************************************************************************
+Methods in PrimaryDBConfig
+
+primaryDataSource()
+→ Creates the DataSource bean for the primary database using properties with prefix spring.datasource.primary.
+
+primaryEntityManagerFactory()
+→ Builds the EntityManagerFactory that manages JPA entities for the primary database.
+
+primaryTransactionManager()
+→ Configures the Transaction Manager to handle transactions for the primary database.
+***************************************************************************************************************
+_____________________________________________________________________
+                                Secondary Database Config
+@Configuration
+@EnableJpaRepositories(
+    basePackages = "com.example.secondary.repo",
+    entityManagerFactoryRef = "secondaryEntityManagerFactory",
+    transactionManagerRef = "secondaryTransactionManager"
+)
+public class SecondaryDBConfig {
+
+    @Bean
+    @ConfigurationProperties(prefix = "spring.datasource.secondary")
+    public DataSource secondaryDataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory(EntityManagerFactoryBuilder builder) {
+        return builder
+                .dataSource(secondaryDataSource())
+                .packages("com.example.secondary.entity")
+                .persistenceUnit("secondary")
+                .build();
+    }
+
+    @Bean
+    public PlatformTransactionManager secondaryTransactionManager(@Qualifier("secondaryEntityManagerFactory") EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
+    }
+}
+________________________________________________________________________
+5. Usage
+
+When injecting repositories, Spring will automatically map them to their respective databases.
+
+@Service
+public class UserService {
+
+    @Autowired
+    private PrimaryUserRepository primaryRepo;
+
+    @Autowired
+    private SecondaryOrderRepository secondaryRepo;
+
+    public void processData() {
+        primaryRepo.save(new User(...));
+        secondaryRepo.save(new Order(...));
+    }
+}

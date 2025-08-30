@@ -1,3 +1,39 @@
+Sealed Classes
+Sealed Classes were introduced in Java 15 (preview) and became stable in Java 17. They let you restrict which classes can extend or implement a class or interface, giving you more control over inheritance.
+
+Declaration:
+    public sealed class Vehicle permits Car, Bike, Truck {}
+
+1 Subclasses must declare their inheritance type:
+    final → No further extension.
+    sealed → Can have its own limited list of subclasses.
+    non-sealed → Open for anyone to extend.
+    
+2 If a sealed class and all its subclasses are written in the same .java file, then you do not have to write permits.
+    public sealed class Vehicle {}
+
+   final class Car extends Vehicle {}
+   final class Bike extends Vehicle {}
+Here, permits Car, Bike is not needed because Car and Bike are in the same file.
+
+4 Different files → permits required
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Records
+Records in Java are a special type of class introduced in Java 14 (preview) and standardized in Java 16 to create immutable data carriers with minimal boilerplate code.
+
+1 Automatically generates:
+    Constructor
+    Getters (called accessor methods)
+    equals(), hashCode(), and toString()
+
+2 Is implicitly:
+    record is implicitly final
+    Fields are automatically private final.
+     
+Can Records extend classes?
+No. Records cannot extend any class because they implicitly extend java.lang.Record.
+But they can implement interfaces.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is PermGen and MetaSpace?
 
 PermGen : FullForm of PermGen is Permanent Generation and used in Java 7 and earlier.Stores metadata about classes, such as method names, field names, annotations, and constant pool information — basically all the structural details the JVM needs to work with loaded classes.PremGen is fixed in size and cannot be dynamically resized. 
