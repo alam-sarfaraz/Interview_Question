@@ -1,19 +1,26 @@
-How do you ensure fault tolerance in microservices?
-    In microservices, fault tolerance means system keeps running even if some services fail.
-Retry mechanisms: Retry failed calls.
-Circuit breakers: Using libraries like Hystrix, Resilience4j.
-Fallbacks: Provide default responses.
-Bulkheads: Isolate resources for critical services.   
+Explain horizontal and vertical scaling in microservices?
 
+Vertical Scaling (Scale Up)
+    What it is: Make one server stronger.
+    How: Add more CPU, RAM, or storage.
+    Example:
+            A microservice runs on a server with 4 CPU cores and 8 GB RAM.
+            Vertical scaling → Upgrade server to 8 CPU cores and 16 GB RAM.
+
+Horizontal Scaling (Scale Out)
+    What it is: Make more copies of the service.
+    How: Run multiple instances and use a load balancer.
+    Example:
+            Microservice UserService runs on 1 instance.
+            Horizontal scaling → Deploy 3 more instances (total 4).
+            A load balancer distributes requests among them.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-What is the Sidecar pattern in Microservices?
-The Sidecar pattern is a design pattern where a support service runs alongside a main microservice in the same environment (usually the same container or pod).
-It offloads common concerns logging, monitoring, security, or networking from the main service.
-
-Example Use Cases
-Logging/Monitoring: A sidecar collects logs and metrics and forwards them to a central system.
-Network Proxy: A sidecar handles service discovery, load balancing, and TLS for the main service.
-Configuration Updates: Dynamically fetches configuration from a central server.
+How do you ensure fault tolerance in microservices?
+In microservices, fault tolerance means system keeps running even if some services fail.
+    Retry mechanisms: Retry failed calls.
+    Circuit breakers: Using libraries like Hystrix, Resilience4j.
+    Fallbacks: Provide default responses.
+    Bulkheads: Isolate resources for critical services.   
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is a service mesh in Microservices architecture?
 A service mesh is an infrastructure layer that manages service-to-service communication, security, and observability in a microservices architecture without changing application code.
@@ -211,6 +218,15 @@ CQRS is an architectural pattern where the operations that read data (queries) a
 
 👉 Command = change data
 👉 Query = read data
+------------------------------------------------------------------------
+10 What is the Sidecar pattern in Microservices?
+The Sidecar pattern is a design pattern where a support service runs alongside a main microservice in the same environment (usually the same container or pod).
+It offloads common concerns logging, monitoring, security, or networking from the main service.
+
+Example Use Cases
+Logging/Monitoring: A sidecar collects logs and metrics and forwards them to a central system.
+Network Proxy: A sidecar handles service discovery, load balancing, and TLS for the main service.
+Configuration Updates: Dynamically fetches configuration from a central server.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 Load balancer
 Load balancer in microservices → A tool that spreads incoming requests across multiple instances of a microservice so no single instance gets overloaded, ensuring better performance, reliability, and availability

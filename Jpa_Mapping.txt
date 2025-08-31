@@ -115,3 +115,49 @@ public class Course {
 mappedBy
 Used on the inverse side (Course in this example) to indicate that the relationship is already mapped by another entity.
 -------------------------------------------------------------------------------------------
+DeadLock Code
+
+class Resource {
+    public Resource() {
+    }
+}
+
+public class DeadLockExample {
+
+    public static void main(String[] args) {
+        Resource resource1 = new Resource();
+        Resource resource2 = new Resource();
+
+        Thread t1 = new Thread(() -> {
+            synchronized (resource1) {
+                System.out.println("Thread 1 locked Resource1");
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                synchronized (resource2) {
+                    System.out.println("Thread 1 locked Resource2");
+                }
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+            synchronized (resource2) {
+                System.out.println("Thread 2 locked Resource2");
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                synchronized (resource1) {
+                    System.out.println("Thread 2 locked Resource1");
+                }
+            }
+        });
+
+        t1.start();
+        t2.start();
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------

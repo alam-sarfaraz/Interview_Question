@@ -33,8 +33,43 @@ The offset is a unique identifier of a record within a partition. It denotes the
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
  What is the role of the group coordinator in Kafka?
 The group coordinator in Kafka is responsible for managing consumer groups. It handles consumer group membership, assigns partitions to consumers within a group, and manages offset commits. When a consumer joins or leaves a group, the group coordinator triggers a rebalance to reassign partitions among the remaining consumers.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Can we control which partition the data will go to?
+Yes, in Apache Kafka you can control which partition the data (messages) will go to, using different approaches depending on your requirements:
+
+Specifying a Partition Manually
+You can explicitly assign a partition when producing a message.
+
+Case 1
+Example in Java:
+    ProducerRecord<String, String> record =
+        new ProducerRecord<>("my-topic", 2, "key", "value"); // Partition = 2
+    producer.send(record);
+This ensures the message always goes to partition 2.
+
+Case 2 - When partition is not present
+
+ProducerRecord<String, String> record =
+    new ProducerRecord<>("orders", "customer123", "Order placed");
+producer.send(record);
+
+If key is present
+    Kafka takes the hash of the key and uses it to pick a partition.
+    All messages with the same key go to the same partition (order is preserved for that key).
+If key is null
+    Kafka uses round-robin → messages are sent one by one to each partition, spreading the load evenly.
+    
+    
+Case 2:
+ProducerRecord<String, String> record =
+    new ProducerRecord<>("my-topic", 2, null, "value"); // Partition = 2
+producer.send(record);
+
+Result:
+    Message will always go to partition 2, regardless of key being null or any other value.
+    Kafka does not do hashing or round-robin when partition is explicitly set.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 

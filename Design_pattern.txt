@@ -51,9 +51,9 @@ https://medium.com/@javatechie/solid-design-principle-java-ae96a48db97
 Design patterns are solutions to general problems that software developers faced during software development.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 Types of Design Patterns in Java
-1 creational design patterns. 
-2 structural design patterns.
-3 behavioral design patterns.
+1 creational design patterns. - Creational design patterns provide solutions to instantiate an Object in the best possible way for specific situations.
+2 structural design patterns. - Organizing classes and objects to form larger structures.
+3 behavioral design patterns. - These patterns help to define how the objects should communicate and interact with one another.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 Creational design patterns. 
 
@@ -91,90 +91,44 @@ Eager Instantiation: The object creation takes place at the load time.
 Lazy Instantiation: The object creation is done according to the requirement.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
-public class Singleton {
+package com.inn.string;
 
-	private static Singleton singleton;
-   
-	private Singleton() {
+import java.lang.reflect.Constructor;
 
-	}
+public class SingletonExample {
 
-	public static Singleton getInstance() {
-		if (singleton == null) {
-			synchronized (Singleton.class) {
-				if (singleton == null) {
-					singleton = new Singleton();
-				}
-			}
-		}
-		return singleton;
-	}
+    private static SingletonExample singleton;
 
-	public static void main(String[] args) {
-           Singleton singleton = Singleton.getInstance();
-           System.err.println(singleton.hashCode());
-           Singleton singleton1 = Singleton.getInstance();
-           System.err.println(singleton1.hashCode());
-           
-	}
-
-}
-
-
-Example of Eager Instantiation.
-
-public class EagerInitializedSingleton {
-
-    private static final EagerInitializedSingleton instance = new EagerInitializedSingleton();
-
-    // private constructor to avoid client applications using the constructor
-    private EagerInitializedSingleton(){}
-
-    public static EagerInitializedSingleton getInstance() {
-        return instance;
+    private SingletonExample() {
+        // Uncomment this to prevent reflection breaking
+        // if (singleton != null) {
+        //     throw new RuntimeException("Use getInstance() method to create");
+        // }
     }
-}
---------------------------------------------------------------------------------------------------------------------------------------------------------------
-Lazy Instantiation: The object creation is done according to the requirement.
 
-public class LazyInitializedSingleton {
-
-    private static LazyInitializedSingleton instance;
-
-    private LazyInitializedSingleton(){}
-
-    public static LazyInitializedSingleton getInstance() {
-        if (instance == null) {
-            instance = new LazyInitializedSingleton();
-        }
-        return instance;
-    }
-}
---------------------------------------------------------------------------------------------------------------------------------------------------------------
-How to break Singleton pattern
-
-Using Reflection to destroy Singleton Pattern.
-
-public class ReflectionSingletonTest {
-
-    public static void main(String[] args) {
-        EagerInitializedSingleton instanceOne = EagerInitializedSingleton.getInstance();
-        EagerInitializedSingleton instanceTwo = null;
-        try {
-            Constructor[] constructors = EagerInitializedSingleton.class.getDeclaredConstructors();
-            for (Constructor constructor : constructors) {
-                // This code will destroy the singleton pattern
-                constructor.setAccessible(true);
-                instanceTwo = (EagerInitializedSingleton) constructor.newInstance();
-                break;
+    public static SingletonExample getInstance() {
+        if (singleton == null) {
+            synchronized (SingletonExample.class) {
+                if (singleton == null) {
+                    singleton = new SingletonExample();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        System.out.println(instanceOne.hashCode());
-        System.out.println(instanceTwo.hashCode());
+        return singleton;
     }
 
+    public static void main(String[] args) throws Exception {
+        SingletonExample obj1 = SingletonExample.getInstance();
+        SingletonExample obj2 = SingletonExample.getInstance();
+        System.out.println("Normal Singleton: " + (obj1 == obj2)); // true
+
+        // Breaking singleton using Reflection
+        Constructor<SingletonExample> constructor = SingletonExample.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        SingletonExample newInstance = constructor.newInstance();
+
+        System.out.println("After Reflection: " + (obj1 == newInstance)); // false
+    }
 }
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------

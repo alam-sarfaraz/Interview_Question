@@ -22,6 +22,15 @@ Example: Car and Engine
          Car has an Engine.
          Engine cannot exist separately without a Car.
 
+What is aggregation?
+Aggregation is a special type of association that represents a "has-a" relationship but with a weaker bond compared to composition.
+Child can exist without the parent.
+If the parent object is destroyed, the child object can still exist.
+In aggregation, the contained object can exist independently of the container.
+Example: University and Department
+         University has Departments.
+         Departments can exist even if the University is closed.
+
 What is an association?
 Association is a relationship between two classes where they can interact but do not depend on each other's lifecycle.
 It represents a "uses-a" or "works-with" relationship.
@@ -34,16 +43,6 @@ Types of Association
 Example: Teacher and Student
          Teacher can exist without a Student.
          Student can exist without a Teacher.
-         
-What is aggregation?
-Aggregation is a special type of association that represents a "has-a" relationship but with a weaker bond compared to composition.
-Child can exist without the parent.
-If the parent object is destroyed, the child object can still exist.
-In aggregation, the contained object can exist independently of the container.
-Example: University and Department
-         University has Departments.
-         Departments can exist even if the University is closed.
-
 -------------------------------------------------------------------------------------------------------------------------------------------------------------  IS-A Relationship (Inheritance)
      Represents inheritance.
      One class is a type of another class.
