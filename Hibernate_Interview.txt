@@ -224,28 +224,47 @@ Min Pool Size: The minimum number of connections that should be maintained in th
 Connection Lease: When a connection is borrowed from the pool for use, it is referred to as a lease. After usage, it is returned to the pool.
 Timeout: The maximum time an application will wait to get a connection from the pool. If a connection is not available within this time, an error is thrown.
 
+package com.example.hikari;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-public class DatabaseConnectionPool {
+import java.sql.Connection;
+import java.sql.SQLException;
+
+public class HikariCPConnectionPool {
+
     private static HikariDataSource dataSource;
 
     static {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/mydatabase");
-        config.setUsername("dbuser");
-        config.setPassword("dbpassword");
-        config.setMinimumIdle(10);
-        config.setMaximumPoolSize(100);
-        config.setConnectionTimeout(30000);
-        
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/mydb");
+        config.setUsername("root");
+        config.setPassword("password");
+
+        // Optional settings
+        config.setMaximumPoolSize(10);     // Max connections
+        config.setMinimumIdle(5);          // Min idle connections
+        config.setIdleTimeout(30000);      // 30 sec idle timeout
+        config.setMaxLifetime(1800000);    // 30 min max lifetime
+        config.setConnectionTimeout(30000);// 30 sec wait for a connection
+
         dataSource = new HikariDataSource(config);
     }
 
+    // Get a connection from the pool
     public static Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
+
+    // Close pool when shutting down
+    public static void closePool() {
+        if (dataSource != null) {
+            dataSource.close();
+        }
+    }
 }
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 Hibernate
 Hibernate is a Java-based persistence framework.that basically allows a developer to map POJO - plain old Java objects - to relational database tables.
@@ -255,7 +274,7 @@ Hibernate ORM stands for Object Relational Mapping. This is a mapping tool patte
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 Configuration
 
-As Hibernate can operate in different environments, it requires a wide range of configuration parameters. These configurations contain the mapping information that provides different functionalities to Java classes. Generally, we provide database related mappings in the configuration file. Hibernate facilitates to provide the configurations either in an XML file (like hibernate.cfg.xml) or properties file (like hibernate.properties).
+Hibernate configuration is the set of instructions that tells Hibernate how to talk to the database and manage your tables automatically. Hibernate facilitates to provide the configurations either in an XML file (like hibernate.cfg.xml) or properties file (like hibernate.properties).
  
 hibernate. cfg. xml
 
@@ -292,7 +311,7 @@ session.close();
 
 SessionFactory
 
-SessionFactory is a thread-safe, heavyweight object responsible for creating and managing Session instances. The Session provides methods such as save, delete and update, all of which are used to perform CRUD-based operations on the database to which the SessionFactory connects
+SessionFactory is a thread-safe, heavyweight object responsible for creating and managing Session instances.Created once per application during startup. The Session provides methods such as save, delete and update, all of which are used to perform CRUD-based operations on the database to which the SessionFactory connects
 It holds second level cache (optional) of data.
 
 Heavyweight & Immutable
@@ -331,14 +350,50 @@ The session objects should not be kept open for a long time because they are not
 Criteria
 In Hibernate, criteria queries are used to fetch data from a database based on certain conditions or criteria. Criteria queries are created using the Criteria API provided by Hibernate. 
 
+Session session = HibernateUtil.getSessionFactory().openSession();
+Criteria criteria = session.createCriteria(Employee.class);
+criteria.add(Restrictions.eq("department", "IT"));
+criteria.add(Restrictions.gt("salary", 50000));
+
+List<Employee> employees = criteria.list();
+for (Employee emp : employees) {
+    System.out.println(emp.getName() + " - " + emp.getSalary());
+}
+session.close();
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-A transaction is a unit of work which ensure the data which is committed in database successfully or not.
+A transaction is a single unit of work that ensures a group of operations are executed successfully; if any operation fails, the entire transaction is rolled back.
 A transaction can be described by ACID properties (Atomicity, Consistency, Isolation and Durability).
 
-1. Atomicity: Each transaction should be carried out in its entirety; if one part of the transaction fails, then the whole transaction fails.
-2. Consistency: The database should be in a valid state before and after the performed transaction.
+1. Atomicity: All steps happen completely or none happen it means that if one part of the transaction fails, then the whole transaction fails.
+2. Consistency: Data must remain correct before and after the transaction.
 3. Isolation: Each transaction should execute in complete isolation without knowing the existence of other transactions.
 4. Durability: Once the transaction is complete, the changes made by the transaction are permanent (even in the occurrence of unusual events such as power loss).
+
+Session session = HibernateUtil.getSessionFactory().openSession();
+Transaction transaction = null;
+try {
+    transaction = session.beginTransaction();
+
+    Employee emp = new Employee();
+    emp.setName("John");
+    session.save(emp);
+
+    // Another operation
+    emp.setSalary(50000);
+    session.update(emp);
+
+    transaction.commit(); // Commit if all succeed
+    System.out.println("Transaction committed!");
+} catch (Exception e) {
+    if (transaction != null) {
+        transaction.rollback(); // Rollback on failure
+    }
+    System.out.println("Transaction rolled back!");
+} finally {
+    session.close();
+}
+
 
 void begin() starts a new transaction.
 void commit() ends the unit of work unless we are in FlushMode.NEVER.

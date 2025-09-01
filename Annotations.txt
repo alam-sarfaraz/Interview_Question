@@ -8,9 +8,28 @@ Key points:
     Does not have required attribute (assumes the dependency must be present).
     Can use @Named for specifying which bean to inject when multiple beans exist.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-@Cacheable: Caches the result of a method. If the method is called with the same parameters, the cached result is returned instead of executing the method again.
-@CachePut: Updates the cache with the method’s result, even if the result already exists in the cache.
-@CacheEvict: Removes data from the cache. It can be used for clearing caches after an update.
+@Cacheable:
+@Cacheable is a Spring Framework annotation used to cache the result of a method execution. When you call a method annotated with @Cacheable, Spring first checks whether the result is already present in the cache. If it is, it returns the cached result instead of executing the method. If not, it executes the method, stores the result in the cache, and then returns it.
+
+    Purpose: Caches the result of a method if not already present.
+Execution:
+    If cache contains the value → method is not executed.
+    If cache does not contain the value → method executes and stores the result.
+    Use Case: Frequently accessed read operations (e.g., fetching product details).
+    
+@CachePut
+    Purpose: Updates (or adds) the cache without skipping method execution.
+Execution:
+    Always executes the method.
+    After execution, it updates the cache with the return value.
+    Use Case: After save or update operations.
+    
+@CacheEvict
+    Purpose: Removes entry (or all entries) from cache.
+Execution:
+    Method always executes.
+    Cache entry is removed after method execution (or before if beforeInvocation = true).
+    Use Case: After delete operations or when you need to invalidate stale data.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 @Conditional annotations is one the powerful annotation in springboot throught which we can conditionally enable or disable beans, configurations, or features at runtime based on specific conditions.
 

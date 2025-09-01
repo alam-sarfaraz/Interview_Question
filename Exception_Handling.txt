@@ -79,6 +79,26 @@ Major reasons why an exception Occurs:
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 Hierarchy of Java Exception classes
 The java.lang.Throwable class is the root class of Java Exception hierarchy inherited by two subclasses: Exception and Error.
+java.lang.Object
+   └── java.lang.Throwable
+         ├── java.lang.Error
+         │     ├── OutOfMemoryError
+         │     ├── StackOverflowError
+         │     └── VirtualMachineError
+         │
+         └── java.lang.Exception
+               ├── java.lang.RuntimeException (Unchecked)
+               │      ├── NullPointerException
+               │      ├── ArrayIndexOutOfBoundsException
+               │      ├── ArithmeticException
+               │      └── ClassCastException
+               │
+               └── Checked Exceptions
+                      ├── IOException
+                      ├── SQLException
+                      ├── ClassNotFoundException
+                      └── FileNotFoundException
+
 
 There are mainly two types of exceptions:
 

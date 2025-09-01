@@ -323,19 +323,20 @@ What is the 12-factor app methodology?
 The 12-Factor App methodology is a set of best practices for building modern, scalable, and maintainable Software-as-a-Service (SaaS) applications. It was introduced by Heroku to help developers design applications that are portable, resilient, and easy to deploy across different environments (development, staging, production, etc.).
 
 Mnemonic: "Cool Developers Build Bright Projects, Providing Clever, Clean, Deep Logs And Apps"
-1. Codebase - One codebase, many deploys – A single version-controlled codebase is used for multiple deployments (dev, staging, prod).
-2. Dependencies - Explicitly declare dependencies – Use a dependency manager to avoid hidden, system-level dependencies.
-3. Config - Store config in the environment – Keep credentials, URLs, and keys outside the codebase using environment variables.
-4. Backing Services -  Treat services as attached resources – Databases, queues, and caches should be swappable without changing code.
-5. Build, Release, Run - Separate build, release, and run – Ensure builds are immutable and configuration is applied only at release.
-6. Processes - Execute as stateless processes – Do not store session or data in-process; use external storage.
-7. Port Binding - Export services via port binding – The app should run independently by exposing HTTP or other services on a port.
-8. Concurrency - Scale by process model – Scale horizontally by adding more processes, not by creating threads inside one.
-9. Disposability - Fast start, graceful shutdown – Processes should boot quickly and handle termination signals properly.
-10. Dev/Prod Parity - Keep environments similar – Minimize differences between development, staging, and production.
-11. Logs - Treat logs as event streams – Output logs to stdout/stderr and let the environment handle aggregation.
-12. Admin Processes - Run admin tasks as one-off processes – Execute migrations, scripts, and maintenance tasks separately.
--------------------------------------------------------------------------------------------------------------------------------------------------------------
+A-1 ,B - 2 ,CCC-3 , D-3 , L-1 , p-2
+1  Admin Processes - Run admin tasks as one-off processes – Execute migrations, scripts, and maintenance tasks separately.
+2  Backing Services -  Treat services as attached resources – Databases, queues, and caches should be swappable without changing code.
+3  Build, Release, Run - Separate build, release, and run – Ensure builds are immutable and configuration is applied only at release.
+4  Codebase - One codebase, many deploys – A single version-controlled codebase is used for multiple deployments (dev, staging, prod).
+5  Config - Store config in the environment – Keep credentials, URLs, and keys outside the codebase using environment variables.
+6  Concurrency - Scale by process model – Scale horizontally by adding more processes, not by creating threads inside one.  
+7  Dependencies - Explicitly declare dependencies – Use a dependency manager to avoid hidden, system-level dependencies.
+8  Disposability - Fast start, graceful shutdown – Processes should boot quickly and handle termination signals properly.
+9  Dev/Prod Parity - Keep environments similar – Minimize differences between development, staging, and production.
+10 Logs - Treat logs as event streams – Output logs to stdout/stderr and let the environment handle aggregation.
+11 Processes - Execute as stateless processes – Do not store session or data in-process; use external storage.
+12 Port Binding - Export services via port binding – The app should run independently by exposing HTTP or other services on a port.
+ -------------------------------------------------------------------------------------------------------------------------------------------------------------
 Maven is a build automation and project management tool primarily used for Java projects. It uses a project object model (POM) file to manage project dependencies, build processes, and project documentation. Maven simplifies the build process by providing a standard way to handle project configuration, dependencies, and plugins.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 Monolithic and Microservices Architecture

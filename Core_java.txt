@@ -1,11 +1,22 @@
 Aspect-Oriented Programming (AOP) is a way to write code for common tasks (like logging, security, transactions) in one place and have it run automatically wherever needed, instead of repeating it in every class.
 
-Term	     Meaning
-Aspect	     A module that contains cross-cutting logic (e.g., LoggingAspect).
-Advice	     The actual code to run (before, after, or around a method).
-Join Point	 A specific point in program execution (like method call).
-Pointcut	 An expression that selects which join points to target.
-Weaving	     The process of connecting aspects with the target code.
+Aspect	     
+    A module that contains cross-cutting logic (e.g., LoggingAspect).Defined using @Aspect.
+Advice	 
+    The action taken at a particular point in program execution.).
+        Types:
+                Before Advice – Runs before a method executes (@Before).
+                After Advice – Runs after a method executes (@After).
+                After Returning – Runs only if method succeeds (@AfterReturning).
+                After Throwing – Runs only if method throws exception (@AfterThrowing).
+                Around Advice – Runs before and after method (@Around).
+Join Point
+    A point in program execution where advice can be applied (e.g., method execution).
+Pointcut
+    An expression that matches join points.
+    Example: execution(* com.example.service.*.*(..))
+Weaving
+    The process of applying aspects to target classes at runtime or compile-time.
 
 @Aspect
 @Component

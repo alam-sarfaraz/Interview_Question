@@ -102,7 +102,7 @@ Fail-Safe
     Does not throw ConcurrentModificationException.
     It works on a clone (copy) of the collection.
     So any structural modification won’t affect the iteration.
-        Examples: CopyOnWriteArrayList, ConcurrentHashMap
+        Examples: CopyOnWriteArrayList, ConcurrentHashMap,CopyOnWriteArraySet
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 try-with-resources

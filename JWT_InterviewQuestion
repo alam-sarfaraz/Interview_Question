@@ -23,10 +23,10 @@ Signature – ensures the token hasn’t been altered.
 
 How it works in authentication?
 
-1 User logs in with username/password.
+1 User logs in with username/password.(In JWT authentication, the password is usually sent as plain text inside an HTTPS request (encrypted by TLS in transit), verified on the server, and never stored or sent back.)
 2 Server verifies credentials and creates a JWT.
 3 JWT is sent back to the client.
-4 Client stores the token (usually in localStorage or cookies).
+4 Client stores the token (usually in localStorage, sessionStorage, or a cookie.).
 5 For every request, the client sends the token in the Authorization header:
   Authorization: Bearer <token>
 6 Server verifies the token’s signature and expiry before allowing access.
