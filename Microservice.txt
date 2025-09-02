@@ -132,7 +132,9 @@ Circuit Breaker is design pattern in microservices is like a safety mechanism th
 
 How It Works
 Closed State: Initially, the circuit is closed, and requests flow normally. The Circuit Breaker monitors the success and failure rates of the requests.
+
 Open State: If the failure rate exceeds a certain threshold, the circuit opens. This means that any requests to the failed service are immediately returned with an error, without actually attempting to call the service. This helps to avoid overwhelming the failing service.
+
 Half-Open State: After a predefined timeout period, the Circuit Breaker enters a half-open state and allows a limited number of test requests to pass through. If these requests succeed, the circuit closes again, and normal operation resumes. If they fail, the circuit reopens.
 
 Tools

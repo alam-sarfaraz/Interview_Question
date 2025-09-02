@@ -1,0 +1,91 @@
+                                       Implement a Eureka Server in a Spring Boot project:
+
+1. Add Dependencies
+    Add Eureka Server dependency in your pom.xml
+    
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+    </dependency>
+
+2. Enable Eureka Server
+    Create a Spring Boot main class and add the annotation: @EnableEurekaServer
+    
+3. Configure Application Properties 
+    eureka:
+        client:
+            register-with-eureka: false  # Don't register the server itself
+            fetch-registry: false        # Don't fetch registry, because it's the server      
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                       Implement a Eureka Client and register it with your running Eureka Server.
+
+1. Add Dependencies
+    Add the Eureka Client dependency to your client microservice’s pom.xml:
+    <dependency>
+       <groupId>org.springframework.cloud</groupId>
+       <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
+    
+2. Enable Eureka Client 
+    In your Spring Boot main class, add the annotation: @EnableEurekaClient // Enables this microservice to register with Eureka Server 
+    
+3. Configure Application Properties
+    eureka:
+      client:
+        service-url:
+           defaultZone: http://localhost:8761/eureka/ 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                        Implementing an API Gateway in Spring Boot
+1. Add Dependencies (pom.xml) 
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-gateway</artifactId>
+    </dependency>
+    
+2. Configure application.yml
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/users/**
+        - id: order-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/orders/**                                           
+----------------------------------------------------------------------------------------------------------------------------------------------------------------    
+                                           Standalone Circuit Breaker in Spring Boot 
+1. . Add Dependencies (pom.xml)
+    <dependency>
+        <groupId>io.github.resilience4j</groupId>
+        <artifactId>resilience4j-spring-boot3</artifactId>
+        <version>2.2.0</version> <!-- Use latest stable -->
+    </dependency>     
+    
+2. Configure application.yml
+        
+resilience4j:
+  circuitbreaker:
+    instances:
+      myService:
+        slidingWindowSize: 5      # Number of calls to monitor
+        minimumNumberOfCalls: 5   # Minimum calls before it starts evaluating
+        failureRateThreshold: 50  # % of failures to trip the breaker
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2       
+----------------------------------------------------------------------------------------------------------------------------------------------------------------                                                                              
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                                        

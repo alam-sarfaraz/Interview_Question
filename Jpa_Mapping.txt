@@ -115,7 +115,7 @@ public class Course {
 mappedBy
 Used on the inverse side (Course in this example) to indicate that the relationship is already mapped by another entity.
 -------------------------------------------------------------------------------------------
-DeadLock Code
+                                        DeadLock Code
 
 class Resource {
     public Resource() {
