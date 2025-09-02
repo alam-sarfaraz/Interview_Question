@@ -1,3 +1,28 @@
+JWT implementation:
+1. Add Required Dependencies
+    spring-boot-starter-web
+    spring-boot-starter-security
+    jjwt-api, jjwt-impl, jjwt-jackson
+ 
+2.Create JWT Utility Class
+    This class handles token creation, validation, and extraction.
+
+3. Create Authentication Filter .
+    It extends OncePerRequestFilter, so it runs once per request before the request hits your controller.
+    and we have to override doFilterInternal method
+    The Authentication Filter (in JWT implementation) is the key piece that checks every incoming request to ensure it has a valid JWT before allowing access to protected resources. 
+    
+4. Configure Spring Security  
+    Purpose of SecurityConfig
+        This class tells Spring Security:
+        Which endpoints are public (e.g., /auth/login or /register)
+        Which endpoints require authentication (e.g., /api/**)
+        How to handle authentication (stateless with JWT)
+        Which filters to apply before processing the request  
+
+5. Authentication Controller  
+    Provide endpoints to login and generate JWT.         
+------------------------------------------------------------------------------------------------------------------------
 What is Spring security authentication and authorization?
 
 Authentication – "Who are you?"
