@@ -33,7 +33,7 @@
     eureka:
       client:
         service-url:
-           defaultZone: http://localhost:8761/eureka/ 
+           defaultZone: http://localhost:8761/eureka/ #defaultZone points to the Eureka Server’s URL where this service should register itself.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
                                         Implementing an API Gateway in Spring Boot
 1. Add Dependencies (pom.xml) 
@@ -73,8 +73,8 @@ resilience4j:
         slidingWindowSize: 5      # Number of calls to monitor
         minimumNumberOfCalls: 5   # Minimum calls before it starts evaluating
         failureRateThreshold: 50  # % of failures to trip the breaker
-        waitDurationInOpenState: 10s
-        permittedNumberOfCallsInHalfOpenState: 2       
+        waitDurationInOpenState: 10s # how long to stay OPEN before HALF-OPEN
+        permittedNumberOfCallsInHalfOpenState: 2  # test requests in HALF-OPEN     
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------                                                                              
                                         
                                         

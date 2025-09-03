@@ -1,3 +1,40 @@
+Rate limiting:
+    Rate limiting is a technique used to control the number of requests a client can make to a server or API within a specific time frame. It helps prevent abuse, ensure fair usage, and protect system resources.
+
+If an interviewer asks, how would you protect your application with rate limiting in a microservices architecture?
+    We protect our microservices using rate limiting at the API Gateway level. Each incoming request first passes through the gateway, where we define rules (e.g., 100 requests per minute per user or API key). We use a distributed cache like Redis with a token bucket algorithm to ensure fair usage across all gateway instances. If a client exceeds the limit, the gateway responds with HTTP 429 (Too Many Requests) and suggests when to retry. This prevents abuse, controls traffic spikes, and protects downstream microservices from overload.
+OR
+    We protect our microservices using rate limiting at the API Gateway. It controls the number of requests a user or API key can make within a specific time frame (e.g., 100 requests/min). If the limit is exceeded, the gateway blocks excess requests with HTTP 429, preventing overload and ensuring fair usage.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Fault tolerance:
+    In microservices, fault tolerance means system keeps running even if some services fail.
+How would you protect your application with fault tolerance?
+First, I identify potential failure points — such as external API calls, database queries, message queues, or downstream microservices that my service depends on.
+
+1. Retry Mechanism
+    For transient failures (like temporary network glitches), I use Spring Retry or Resilience4j's retry feature to automatically retry the request with exponential backoff. 
+    (Transient failures mean temporary or short-lived errors that can fix themselves if you try again after a moment.)  
+    Exponential backoff means increasing the waiting time between retries step by step instead of retrying immediately each time.
+    Simple Example:First retry → wait 1 second,Second retry → wait 2 seconds,Third retry → wait 4 seconds,Fourth retry → wait 8 seconds, and so on…
+    
+2. Circuit Breaker
+    To prevent cascading failures, I implement a Circuit Breaker (Resilience4j). If a service fails continuously, the circuit opens and stops making calls until it recovers.
+    Cascading failures mean when the failure of one service or component spreads to others and causes the whole system to fail.
+    Simple Example:   Service A calls Service B → Service B becomes slow or goes down.
+                      Service A keeps waiting → its threads get blocked.
+                      Service C calls Service A → now Service C also gets delayed.
+                      Soon, all services slow down or crash — this is cascading failure.
+
+3. Fallbacks & Graceful Degradation    
+    If a service is down, I provide a fallback response (e.g., cached data, static response, or alternative service) so users still get some experience. 
+    
+4. Bulkhead Pattern
+    I isolate resources per service using Bulkhead to ensure one slow service doesn't consume all my threads. 
+    
+To ensure fault tolerance in my Spring Boot application, I first identify all potential failure points—like external APIs, databases, or downstream services. Then, I implement key resilience patterns using Resilience4j. For transient failures, I use retries with exponential backoff. To prevent cascading failures, I configure a circuit breaker that stops sending requests when a service repeatedly fails and then retries after a cool-off period. I also add fallback methods to return cached or default responses so users still get some experience even if the service is down. Timeouts are configured to prevent threads from hanging, and I apply the bulkhead pattern to isolate resources per service. For high-traffic scenarios, I use rate limiting at the API gateway. Finally, I integrate monitoring tools like Prometheus and Grafana for real-time alerts and sometimes perform chaos testing to validate resilience. This way, the system remains available and stable even under failures.                          
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 Explain horizontal and vertical scaling in microservices?
 
 Vertical Scaling (Scale Up)
@@ -14,13 +51,6 @@ Horizontal Scaling (Scale Out)
             Microservice UserService runs on 1 instance.
             Horizontal scaling → Deploy 3 more instances (total 4).
             A load balancer distributes requests among them.
----------------------------------------------------------------------------------------------------------------------------------------------------------------
-How do you ensure fault tolerance in microservices?
-In microservices, fault tolerance means system keeps running even if some services fail.
-    Retry mechanisms: Retry failed calls.
-    Circuit breakers: Using libraries like Hystrix, Resilience4j.
-    Fallbacks: Provide default responses.
-    Bulkheads: Isolate resources for critical services.   
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is a service mesh in Microservices architecture?
 A service mesh is an infrastructure layer that manages service-to-service communication, security, and observability in a microservices architecture without changing application code.
@@ -133,10 +163,9 @@ Circuit Breaker is design pattern in microservices is like a safety mechanism th
 How It Works
 Closed State: Initially, the circuit is closed, and requests flow normally. The Circuit Breaker monitors the success and failure rates of the requests.
 
-Open State: If the failure rate exceeds a certain threshold, the circuit opens. This means that any requests to the failed service are immediately returned with an error, without actually attempting to call the service. This helps to avoid overwhelming the failing service.
+Open State: If the failure rate exceeds a threshold, the circuit opens. This means that any requests to the failed service are immediately returned with an error, without actually attempting to call the service. This helps to avoid overwhelming the failing service.
 
-Half-Open State: After a predefined timeout period, the Circuit Breaker enters a half-open state and allows a limited number of test requests to pass through. If these requests succeed, the circuit closes again, and normal operation resumes. If they fail, the circuit reopens.
-
+Half-Open State: After a predefined timeout period, the Circuit Breaker enters a half-open state and allows a limited number of test requests to pass through. If these requests succeed, the circuit closes again, and normal operation resumes. If they fail, the circuit reopens
 Tools
 Netflix Hystrix,Resilience4j,Spring Cloud Circuit Breaker
 

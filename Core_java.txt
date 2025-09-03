@@ -3,7 +3,7 @@ Aspect-Oriented Programming (AOP) is a way to write code for common tasks (like 
 Aspect	     
     A module that contains cross-cutting logic (e.g., LoggingAspect).Defined using @Aspect.
 Advice	 
-    The action taken at a particular point in program execution.).
+    The action taken (what you want to do, e.g., log method execution).
         Types:
                 Before Advice – Runs before a method executes (@Before).
                 After Advice – Runs after a method executes (@After).
@@ -11,13 +11,26 @@ Advice
                 After Throwing – Runs only if method throws exception (@AfterThrowing).
                 Around Advice – Runs before and after method (@Around).
 Join Point
-    A point in program execution where advice can be applied (e.g., method execution).
+    A specific point in application (e.g., method call).
 Pointcut
     An expression that matches join points.
     Example: execution(* com.example.service.*.*(..))
 Weaving
     The process of applying aspects to target classes at runtime or compile-time.
 
+STEP 
+1. Add Dependency (if using Spring Boot)
+   <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-aop</artifactId>
+   </dependency>
+
+2. Enable AOP in Your Application : 
+   Add @EnableAspectJAutoProxy in your main Spring Boot application class or any configuration class: @EnableAspectJAutoProxy
+   
+   
+3. Create an Aspect
+   
 @Aspect
 @Component
 public class LoggingAspect {
