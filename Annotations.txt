@@ -1,3 +1,12 @@
+What is @Bean annotation?
+Answer: @Bean annotaon is used when you want to explicitly declare and register a bean into application context, so that it will be managed by Spring.
+Some points to remember:
+- When using @Bean, you have the control over the bean creaon logic.
+- @Bean is a method level annotaon, the body of the method contains the logic for creang the bean instance and this method returns the instance which will   
+  be registered in the spring applicaon context.
+- Using @Bean, you can register the classes from 3rd party libraries into the applicaon context
+- @Bean annotaon is usually declared in configuraon classes.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is Inject?
 @Inject is a Java standard annotation (JSR-330) used for dependency injection.
 Where is it used?

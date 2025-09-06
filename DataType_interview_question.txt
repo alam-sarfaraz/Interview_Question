@@ -1,17 +1,16 @@
+Externalizable interface is used when we want to implement custom logic to serialize/deserialize an object. Externalizable interface extends the Serializable interface, and it has two methods, writeExternal() and readExternal() which are used for serializaon and de-serializaon. This way, we can change the JVM’s default serializaon behavior because while using Externalizable, we decide what to store in stream.
+Present in java.io.Externalizable
+-------------------------------------------------------------------------------------------------------------------------------------------------------------  
 How does the hashCode() method relate to the equals() method? What are the implications of overriding one but not the other?
-
 Contract between them (from Object class specification):
     If two objects are equal according to equals(), they must have the same hashCode().
     If two objects have the same hashCode(), they are not necessarily equal.
-
 Implications of overriding one but not the other
-   
     Override equals() but NOT hashCode()                  
         Two objects may be equal, but have different hash codes → collections like HashSet or HashMap may treat them as different objects.
     
     Override hashCode() but NOT equals()
         Objects may have the same hash code, but equals() says they are not equal → can cause duplicate entries in hash-based collections.
-   
 -------------------------------------------------------------------------------------------------------------------------------------------------------------  
 What is composition?
 Composition is an object-oriented design principle where one class contains a reference to another class to use its functionality.
@@ -103,6 +102,8 @@ Fail-Safe
     It works on a clone (copy) of the collection.
     So any structural modification won’t affect the iteration.
         Examples: CopyOnWriteArrayList, ConcurrentHashMap,CopyOnWriteArraySet
+
+HashMap does not have any internal locking. Instead, it uses a modification count (modCount) to detect concurrent modifications. Every put/remove operation increases modCount. When an iterator is created, it stores expectedModCount = modCount. During iteration, each next() or hasNext() checks if they are still equal. If some other thread or code modifies the map, modCount changes but expectedModCount stays the same, leading to a ConcurrentModificationException. This fail-fast behavior is only a detection mechanism, not a prevention mechanism.        
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 try-with-resources
@@ -297,6 +298,14 @@ Key Points
 No Methods: Marker interfaces have no methods.
 Tagging: They tag a class with a specific capability.
 Checked with instanceof: The presence of the marker is often checked using the instanceof keyword.
+
+@interface MyMarker {}
+
+// Using it
+@MyMarker
+class MyClass {
+    // some fields and methods
+}
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is Variable Shadowing?
 Variable shadowing occurs when a variable declared in an inner scope (such as a method, constructor, or inner class) has the same name as a variable declared in an outer scope (such as a class or enclosing block). The inner variable "shadows" or hides the outer variable, making the outer variable inaccessible in the current scope.

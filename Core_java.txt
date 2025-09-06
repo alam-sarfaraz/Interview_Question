@@ -1,3 +1,15 @@
+HashSet internally uses a HashMap to store elements as keys with a dummy value (PRESENT). When you add an element, it calculates the hash using the key's hashCode() and decides the bucket using (n - 1) & hash. If the element already exists (determined using equals()), it is not added. It allows one null element, has a default initial capacity of 16, and a load factor of 0.75. Duplicates are prevented because HashMap cannot store duplicate keys.
+
+Load factor is a threshold that decides when to increase the capacity of the internal HashMap.
+Default: 0.75 (75%)
+
+How it works?
+   Initial capacity = 16
+   Load factor = 0.75
+   Threshold = capacity × load factor → 16 × 0.75 = 12
+That means:
+   When 12 elements are inserted, HashSet will resize (double the capacity to 32) and rehash all elements
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Aspect-Oriented Programming (AOP) is a way to write code for common tasks (like logging, security, transactions) in one place and have it run automatically wherever needed, instead of repeating it in every class.
 
 Aspect	     

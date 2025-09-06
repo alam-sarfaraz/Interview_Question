@@ -174,20 +174,6 @@ Syntax:
 public interface Predicate<T>{
     boolean test(T t);
 }
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Stream API
-
-Stream API is used to iterate over the collections of objects.
-
-Methods :
-
-filter(Predicate): Filters the elements of the stream based on the given predicate.
-map(Function): Transforms each element of the stream using the given function.
-forEach(Consumer): Performs an action for each element of the stream.
-collect(Collector): Collects the elements of the stream into a collection.
-findFirst() / findAny(): Returns an optional containing the first element (or any element) of the stream.
-anyMatch(Predicate) / allMatch(Predicate) / noneMatch(Predicate): Checks if any, all, or none of the elements of the stream match the given predicate.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 Optional class
 It is part of java.util package.
