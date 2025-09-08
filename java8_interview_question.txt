@@ -1,6 +1,5 @@
 Sealed Classes
-Sealed Classes were introduced in Java 15 (preview) and became stable in Java 17. They let you restrict which classes can extend or implement a class or interface, giving you more control over inheritance.
-
+Sealed classes, introduced as a preview feature in Java 15 and standardized in Java 17, provide more control over inheritance. They restrict which classes or interfaces are allowed to extend or implement them, making the class hierarchy more predictable and secure.
 Declaration:
     public sealed class Vehicle permits Car, Bike, Truck {}
 
@@ -40,8 +39,7 @@ PermGen : FullForm of PermGen is Permanent Generation and used in Java 7 and ear
 
 It was a contiguous Java Heap Memory.If too many classes were loaded (e.g., in web applications with hot-redeploy), it could fill up and cause:java.lang.OutOfMemoryError: PermGen space.
 
-MetaSpace introduced in Java 8, replacing PermGen.Stores metadata about classes, such as method names, field names, annotations, and constant pool information — basically all the structural details the JVM needs to work with loaded classes.
-MetaSpace is not part of the heap and By default, it can grow dynamically depending on available system memory.
+Metaspace was introduced in Java 8, replacing PermGen. It stores metadata about classes (e.g., method names, field names, annotations, and constant pool information) — essentially all the structural details the JVM needs to work with loaded classes. Metaspace is not part of the Java heap and, by default, can grow dynamically based on the available system memory.
 Example : 
 -XX:MaxMetaspaceSize=<size> → sets an upper limit.
 -XX:MetaspaceSize=<size> → initial size before first GC.
@@ -81,6 +79,8 @@ Java DateTime API
 Method Reference
 Optional Class
 Default and Static Methods in Interfaces
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+The Java 8 DateTime API (java.time) provides an immutable, thread-safe, and more user-friendly way to handle dates, times, and time zones, replacing the older Date and Calendar classes.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 Lambda Expressions: Lambda expressions allow developers to write more concise and expressive code by enabling the use of functional programming constructs. They simplify the syntax for defining anonymous functions, making it easier to work with collections and perform operations like filtering, mapping, and reducing.
 

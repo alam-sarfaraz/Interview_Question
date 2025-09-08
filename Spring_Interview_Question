@@ -46,8 +46,21 @@ It usually works by requiring a special token (CSRF token) in every state-changi
 What is the role of actuator in spring boot?
 Actuator is a module in Spring Boot that provides ready-to-use features for monitoring and managing applications by exposing endpoints for health, metrics, info, logging, and more.
 
-   http://localhost:8080/actuator/health → returns {"status":"UP"}
-   http://localhost:8080/actuator/metrics/jvm.memory.used → shows JVM memory usage.
+Implement Actuator in Spring Boot:
+  1. Add Dependency
+       <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+       </dependency>
+  2. Enable Actuator Endpoints
+      management:
+	   endpoints:
+		 web:
+		   exposure:
+             include: "*"
+  3. Run and Access Endpoints
+       http://localhost:8080/actuator/health → returns {"status":"UP"}
+       http://localhost:8080/actuator/metrics/jvm.memory.used → shows JVM memory usage.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 DispatcherServlet

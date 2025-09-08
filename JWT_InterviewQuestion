@@ -10,7 +10,7 @@ JWT implementation:
 3. Create Authentication Filter .
     It extends OncePerRequestFilter, so it runs once per request before the request hits your controller.
     and we have to override doFilterInternal method
-    The Authentication Filter (in JWT implementation) is the key piece that checks every incoming request to ensure it has a valid JWT before allowing access to protected resources. 
+    The Authentication Filter that checks every incoming request to ensure it has a valid JWT before allowing access to protected resources. 
     
 4. Configure Spring Security  
     Purpose of SecurityConfig

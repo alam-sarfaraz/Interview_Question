@@ -306,6 +306,37 @@ Checked with instanceof: The presence of the marker is often checked using the i
 class MyClass {
     // some fields and methods
 }
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is the difference between shallow copy and deep copy?
+
+Shallow Copy
+A shallow copy creates a new object, but copies only the field values.
+If the object contains primitive fields (int, char, boolean), their values are copied directly.
+If it contains object references, only the reference (address) is copied, not the actual object.
+
+Effect:
+    Both the original and the copied object share the same reference for mutable objects.
+    Changing the mutable field in one object will also reflect in the other.
+
+// Shallow Copy Constructor
+    Person(Person p) {
+        this.name = p.name;
+        this.address = p.address; // Reference copied
+    }
+    
+Deep Copy
+A deep copy creates a new object and also creates new copies of all objects referenced by it.
+This means that the original and the copied object do not share the same reference.
+
+Effect:
+    Both objects are completely independent.
+    Changes in one object do not affect the other. 
+
+// Deep Copy Constructor
+    Person(Person p) {
+        this.name = p.name;
+        this.address = new Address(p.address); // New object created
+    }   
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is Variable Shadowing?
 Variable shadowing occurs when a variable declared in an inner scope (such as a method, constructor, or inner class) has the same name as a variable declared in an outer scope (such as a class or enclosing block). The inner variable "shadows" or hides the outer variable, making the outer variable inaccessible in the current scope.
@@ -382,9 +413,6 @@ A pointer is a variable which can hold the address of another variable or object
 But, Java does not support pointer due to security reason, because if you get the address of any variable you could access it anywhere from the program without any restriction even variable is private.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 The static keyword indicates that a field or method belongs to the class rather than to instances of the class. Static fields and methods can be accessed without creating an instance of the class.
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 Explain the purpose of the finalize() method in Java.
 
@@ -399,55 +427,3 @@ getClass() method
 clone() method
 wait(), notify() notifyAll() methods
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-What is the difference between shallow copy and deep copy?
-
-Shallow Copy
-A shallow copy creates a new object, but copies only the field values.
-If the object contains primitive fields (int, char, boolean), their values are copied directly.
-If it contains object references, only the reference (address) is copied, not the actual object.
-
-Effect:
-    Both the original and the copied object share the same reference for mutable objects.
-    Changing the mutable field in one object will also reflect in the other.
-
-// Shallow Copy Constructor
-    Person(Person p) {
-        this.name = p.name;
-        this.address = p.address; // Reference copied
-    }
-    
-Deep Copy
-A deep copy creates a new object and also creates new copies of all objects referenced by it.
-This means that the original and the copied object do not share the same reference.
-
-Effect:
-    Both objects are completely independent.
-    Changes in one object do not affect the other. 
-
-// Deep Copy Constructor
-    Person(Person p) {
-        this.name = p.name;
-        this.address = new Address(p.address); // New object created
-    }   
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-Java ClassLoader
-
-The Java class loader is an abstract class, belonging to java.lang package. It is a part of the Java run time environment that loads Java classes dynamically into the java virtual machine. It is used to load a class during run time. The java class loader is based on 3 principles, Delegation, Visibility, and Uniqueness. In this article, we will be diving deep into understanding class loaders in Java.
-
-Types of the class loader in java In Java, there are three types of class loaders:
-
-Bootstrap class loader
-Extension class loader
-System class loader
-
-Bootstrap ClassLoader: It is a machine code that starts the operation when called by JVM. The bootstrap class loader is not a Java class, instead, its job is to only load a class from the location rt.jar. It doesn’t have any parent class loader and is also known as a Primordial class loader. It is a parent of all the class loaders. For example: When a String.class.getClassLoader() is called, it returns the output as null, and any code that uses it throws NullPointerException.
-
-Extension ClassLoader: It is a child of BootStrap ClassLoader. It is used for loading the extension of core classes of Java by using the respective extension library of JDK. This class loads the library from the directory, JRE/lib/ext or any other directory pointed java.ext.dirs by a system property.
-
-System ClassLoader: The application of ClassLoader is also known as System ClassLoader. It is used for loading application-type classes which can be found in the environment variable CLASSPATH, -classpath, or -cp command-line option. The ClassLoader Application is a child of Extension CLassLoader.
-
-How Do Java ClassLoaders Work?
-When JVM sends the request for a class, a loadClass() method of java.lang.ClassLoader is invoked internally and passes the name of the class. The loadClass() method then calls the findLoadedClass() method to check whether the class has been loaded successfully or not. This is helpful to avoid loading of class multiple times. If the class is loaded already, then it delegates the request to the parent ClassLoader of the class. In case, if the ClassLoader is unable to find the class then findClass() is invoked which looks for classes in the file system. 
-
-https://www.scaler.com/topics/class-loader-in-java/
----------------------------------------------------------------------------------------------------------------------------------------------------------------
