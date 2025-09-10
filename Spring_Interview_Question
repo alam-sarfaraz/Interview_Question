@@ -1,3 +1,30 @@
+You notice a delay when fetching millions of records through an endpoint in a Spring Boot application. How will you handle it?
+1. Pagination
+Instead of fetching all records at once, implement pagination to retrieve a subset of records in smaller chunks.
+Implementation: Use Pageable with Spring Data JPA
+
+2.Async / Batch Processing
+If the client absolutely needs all data:
+Process in background job (e.g., Spring Batch).
+Store result in file (CSV/JSON) and give a download link.
+Avoid locking up API for minutes.
+
+3. Streaming Data
+Stream the records to the client instead of loading them all into memory.
+Normally, when you call findAll(), Spring JPA loads all records into memory first → very heavy for millions of rows.
+With streaming, records are fetched from the database one by one (or in small chunks) and sent to the client as they come, instead of waiting for the full dataset.
+
+4. Optimize Database Query
+Ensure proper indexing on frequently queried columns.
+Use lazy loading for relationships.
+Optimize SQL queries by fetching only required columns.
+
+5. Returning Compressed Data
+To reduce payload size, compress the response using Gzip: Configure compression in application.properties:
+server.compression.enabled=true
+server.compression.mime-types=application/json
+server.compression.min-response-size=1024
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 Can read configuration from external files other than application.properties or application.yml.
 Yes, Spring Boot supports external properties files, YAML files, environment variables, command-line args, or config servers, giving flexibility beyond application.properties.
 
@@ -15,7 +42,11 @@ Yes, Spring Boot supports external properties files, YAML files, environment var
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 BeanFactory and ApplicationContext.
-BeanFactory is the basic IoC container with lazy loading and minimal features, while ApplicationContext is a more advanced container with eager loading, event handling, internationalization, and AOP support, making it the default choice for Spring applications.
+In Spring, both BeanFactory and ApplicationContext are IoC containers that manage beans.
+
+BeanFactory is the basic container with lazy loading, while ApplicationContext is the advanced container with eager loading and enterprise features — and it’s the one we use in real projects, including Spring Boot.
+
+Think of BeanFactory as the simplest version of Spring’s container — it just gives you beans when you ask, using lazy loading. But in real-world apps we need more — events, internationalization, AOP, and annotation support. That’s where ApplicationContext comes in; it eagerly loads beans at startup and provides all the enterprise features. That’s why in practice, especially with Spring Boot, we always use ApplicationContext.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 How do you optimize the startup time of a Spring Boot application in a production environment?
 We can optimize Spring Boot startup in production by 
@@ -26,6 +57,20 @@ limiting classpath scanning,
 optimizing database initialization,
 reducing logging overhead,
 and leveraging Spring Native AOT compilation for near-instant startup.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Can you explain the complete request handling flow in Spring MVC, starting from when a client sends an HTTP request until the response is returned?
+A Spring MVC request flows through Filters → DispatcherServlet → HandlerMapping → Interceptors → Controller → ViewResolver/MessageConverter → back through Interceptors & Filters → and finally to the client.
+
+Filters are servlet components that intercept requests and responses, mainly used for cross-cutting concerns like logging, security, or encoding — they run before and after the servlet.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+DispatcherServlet
+In Spring MVC, the DispatcherServlet acts as the front controller. It is responsible for receiving requests and sending them to the appropriate handler method in the controller. After the controller processes the request and returns the response, the DispatcherServlet takes it and forwards it to a ViewResolver to render the view (e.g., JSP or Thymeleaf template). If the response is in JSON format, the DispatcherServlet uses tools like Jackson to serialize the data and send it back to the client.
+
+Role:
+Receives the request.
+Finds the right controller to handle it (via handler mappings).
+Calls the controller method.
+Returns the view or response to the client.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What are Spring Interceptors?
 Spring Interceptors are components in the Spring MVC framework that allow us to intercept HTTP requests and responses at three different stages of their lifecycle, before they reach the controller and after the view is rendered.    
@@ -62,17 +107,7 @@ Implement Actuator in Spring Boot:
        http://localhost:8080/actuator/health → returns {"status":"UP"}
        http://localhost:8080/actuator/metrics/jvm.memory.used → shows JVM memory usage.
 
----------------------------------------------------------------------------------------------------------------------------------------------
-DispatcherServlet
-In Spring MVC, the DispatcherServlet acts as the front controller. It is responsible for receiving requests and sending them to the appropriate handler method in the controller. After the controller processes the request and returns the response, the DispatcherServlet takes it and forwards it to a ViewResolver to render the view (e.g., JSP or Thymeleaf template). If the response is in JSON format, the DispatcherServlet uses tools like Jackson to serialize the data and send it back to the client.
-
-Role:
-Receives the request.
-Finds the right controller to handle it (via handler mappings).
-Calls the controller method.
-Returns the view or response to the client.
---------------------------------------------------------------------------------------------------------------------------------------------
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What are different types of Spring Bean autowiring?
 There are four types of autowiring in Spring framework.
 
@@ -80,7 +115,7 @@ autowire byName
 autowire byType
 autowire by constructor
 autowiring by @Autowired and @Qualifier annotations
---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is lazy initialization of spring bean?
 Lazy initialization in Spring means a bean is created only when it is first needed, instead of at application startup.
 
@@ -111,7 +146,7 @@ The real bean is only created when you first call a method on that dependency.
 Field / Setter Injection + Lazy Initialization
 Works the same way — Spring injects a proxy object.
 The real bean will be created only on the first method call.
---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What are the bean scopes available in Spring?
 Singleton :  Only one instance per Spring container.Same object returned every time you request it.          
 Prototype :  A new instance is created every time you request it.
@@ -120,7 +155,7 @@ Session   :  One bean instance per HTTP session.
 Application: One bean instance per ServletContext (shared across the whole app).
 Websocket :  One bean instance per WebSocket session.           
 
---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 Explain the Bean Life Cycle in Spring ?
 
 Below are the Spring Bean Life Cycle stages :
@@ -139,7 +174,7 @@ Below are the Spring Bean Life Cycle stages :
                   Custom destroy() method (if defined in XML)
                   destroy() from the DisposableBean interface
                   @PreDestroy annotation.
---------------------------------------------------------------------------------------------------------------------------------------------                        
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is dependency Injection?
 
 The process of injecting dependent bean objects into target bean objects is called dependency injection.
@@ -169,13 +204,13 @@ Constructor Injection (Preferred in most cases)
     Easier Testing: Encourages dependency injection through constructors, which integrates well with unit testing and frameworks like JUnit/Mockito.
     Fail Fast: If a mandatory dependency is missing, the microservice fails during startup rather than at runtime.
 
---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 What is an IOC container?
 
 Spring IoC Container is the core of Spring Framework. It creates the objects, configures and assembles their dependencies, manages their entire life cycle. It gets the information about the objects from a configuration file(XML) or Java Code or Java Annotations and Java POJO class. These objects are called Beans. Since the Controlling of Java objects and their lifecycle is not done by the developers, hence the name Inversion Of Control.                  
 
---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 Spring Boot:
 Spring Boot is an open source Java-based framework used to create a stand alone application(micro Service).
 Features of Spring Boot:
@@ -186,17 +221,17 @@ Features of Spring Boot:
 4 Spring Boot automatically configures dependencies by using @EnableAutoconfiguration annotation and reduces boilerplate code.
 5 Security – to provide authentication and authorization
 6 Logging – to record events at certain points during program execution
----------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is the use of Profiles in spring boot?
 While developing the application we deal with multiple environments such as dev, QA, Prod, and each environment requires a different configuration. For eg., we might be using an embedded H2 database for dev but for prod, we might have proprietary Oracle or DB2. Even if DBMS is the same across the environment, the URLs will be different.
 
 spring.profiles.active=dev
 
 This will activate the dev profile, and Spring Boot will load the application-dev.properties.
----------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is Spring Boot dependency management?
 Spring Boot dependency management is used to manage dependencies and configuration automatically without you specifying the version for any of that dependencies.
----------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 How Spring Boot Application Works Internally?
 
 The class has @SpringBootApplication and a main() method with SpringApplication.run().

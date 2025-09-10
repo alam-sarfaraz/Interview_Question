@@ -1,3 +1,8 @@
+What is hibernate.dialect?
+Hibernate.dialect tells Hibernate which type of database you are using so it can generate the correct SQL.
+    If you use the wrong dialect, Hibernate might create SQL your database doesn’t understand, causing errors or wrong behavior.
+    It also affects things like data types, functions, and ID generation.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
 In Hibernate, what is optimistic locking?
 
 Optimistic locking is a concurrency control mechanism that prevents multiple transactions from overwriting each other’s changes by checking a version/timestamp field before committing an update. 

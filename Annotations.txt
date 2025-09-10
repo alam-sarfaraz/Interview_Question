@@ -1,3 +1,4 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is @Bean annotation?
 Answer: @Bean annotaon is used when you want to explicitly declare and register a bean into application context, so that it will be managed by Spring.
 Some points to remember:
@@ -6,6 +7,22 @@ Some points to remember:
   be registered in the spring applicaon context.
 - Using @Bean, you can register the classes from 3rd party libraries into the applicaon context
 - @Bean annotaon is usually declared in configuraon classes.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Difference between @autowired and @Bean
+
+@Autowired 
+    How to use an object (injection).
+    Tells Spring I need this bean (automatic supply).
+    You don’t create anything. You just ask Spring to give you something.
+    Spring looks into its container (where beans are already registered, either via @Bean, @Component, @Service, etc.) and injects the right one.
+
+@Bean 
+    How to make an object (definition).
+    Tells Spring how to make a bean (manual recipe).
+    You (the developer) write explicit instructions for creating the bean.
+    Spring will call that method and put the returned object into its container.
+
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is Inject?
 @Inject is a Java standard annotation (JSR-330) used for dependency injection.
@@ -50,6 +67,29 @@ Example :
 The @Transactional annotation in JPA is used to indicate that a method should be executed within a transaction. 
 It can be applied at the class or method level, 
 When a method annotated with @Transactional is called, a transaction will be started before the method is executed, and any changes made to the database within the method will be persisted to the database when the transaction is committed. If an exception is thrown within the method, the transaction will be rolled back, and any changes made to the database within the method will be discarded.
+Flow:
+ Caller --> Spring Proxy --> Start Transaction --> Execute Method --> Commit / Rollback --> Return
+
+Propagation (transaction behavior):
+-----------------------------------------------------
+| Propagation      | Meaning                         |
+|-----------------|----------------------------------|
+| REQUIRED         | Join existing or create new     |
+| REQUIRES_NEW     | Always start a new transaction  |
+| SUPPORTS         | Join if exists, else no txn     |
+| MANDATORY        | Must join existing, else error  |
+| NOT_SUPPORTED    | Run without transaction         |
+| NEVER            | Must not run in transaction     |
+| NESTED           | Create nested transaction       |
+-----------------------------------------------------
+
+Rollback Rules:
+-------------------------------------------------------------
+| By default: Rolls back on RuntimeException (unchecked)     |
+| Checked exceptions → NO rollback unless rollbackFor is set |
+| Example: @Transactional(rollbackFor = IOException.class)   |
+-------------------------------------------------------------
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 The @Mock annotation is used to create a mock object of a class or interface, and the @InjectMocks annotation is used to inject the mock objects into a test class.
@@ -142,17 +182,7 @@ public ControllerClass {
 @RestController
 It is a combination of @Controller and @ResponseBody, used for creating a restful controller. It converts the response to JSON or XML. It ensures that data returned by each method will be written straight into the response body instead of returning a template.
 
-@RestController simply combines @Controller and @ResponseBody. So you don't need to annotate your endpoint methods with @ResponseBody. A single anntoation of your controller class will do the magic. The return type of the endpoint methods are used as response body.
-
-@RestController
-public ControllerClass {
-
-   @GetMapping("/greetings")
-   private String someEndpoint(){
-       return "hey";
-   }
-
-}
+@RestController simply combines @Controller and @ResponseBody. So you don't need to annotate your endpoint methods with @ResponseBody. A single anntoation of your controller class will do the magic. Methods return data directly in the HTTP response body (typically JSON or XML).
 --------------------------------------------------------------------------------------------------------------------------------------------
 @service
 
