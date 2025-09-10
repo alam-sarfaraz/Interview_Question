@@ -1,3 +1,54 @@
+You need to use a HashMap where the keys are complex objects, such as a Person class with attributes like name, age, and address.How would you design this key class to ensure that it works correctly in a HashMap?
+
+To make a complex object (like Person) work correctly as a key in a HashMap, you must ensure it can be compared consistently and hashed reliably.
+
+Key Points
+    Make the class immutable (best practice)
+    Declare fields as final and don’t allow changes after creation.
+    Override equals()
+        Define equality based on significant fields (name, age, address).
+    Override hashCode()
+        Must be consistent with equals().
+        Use the same fields that are used in equals().
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+How would you resolve this circular dependency in Java?
+1 Use setter or field injection instead of constructor injection
+2 Use a factory/builder to create them in sequence.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+How do you create a custom annotation?
+A custom annotation in Java is a user-defined annotation created using @interface to add metadata that can be processed at compile-time or runtime.
+    @Target: Specifies where an annotation can be applied (class, method, field, etc.).
+    @Retention – how long the annotation is retained(e.g., runtime, compile-time).
+    
+@Retention(RetentionPolicy.RUNTIME)  // Available at runtime
+@Target(ElementType.METHOD)         // Can be applied to methods
+public @interface MyAnnotation {
+    String value();      // Element
+    int version() default 1;  // Default value
+}    
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Can we change the return type of method to subclass while overriding?
+    Yes, we can change the return type to a subclass while overriding a method in Java. This is called a covariant return type.
+
+What is a Covariant Return Type?
+    It allows an overriding method in a subclass to return a more specific (subclass) type than the one declared in the superclass method.
+
+class Animal {
+    Animal getAnimal() {
+        return new Animal();
+    }
+}
+class Dog extends Animal {
+    @Override
+    Dog getAnimal() { // Return type changed to subclass (Dog)
+        return new Dog();
+    }
+}
+Restrictions
+   Works only for objects (not primitives) – You can’t use this with int, double, etc. Only class types.
+   Must return a child class – The new return type must be a subclass of the original return type.
+   Everything else must match – Method name and parameters must stay the same
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
 HashSet internally uses a HashMap to store elements as keys with a dummy value (PRESENT). When you add an element, it calculates the hash using the key's hashCode() and decides the bucket using (n - 1) & hash. If the element already exists (determined using equals()), it is not added. It allows one null element, has a default initial capacity of 16, and a load factor of 0.75. Duplicates are prevented because HashMap cannot store duplicate keys.
 
 Load factor is a threshold that decides when to increase the capacity of the internal HashMap.
@@ -76,12 +127,14 @@ If it is numeric, then it will assign to 0.
 If it is a boolean, then it will be assigned to false. Etc.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 Can the static methods be overridden?
-In Java, static methods cannot be overridden in the same way instance methods are.
+No, you cannot override a static method in Java. Static methods belong to the class rather than an instance of the class.
+If you define a static method with the same name and parameters in a subclass, it will hide the superclass's static method, not override it.
 Instead of overriding, static methods in a subclass hide the static methods of the parent class. This is known as method hiding.
-
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Serialization means to convert an object into a byte stream, which can then be easily stored in a file, transmitted over a network, or saved in a database. 
+Serialization in Java is the process of converting an object into a byte stream so that it can be easily stored in a file,sent over a network, or saved in a database.
+Later, this byte stream can be converted back into the original object. That reverse process is called deserialization.
+The ObjectOutputStream class is used for serialization.
+The ObjectInputStream class is used for deserialization.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 ConcurrentHashMap :
 
@@ -233,3 +286,15 @@ In simple words, concurrency is the ability to run several programs or several p
 The backbone of java concurrency is threading. 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
+Consider the following scenario where you have two interfaces with the same default method signature, but different method bodies. How would you resolve this diamond problem in Java when a class implements both interfaces?
+
+Java allows you to resolve this diamond problem by explicitly overriding the conflicting method and specifying which interface's default method you want to use.
+
+class C implements A, B {
+
+@Override
+public void doSomething() {
+       A.super.doSomething(); // Call A's implementation explicitly
+    }
+}
+

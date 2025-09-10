@@ -1,3 +1,39 @@
+Executor interface and ExecutorService
+
+Executor Interface
+    A simple interface in java.util.concurrent to execute a task (Runnable) asynchronously (fire-and-forget).
+    Has only one method:
+    void execute(Runnable command);
+    
+ExecutorService?
+    It is a sub-interface of Executor with advanced control.
+    Provides:
+        submit() → Accepts Runnable or Callable, returns Future.
+        invokeAll() and invokeAny() → Execute multiple tasks.
+        Shutdown control: shutdown(), shutdownNow().    
+
+ExecutorService service = Executors.newFixedThreadPool(2);
+Future<?> future = service.submit(() -> System.out.println("Task running"));
+service.shutdown();
+
+Difference:
+--------------------------------------------------------------------------------------------------
+| Feature               | **Executor**          | **ExecutorService**                            |
+| --------------------- | --------------------- | ---------------------------------------------- |
+| **Type**              | Interface             | Sub-interface of `Executor`                    |
+| **Main Method**       | `execute(Runnable)`   | `submit()`, `invokeAll()`, `invokeAny()`, etc. |
+| **Result Handling**   | No result handling    | Returns `Future` for result/cancellation       |
+| **Task Type**         | Only `Runnable`       | `Runnable` and `Callable`                      |
+| **Lifecycle Control** | No shutdown support   | Supports `shutdown()` and `shutdownNow()`      |
+| **Use Case**          | Fire-and-forget tasks | Task execution with result & lifecycle control |
+-------------------------------------------------------------------------------------------------        
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+concurrency and parallelism
+Concurrency is about managing multiple tasks at once, while parallelism is about running multiple tasks simultaneously.
+
+Concurrency → Dealing with many tasks at once (tasks start, pause, and resume without necessarily running at the same time). It’s about managing multiple tasks.
+Parallelism → Actually running multiple tasks at the same time, usually on multiple processors/cores.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 Why are wait(), notify(), and notifyAll() in Object class?
      In Java, every object has a lock (monitor).
      When you use synchronized, it locks on an object, not on a thread.

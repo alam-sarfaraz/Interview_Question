@@ -221,10 +221,9 @@ You can create your own by extending ClassLoader
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 Reflection in Java is a powerful feature that allows us to inspect and manipulate the properties of classes, methods, fields, and other components of a program at runtime, even if we don't know the exact class types or members in advance.
 
-Imagine you have a class, but you don't know what methods it has. Using reflection, you can ask the class about its methods and even call them, all while the program is running.
-Reflection allows you to access private fields and invoke private methods dynamically, even if you don’t have direct access to them in the usual way.
+Reflection can be used to access private fields, methods,and constructors by setAccessible(true).
 
-You need to use setAccessible(true) to bypass Java's access control (private, protected, etc.).
+Imagine you have a class, but you don't know what methods it has. Using reflection, you can ask the class about its methods and even call them, all while the program is running.
 
 class Person {
     private String name;
